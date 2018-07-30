@@ -1,0 +1,17 @@
+type Meetup {
+  id: ID! @unique
+  organizer: User! @relation(name: "UserEvents")
+  title: String!
+  description: String!
+  location: String!
+  date: DateTime!
+  attendees: [User!]! @relation(name: "EventAttendees")
+}
+type User {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  name: String!
+  myMeetups: [Meetup!]! @relation(name: "UserEvents")
+  meetupsAttending: [Meetup!]! @relation(name: "EventAttendees")
+}
