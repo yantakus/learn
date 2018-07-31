@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { Form } from 'semantic-ui-react'
 import redirect from '../lib/redirect'
-import { query } from '../components/Meetups'
+import { query } from './index'
 
 interface Props {
   createMeetup: Function

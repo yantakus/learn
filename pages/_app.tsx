@@ -21,21 +21,23 @@ class MyApp extends App<Props> {
     return <Container>
       <ApolloProvider client={apolloClient}>
         <Main>
-          <div className="header item">
-            <h1>
-              <Link href="/"><a className="navbar-item">Techies</a></Link>
-            </h1>
+          <div className="ui stackable relaxed container">
+            <div className="header item">
+              <h1>
+                <Link href="/"><a className="navbar-item">Techies</a></Link>
+              </h1>
+            </div>
+            <Grid>
+              <Grid.Column stretched width={12}>
+                <Segment>
+                  <Component {...pageProps} />
+                </Segment>
+              </Grid.Column>
+              <Grid.Column width={4}>
+                <Menu pathname={pathname} />
+              </Grid.Column>
+            </Grid>
           </div>
-          <Grid>
-            <Grid.Column stretched width={12}>
-              <Segment>
-                <Component {...pageProps} />
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <Menu pathname={pathname} />
-            </Grid.Column>
-          </Grid>
         </Main>
       </ApolloProvider>
     </Container>

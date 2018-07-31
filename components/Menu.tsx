@@ -60,6 +60,10 @@ export default class MenuComponent extends Component<Props> {
               {
                 name: 'Login',
                 url: '/login'
+              },
+              {
+                name: 'Signup',
+                url: '/signup'
               }
             ]
           }

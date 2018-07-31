@@ -50,7 +50,6 @@ const meetup = {
     )
   },
   async notAttending (parent, { id }, ctx, info) {
-    console.log('here')
     const userId = getUserId(ctx)
     const meetupExists = await ctx.db.exists.Meetup({
       id

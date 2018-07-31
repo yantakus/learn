@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Link from 'next/link'
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
-import { Form } from 'semantic-ui-react'
+import { Form, Message } from 'semantic-ui-react'
 import cookie from 'cookie'
 
 import redirect from '../lib/redirect'
@@ -36,11 +36,11 @@ export default class SignUp extends Component<Types> {
           })
         }}
       >
-        {(login, { loading }) => (
+        {(login, { loading, error }) => (
           <div className="ui stackable three column centered grid container">
             <div className="column">
               <h3 className="ui horizontal divider header">Log In</h3>
-              <Form onSubmit={() => login({ email, password })}>
+              <Form onSubmit={() => login({ email, password })} error={Boolean(error)}>
                 <div className="field">
                   <label>Email address</label>
                   <Form.Input type="email" name="email" value={email} required onChange={this.handleChange} />
@@ -50,6 +50,10 @@ export default class SignUp extends Component<Types> {
                   <Form.Input type="password" name="password" value={password} required onChange={this.handleChange} />
                 </div>
                 <Form.Button loading={loading} primary content="Log In" />
+                <Message
+                  error
+                  content={String(error)}
+                />
               </Form>
               <div className="ui divider"></div>
               <div className="ui column grid">
