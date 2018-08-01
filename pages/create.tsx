@@ -64,7 +64,7 @@ export default class CreateMeetup extends Component<Props> {
 }
 
 const mutation = gql`
-  mutation CreateMeetupMutation(
+  mutation (
     $title: String!
     $location: String!
     $date: DateTime!

@@ -11,8 +11,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   createMeetup(title: String!, description: String!, date: DateTime!, location: String!): Meetup!
-  attending(id: ID!): Meetup!
-  notAttending(id: ID!): Meetup!
+  attendMeetup(id: ID!, attending: Boolean!): Meetup!
 }
 
 type AuthPayload {

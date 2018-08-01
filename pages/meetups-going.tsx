@@ -8,10 +8,11 @@ export default () => (
   <Query query={query}>
     {props => {
       const { data, loading } = props
+      console.log(data)
       if (!data?.user && !loading) {
         return "You are not logged in"
       }
-      return <Meetups data={data?.user?.myMeetups} loading={loading} />
+      return <Meetups data={data?.user?.meetupsAttending} loading={loading} />
     }}
   </Query>
 )
@@ -20,7 +21,7 @@ export const query = gql`
   {
     user {
       id
-      myMeetups {
+      meetupsAttending {
         id
         title
         date

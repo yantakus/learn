@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Card } from 'semantic-ui-react'
 
 import Preloader from '../Preloader'
 import Meetup from './item'
@@ -27,15 +28,11 @@ export default class Meetups extends Component<Props> {
     return (
       <Fragment>
         <h2 className="ui header">All Meetups</h2>
-        <div className="ui divided items">
-        <div
-          className="item"
-        >
+        <Card.Group itemsPerRow={2}>
           {data.length ? data.map(meetup => (
             <Meetup key={meetup.id} meetup={meetup} />
           )) : 'No meetups yet'}
-          </div>
-        </div>
+        </Card.Group>
       </Fragment>
     )
   }

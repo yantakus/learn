@@ -10,7 +10,7 @@ export default () => (
       const { data, loading } = props
       return <Meetups data={data.meetups} loading={loading} />
     }}
-</Query>
+  </Query>
 )
 
 export const query = gql`
