@@ -4,12 +4,13 @@ type Query {
   meetups: [Meetup!]!
   meetup(id: ID!): Meetup!
   users: [User!]!
-  user: User!
+  user(login: String): User
 }
 
 type Mutation {
-  signup(email: String!, password: String!, login: String, name: String!): AuthPayload!
+  signup(email: String!, password: String!, login: String!, name: String!): AuthPayload!
   signin(login: String!, password: String!): AuthPayload!
+  editProfile(name: String, login: String): User!
   createMeetup(title: String!, description: String!, date: DateTime!, location: String!): Meetup!
   attendMeetup(id: ID!, attending: Boolean!): Meetup!
 }

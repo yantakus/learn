@@ -29,7 +29,7 @@ export default class Meetup extends Component<Props> {
             </Link>
           </Card.Header>
           <Card.Meta>
-            Organized by {login ? <Link href={`/users/${login}`}><a>{login}</a></Link> : <strong>{meetup.organizer.name}</strong>}
+            Organized by {login ? <Link href={`/user?login=${login}`}><a>{login}</a></Link> : <strong>{meetup.organizer.name}</strong>}
           </Card.Meta>
           <Card.Description>
             <div>

@@ -4,7 +4,10 @@ const Query = {
   users (parent, args, ctx, info) {
     return ctx.db.query.users({ orderBy: 'name_DESC' }, info)
   },
-  user (parent, args, ctx, info) {
+  user (parent, { login }, ctx, info) {
+    if (login) {
+      return ctx.db.query.user({ where: { login } }, info)
+    }
     const id = getUserId(ctx)
     return ctx.db.query.user({ where: { id } }, info)
   },

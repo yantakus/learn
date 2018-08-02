@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { getUserId } = require('../../utils')
 
 const auth = {
   async signup(parent, args, ctx, info) {
@@ -30,6 +31,19 @@ const auth = {
     return {
       token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
       user,
+    }
+  },
+
+  async editProfile(parent, args, ctx, info) {
+    const id = getUserId(ctx)
+    if (id) {
+      const user = await ctx.db.mutation.updateUser({
+        where: { id },
+        data: { ...args },
+      })
+      return user
+    } else {
+      throw new Error('You are not authenticated to perform this action.')
     }
   },
 }
