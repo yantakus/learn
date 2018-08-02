@@ -58,11 +58,11 @@ export default class MenuComponent extends Component<Props> {
             menuItems = [
               ...defaultMenuItems,
               {
-                name: 'Login',
-                url: '/login'
+                name: 'Sign In',
+                url: '/signin'
               },
               {
-                name: 'Signup',
+                name: 'Sign Up',
                 url: '/signup'
               }
             ]
@@ -81,7 +81,7 @@ export default class MenuComponent extends Component<Props> {
                 </Menu.Item>
               ))}
               {user && (
-                <Menu.Item key="Logout"><a onClick={() => this.logout(client)} style={{ cursor: 'pointer' }}>Logout</a></Menu.Item>
+                <Menu.Item key="Sign Out"><a onClick={() => this.logout(client)} style={{ cursor: 'pointer' }}>Sign Out</a></Menu.Item>
               )}
             </Menu>
           )}}

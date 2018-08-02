@@ -27,7 +27,7 @@ export default class CreateMeetup extends Component<Props> {
           // read data from cache for this query
           const data = store.readQuery({ query })
           // add the new meetup from this mutation to existing meetups
-          data.meetups.push(createMeetup)
+          data.meetups.unshift(createMeetup)
           // write data back to the cache
           store.writeQuery({ query, data })
         }}

@@ -21,6 +21,7 @@ export const query = gql`
       date
       location
       organizer {
+        login
         name
       }
       attendees {

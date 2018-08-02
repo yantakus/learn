@@ -9,21 +9,22 @@ import { Form, Message } from 'semantic-ui-react'
 import { userQuery } from '../components/Menu'
 
 export default class SignUp extends Component {
-  state = { name: '', email: '', password: '' }
+  state = { name: '', email: '', login: '', password: '' }
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value })
   }
 
   render() {
-    const { name, email, password } = this.state
+    const { name, email, password, login } = this.state
     return (
       <Mutation
         mutation={mutation}
         variables={{
           name,
           email,
-          password
+          password,
+          login
         }}
         update={(store, { data: { signup: { token, user }} }) => {
           document.cookie = cookie.serialize('token', token, {
@@ -40,10 +41,14 @@ export default class SignUp extends Component {
           <div className="ui stackable three column centered grid container">
             <div className="column">
               <h3 className="ui horizontal divider header">Sign Up</h3>
-              <Form onSubmit={() => signup({ name, email, password })} error={Boolean(error)}>
+              <Form onSubmit={() => signup({ name, email, login, password })} error={Boolean(error)}>
                 <div className="field">
                   <label>Name</label>
                   <Form.Input type="text" name="name" value={name} required onChange={this.handleChange} />
+                </div>
+                <div className="field">
+                  <label>Login</label>
+                  <Form.Input type="text" name="login" value={login} required onChange={this.handleChange} />
                 </div>
                 <div className="field">
                   <label>Email address</label>
@@ -62,7 +67,7 @@ export default class SignUp extends Component {
               <div className="ui divider"></div>
               <div className="ui column grid">
                 <div className="center aligned column">
-                  Already got an account? <Link href="/login"><a>Log In</a></Link>
+                  Already got an account? <Link href="/signin"><a>Sign In</a></Link>
                 </div>
               </div>
             </div>
@@ -74,8 +79,8 @@ export default class SignUp extends Component {
 }
 
 const mutation = gql`
-  mutation SignupMutation($name: String!, $email: String!, $password: String!) {
-    signup(name: $name, email: $email, password: $password) {
+  mutation SignupMutation($name: String!, $email: String!, $login: String!, $password: String!) {
+    signup(name: $name, email: $email, login: $login, password: $password) {
       token
       user {
         id

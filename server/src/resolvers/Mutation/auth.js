@@ -14,11 +14,16 @@ const auth = {
     }
   },
 
-  async login(parent, { email, password }, ctx, info) {
-    const user = await ctx.db.query.user({ where: { email } })
-    const valid = await bcrypt.compare(password, user.password)
+  async signin(parent, { login, password }, ctx, info) {
+    let user = await ctx.db.query.user({ where: { login }})
+    if (!user) user = await ctx.db.query.user({ where: { email: login }})
 
-    if (!user || !valid) {
+    if (!user) {
+      throw new Error('Wrong email/password combination.')
+    }
+
+    const valid = await bcrypt.compare(password, user.password)
+    if (!valid) {
       throw new Error('Wrong email/password combination.')
     }
 

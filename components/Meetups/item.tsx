@@ -19,6 +19,7 @@ interface Props {
 export default class Meetup extends Component<Props> {
   render () {
     const { meetup } = this.props
+    const login = meetup.organizer?.login
     return (
       <Card key={meetup.id}>
         <Card.Content>
@@ -28,7 +29,7 @@ export default class Meetup extends Component<Props> {
             </Link>
           </Card.Header>
           <Card.Meta>
-            Organized by <strong>{meetup.organizer.name}</strong>
+            Organized by {login ? <Link href={`/users/${login}`}><a>{login}</a></Link> : <strong>{meetup.organizer.name}</strong>}
           </Card.Meta>
           <Card.Description>
             <div>
