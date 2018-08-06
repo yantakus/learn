@@ -3,6 +3,8 @@ import { Mutation, Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { format } from 'date-fns'
 import { Button, Icon } from 'semantic-ui-react'
+import get from 'lodash/get'
+
 import Preloader from '../components/Preloader'
 
 interface Props {
@@ -13,22 +15,22 @@ interface Props {
 }
 
 export default class CreateMeetup extends Component<Props> {
-  static async getInitialProps ({ query }) {
+  static getInitialProps({ query }) {
     return { query }
   }
   render() {
-    const { query: { id } } = this.props
+    const {
+      query: { id },
+    } = this.props
     return (
-      <Query
-        query={query}
-        variables={{ id }}
-      >
-        {({ data: { user, meetup }, loading }) => {
+      <Query query={query} variables={{ id }} errorPolicy="all">
+        {({ data, loading }) => {
           if (loading) {
             return <Preloader />
           }
+          const { currentUser, meetup } = data
           const attending = meetup.attendees.some(item => {
-            return item.id === user.id
+            return get(currentUser, ['id']) === item.id
           })
           return (
             <Mutation
@@ -39,50 +41,55 @@ export default class CreateMeetup extends Component<Props> {
                 <div>
                   <h1 className="ui dividing header">
                     {meetup.title}
-                    <div className="sub header">Organized by {meetup.organizer.name}</div>
+                    <div className="sub header">
+                      Organized by {meetup.organizer.name}
+                    </div>
                   </h1>
                   <div className="description">
                     <h3 className="ui header">Details</h3>
                     <p>{meetup.description}</p>
                     <p>
-                      <i className="calendar icon"></i> {format(meetup.date || new Date(), "DD.MM.YYYY, H:m")}
+                      <i className="calendar icon" />{' '}
+                      {format(meetup.date || new Date(), 'DD.MM.YYYY, H:m')}
                     </p>
                     <p>
-                      <i className="map marker alternate icon"></i> {meetup.location}
+                      <i className="map marker alternate icon" />{' '}
+                      {meetup.location}
                     </p>
                   </div>
-                  {user &&
+                  {currentUser && (
                     <Fragment>
                       <h3 className="ui header">Are you going?</h3>
                       <Button
                         primary={attending}
                         icon
-                        onClick={() => attendMeetup({ id, attending: !attending })}
+                        onClick={() =>
+                          attendMeetup({ id, attending: !attending })
+                        }
                         title={attending ? "I'm not going" : "I'm going"}
                         loading={loading}
                       >
                         <Icon name={attending ? 'thumbs down' : 'thumbs up'} />
                       </Button>
                     </Fragment>
-                  }
+                  )}
                   <h3 className="ui header">
                     Attendees: {meetup.attendees.length}
                   </h3>
                   <div className="ui bulleted list">
-                    {meetup.attendees.length ? meetup.attendees.map(attendee =>
-                      <div
-                        key={attendee.id}
-                        className="item"
-                      >
-                        {attendee.name}
-                      </div>
-                    ) : null}
+                    {meetup.attendees.length
+                      ? meetup.attendees.map(attendee => (
+                          <div key={attendee.id} className="item">
+                            {attendee.name}
+                          </div>
+                        ))
+                      : null}
                   </div>
                 </div>
               )}
             </Mutation>
-          )}
-        }
+          )
+        }}
       </Query>
     )
   }
@@ -90,7 +97,7 @@ export default class CreateMeetup extends Component<Props> {
 
 const query = gql`
   query MeetupQuery($id: ID!) {
-    user {
+    currentUser {
       id
     }
     meetup(id: $id) {

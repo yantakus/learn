@@ -4,7 +4,8 @@ type Query {
   meetups: [Meetup!]!
   meetup(id: ID!): Meetup!
   users: [User!]!
-  user(login: String): User
+  user(login: String!): User
+  currentUser: User
 }
 
 type Mutation {
@@ -17,7 +18,7 @@ type Mutation {
 
 type AuthPayload {
   token: String!
-  user: User!
+  currentUser: User!
 }
 
 type User {

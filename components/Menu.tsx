@@ -6,59 +6,58 @@ import gql from 'graphql-tag'
 import { Menu } from 'semantic-ui-react'
 import Link from 'next/link'
 
-import redirect from '../lib/redirect'
-
 export const userQuery = gql`
   {
-    user {
+    currentUser @client {
       id
     }
   }
 `
 
 interface Props {
-  pathname: string
+  router: {
+    pathname: String
+    asPath: String
+  }
 }
 
-const defaultMenuItems = [{ name: 'All Meetups', url: '/' }];
+const defaultMenuItems = [{ name: 'All Meetups', url: '/' }]
 let menuItems
 
 export default class MenuComponent extends Component<Props> {
   signout = client => {
     document.cookie = cookie.serialize('token', '', {
-      maxAge: -1 // Expire the cookie immediately
+      maxAge: -1, // Expire the cookie immediately
     })
-    client.writeData({ data: { user: null } })
-    redirect({}, '/')
+    client.writeData({ data: { currentUser: null } })
   }
 
-  render () {
-    const { pathname } = this.props
+  render() {
+    const {
+      router: { pathname, asPath },
+    } = this.props
     return (
-      <Query
-        query={userQuery}
-        errorPolicy="all"
-      >
+      <Query query={userQuery}>
         {({ data, client }) => {
-          const user = data && data.user
+          const user = data && data.currentUser
           if (user) {
             menuItems = [
               ...defaultMenuItems,
               {
                 name: 'My Profile',
-                url: '/me'
+                url: '/me',
               },
               {
                 name: 'My Meetups',
-                url: '/my-meetups'
+                url: '/my-meetups',
               },
               {
                 name: "I'm going",
-                url: '/meetups-going'
+                url: '/meetups-going',
               },
               {
                 name: 'Create Meetup',
-                url: '/create'
+                url: '/create',
               },
             ]
           } else {
@@ -66,21 +65,23 @@ export default class MenuComponent extends Component<Props> {
               ...defaultMenuItems,
               {
                 name: 'Sign In',
-                url: '/signin'
+                url: `/signin?redirect=${asPath}`,
               },
               {
                 name: 'Sign Up',
-                url: '/signup'
-              }
+                url: '/signup',
+              },
             ]
           }
           return (
-            <Menu fluid vertical tabular='right'>
+            <Menu fluid vertical tabular="right">
               {menuItems.map(i => (
                 <Menu.Item
                   key={i.name}
                   name={i.name}
-                  active={pathname === i.url || pathname.startsWith(`${i.url}/`)}
+                  active={
+                    pathname === i.url || pathname.startsWith(`${i.url}/`)
+                  }
                 >
                   <Link prefetch href={i.url}>
                     <a>{i.name}</a>
@@ -88,10 +89,18 @@ export default class MenuComponent extends Component<Props> {
                 </Menu.Item>
               ))}
               {user && (
-                <Menu.Item key="Sign Out"><a onClick={() => this.signout(client)} style={{ cursor: 'pointer' }}>Sign Out</a></Menu.Item>
+                <Menu.Item key="Sign Out">
+                  <a
+                    onClick={() => this.signout(client)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Sign Out
+                  </a>
+                </Menu.Item>
               )}
             </Menu>
-          )}}
+          )
+        }}
       </Query>
     )
   }

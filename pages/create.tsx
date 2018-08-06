@@ -36,24 +36,56 @@ export default class CreateMeetup extends Component<Props> {
           <div className="ui stackable three column centered grid container">
             <div className="column">
               <h3 className="ui horizontal divider header">Sign Up</h3>
-              <Form onSubmit={() => createMeetup({ title, location, date, description })}>
+              <Form
+                onSubmit={() =>
+                  createMeetup({ title, location, date, description })
+                }
+              >
                 <div className="field">
                   <label>Title</label>
-                  <Form.Input type="text" name="title" value={title} required onChange={this.handleChange} />
+                  <Form.Input
+                    type="text"
+                    name="title"
+                    value={title}
+                    required
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div className="field">
                   <label>Location</label>
-                  <Form.Input type="text" name="location" value={location} required onChange={this.handleChange} />
+                  <Form.Input
+                    type="text"
+                    name="location"
+                    value={location}
+                    required
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div className="field">
                   <label>Date</label>
-                  <Form.Input type="datetime-local" name="date" value={date} required onChange={this.handleChange} />
+                  <Form.Input
+                    type="datetime-local"
+                    name="date"
+                    value={date}
+                    required
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div className="field">
                   <label>Description</label>
-                  <Form.Input type="text" name="description" value={description} required onChange={this.handleChange} />
+                  <Form.Input
+                    type="text"
+                    name="description"
+                    value={description}
+                    required
+                    onChange={this.handleChange}
+                  />
                 </div>
-                <Form.Button loading={loading} primary content="Create Meetup" />
+                <Form.Button
+                  loading={loading}
+                  primary
+                  content="Create Meetup"
+                />
               </Form>
             </div>
           </div>
@@ -64,7 +96,7 @@ export default class CreateMeetup extends Component<Props> {
 }
 
 const mutation = gql`
-  mutation (
+  mutation(
     $title: String!
     $location: String!
     $date: DateTime!

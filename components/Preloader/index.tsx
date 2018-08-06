@@ -1,12 +1,12 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 
 interface Props {
-  height?: number,
-};
+  height?: number
+}
 
-const Preloader = ({ height }: Props) => (
+const Preloader = ({ height = 500 }: Props) => (
   <Fragment>
     <div className="text-center">
       <div className="preloader" style={{ height }}>
@@ -37,7 +37,9 @@ const Preloader = ({ height }: Props) => (
           animation-delay: -0.16s;
         }
         @keyframes sk-bouncedelay {
-          0%, 80%, 100% {
+          0%,
+          80%,
+          100% {
             transform: scale(0);
           }
           40% {
@@ -47,10 +49,6 @@ const Preloader = ({ height }: Props) => (
       `}
     </style>
   </Fragment>
-);
+)
 
-Preloader.defaultProps = {
-  height: 548,
-};
-
-export default Preloader;
+export default Preloader

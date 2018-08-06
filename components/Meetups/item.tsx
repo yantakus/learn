@@ -2,38 +2,47 @@ import React, { Component } from 'react'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { Card, Icon } from 'semantic-ui-react'
+import get from 'lodash/get'
 
 interface Props {
   meetup: {
-    id: string,
-    title: string,
+    id: string
+    title: string
     organizer: {
       name: string
-    },
-    location: string,
-    date: string,
+    }
+    location: string
+    date: string
     attendees: [{}]
   }
 }
 
 export default class Meetup extends Component<Props> {
-  render () {
+  public render() {
     const { meetup } = this.props
-    const login = meetup.organizer?.login
+    const login = get(meetup, ['organizer', 'login'])
     return (
       <Card key={meetup.id}>
         <Card.Content>
           <Card.Header>
-            <Link href={`meetup?id=${meetup.id}`}>
+            <Link href={`meetup/${meetup.id}`}>
               <a>{meetup.title}</a>
             </Link>
           </Card.Header>
           <Card.Meta>
-            Organized by {login ? <Link href={`/user?login=${login}`}><a>{login}</a></Link> : <strong>{meetup.organizer.name}</strong>}
+            Organized by{' '}
+            {login ? (
+              <Link href={`/user/${login}`}>
+                <a>{login}</a>
+              </Link>
+            ) : (
+              <strong>{meetup.organizer.name}</strong>
+            )}
           </Card.Meta>
           <Card.Description>
             <div>
-              <Icon name="calendar"/> {format(meetup.date || new Date(), "DD.MM.YYYY, H:m")}
+              <Icon name="calendar" />{' '}
+              {format(meetup.date || new Date(), 'DD.MM.YYYY, H:m')}
             </div>
             <div>
               <Icon name="map marker alternate" /> {meetup.location}
@@ -41,9 +50,10 @@ export default class Meetup extends Component<Props> {
           </Card.Description>
         </Card.Content>
         <Card.Content>
-          <Icon name="thumbs up" /> {meetup.attendees && meetup.attendees.length <= 1
-          ? `${meetup.attendees.length} attendee going`
-          : `${meetup.attendees.length} attendees going`}
+          <Icon name="thumbs up" />{' '}
+          {meetup.attendees && meetup.attendees.length <= 1
+            ? `${meetup.attendees.length} attendee going`
+            : `${meetup.attendees.length} attendees going`}
         </Card.Content>
       </Card>
     )

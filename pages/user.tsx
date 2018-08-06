@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
+import get from 'lodash/get'
 
 import User from '../components/User'
 
@@ -11,17 +12,18 @@ interface Props {
 }
 
 class UserPage extends Component<Props> {
-  static async getInitialProps ({ query }) {
+  static async getInitialProps({ query }) {
     return { query }
   }
   render() {
-    const { query: { login }} = this.props
+    const {
+      query: { login },
+    } = this.props
     return (
-      <Query
-        query={query}
-        variables={{ login }}
-      >
-        {({ data, loading }) => <User data={data} loading={loading} />}
+      <Query query={query} variables={{ login }}>
+        {({ data, loading }) => (
+          <User data={get(data, ['user'])} loading={loading} />
+        )}
       </Query>
     )
   }
