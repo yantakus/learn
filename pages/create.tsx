@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost'
 import { Form } from 'semantic-ui-react'
 import redirect from '../lib/redirect'
 import { query } from './index'
+import produce from 'immer'
 
 interface Props {
   createMeetup: Function
@@ -22,14 +23,15 @@ export default class CreateMeetup extends Component<Props> {
       <Mutation
         mutation={mutation}
         onCompleted={() => redirect({}, '/')}
-        variables={{ title, location, date, description }}
         update={(store, { data: { createMeetup } }) => {
           // read data from cache for this query
           const data = store.readQuery({ query })
           // add the new meetup from this mutation to existing meetups
-          data.meetups.unshift(createMeetup)
+          const newData = produce(data, draftState => {
+            draftState.meetups.unshift(createMeetup)
+          })
           // write data back to the cache
-          store.writeQuery({ query, data })
+          store.writeQuery({ query, data: newData })
         }}
       >
         {(createMeetup, { loading }) => (
@@ -38,7 +40,9 @@ export default class CreateMeetup extends Component<Props> {
               <h3 className="ui horizontal divider header">Sign Up</h3>
               <Form
                 onSubmit={() =>
-                  createMeetup({ title, location, date, description })
+                  createMeetup({
+                    variables: { title, location, date, description },
+                  })
                 }
               >
                 <div className="field">

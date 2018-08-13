@@ -20,12 +20,6 @@ export default class SignUp extends Component {
     return (
       <Mutation
         mutation={mutation}
-        variables={{
-          name,
-          email,
-          password,
-          login,
-        }}
         update={(
           store,
           {
@@ -49,7 +43,9 @@ export default class SignUp extends Component {
             <div className="column">
               <h3 className="ui horizontal divider header">Sign Up</h3>
               <Form
-                onSubmit={() => signup({ name, email, login, password })}
+                onSubmit={() =>
+                  signup({ variables: { name, email, login, password } })
+                }
                 error={Boolean(error)}
               >
                 <div className="field">

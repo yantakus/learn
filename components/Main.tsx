@@ -1,4 +1,5 @@
 import 'semantic-ui-css/semantic.min.css'
+import '../tailwind.css'
 
 export default ({ children }) => (
   <main>

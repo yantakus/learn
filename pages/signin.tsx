@@ -28,7 +28,6 @@ export default class Signin extends Component<Types> {
     return (
       <Mutation
         mutation={mutation}
-        variables={{ login, password }}
         onCompleted={() => redirect({}, get(this.props, ['query', 'redirect']))}
         update={(
           store,
@@ -52,7 +51,7 @@ export default class Signin extends Component<Types> {
             <div className="column">
               <h3 className="ui horizontal divider header">Sign In</h3>
               <Form
-                onSubmit={() => signin({ login, password })}
+                onSubmit={() => signin({ variables: { login, password } })}
                 error={Boolean(error)}
               >
                 <div className="field">

@@ -37,7 +37,7 @@ export default class CreateMeetup extends Component<Props> {
               mutation={mutation}
               variables={{ id, attending: !attending }}
             >
-              {(attendMeetup, { loading }) => (
+              {(attendMeetup: Function, { loading }) => (
                 <div>
                   <h1 className="ui dividing header">
                     {meetup.title}

@@ -1,7 +1,7 @@
 # import Meetup from "./generated/prisma.graphql"
 
 type Query {
-  meetups: [Meetup!]!
+  meetups(skip: Int, first: Int): [Meetup!]!
   meetup(id: ID!): Meetup!
   users: [User!]!
   user(login: String!): User

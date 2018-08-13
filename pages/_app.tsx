@@ -25,8 +25,18 @@ interface Props {
 }
 
 class MyApp extends App<Props> {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  componentDidCatch() {
+    this.setState({ hasError: true })
+  }
   render() {
     const { Component, pageProps, apolloClient, router } = this.props
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>
+    }
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
@@ -43,7 +53,7 @@ class MyApp extends App<Props> {
                   </div>
                   <Grid>
                     <Grid.Column stretched width={12}>
-                      <Segment>
+                      <Segment stacked>
                         <Component {...pageProps} />
                       </Segment>
                     </Grid.Column>
