@@ -3,10 +3,20 @@ const jwt = require('jsonwebtoken')
 const { getUserId } = require('../../utils')
 
 const auth = {
-  async signup(parent, args, ctx, info) {
+  async signup(parent, { email, login, ...args }, ctx, info) {
+    const emailExists = await ctx.db.query.user({ where: { email }})
+    if (emailExists) {
+      throw new Error('A user with this email already exists.')
+    }
+
+    const loginExists = await ctx.db.query.user({ where: { login }})
+    if (loginExists) {
+      throw new Error('A user with this login already exists.')
+    }
+
     const password = await bcrypt.hash(args.password, 10)
     const user = await ctx.db.mutation.createUser({
-      data: { ...args, password },
+      data: { email, login, password, ...args },
     })
 
     return {

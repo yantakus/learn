@@ -6,11 +6,15 @@ import redirect from '../lib/redirect'
 import { query } from './index'
 import produce from 'immer'
 
-interface Props {
+interface IProps {
   createMeetup: Function
 }
 
-export default class CreateMeetup extends Component<Props> {
+interface IData {
+  meetups: [{}]
+}
+
+export default class CreateMeetup extends Component<IProps> {
   state = { title: '', location: '', date: '', description: '' }
 
   handleChange = (e, { name, value }) => {
@@ -25,7 +29,7 @@ export default class CreateMeetup extends Component<Props> {
         onCompleted={() => redirect({}, '/')}
         update={(store, { data: { createMeetup } }) => {
           // read data from cache for this query
-          const data = store.readQuery({ query })
+          const data = store.readQuery({ query }) as IData
           // add the new meetup from this mutation to existing meetups
           const newData = produce(data, draftState => {
             draftState.meetups.unshift(createMeetup)
