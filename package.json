@@ -1,8 +1,8 @@
 {
-  "name": "with-apollo",
-  "author": "",
+  "name": "food",
+  "author": "Yan Takushevich",
   "license": "ISC",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "node server.js",
     "server": "cd server && npm run dev",
