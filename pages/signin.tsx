@@ -9,26 +9,28 @@ import get from 'lodash/get'
 import redirect from '../lib/redirect'
 import { userQuery } from '../components/Menu'
 
-interface Types {
+interface IProps {
   signin: Function
 }
 
-export default class Signin extends Component<Types> {
+export default class Signin extends Component<IProps> {
   static getInitialProps({ query }) {
     return { query }
   }
-  state = { login: '', password: '' }
+  state = { login: '', password: '', errorMessage: '' }
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value })
   }
 
   render() {
-    const { login, password } = this.state
+    const { login, password, errorMessage } = this.state
     return (
       <Mutation
         mutation={mutation}
-        onCompleted={() => redirect({}, get(this.props, ['query', 'redirect']))}
+        onCompleted={() =>
+          redirect({}, get(this.props, ['query', 'redirect'], '/'))
+        }
         update={(
           store,
           {
@@ -37,13 +39,20 @@ export default class Signin extends Component<Types> {
             },
           }
         ) => {
-          document.cookie = cookie.serialize('token', token, {
-            maxAge: 30 * 24 * 60 * 60, // 30 days
-          })
-          store.writeQuery({
-            query: userQuery,
-            data: { currentUser },
-          })
+          if (currentUser.isActivated) {
+            document.cookie = cookie.serialize('token', token, {
+              maxAge: 30 * 24 * 60 * 60, // 30 days
+            })
+            store.writeQuery({
+              query: userQuery,
+              data: { currentUser },
+            })
+          } else {
+            this.setState({
+              errorMessage:
+                'Account is not activated. Check your email to activate it first.',
+            })
+          }
         }}
       >
         {(signin, { loading, error }) => (
@@ -77,6 +86,7 @@ export default class Signin extends Component<Types> {
                 <Form.Button loading={loading} primary content="Sign In" />
                 <Message error content={String(error)} />
               </Form>
+              {errorMessage && <Message error content={errorMessage} />}
               <div className="ui divider" />
               <div className="ui column grid">
                 <div className="center aligned column">
@@ -100,6 +110,7 @@ const mutation = gql`
       token
       currentUser {
         id
+        isActivated
       }
     }
   }

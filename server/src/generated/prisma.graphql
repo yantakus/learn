@@ -1,5 +1,159 @@
 # source: https://eu1.prisma.sh/public-flickerleg-635/api/dev
-# timestamp: Wed Aug 01 2018 14:50:58 GMT+0300 (+03)
+# timestamp: Mon Aug 27 2018 10:29:33 GMT+0300 (+03)
+
+type AccountActivationCode implements Node {
+  id: ID!
+  user(where: UserWhereInput): User
+}
+
+"""A connection to a list of items."""
+type AccountActivationCodeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AccountActivationCodeEdge]!
+  aggregate: AggregateAccountActivationCode!
+}
+
+input AccountActivationCodeCreateInput {
+  user: UserCreateOneWithoutActivationCodeInput
+}
+
+input AccountActivationCodeCreateOneWithoutUserInput {
+  connect: AccountActivationCodeWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type AccountActivationCodeEdge {
+  """The item at the end of the edge."""
+  node: AccountActivationCode!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AccountActivationCodeOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AccountActivationCodePreviousValues {
+  id: ID!
+}
+
+type AccountActivationCodeSubscriptionPayload {
+  mutation: MutationType!
+  node: AccountActivationCode
+  updatedFields: [String!]
+  previousValues: AccountActivationCodePreviousValues
+}
+
+input AccountActivationCodeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AccountActivationCodeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AccountActivationCodeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AccountActivationCodeSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AccountActivationCodeWhereInput
+}
+
+input AccountActivationCodeUpdateInput {
+  user: UserUpdateOneWithoutActivationCodeInput
+}
+
+input AccountActivationCodeUpdateOneWithoutUserInput {
+  connect: AccountActivationCodeWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+}
+
+input AccountActivationCodeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AccountActivationCodeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AccountActivationCodeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AccountActivationCodeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  user: UserWhereInput
+}
+
+input AccountActivationCodeWhereUniqueInput {
+  id: ID
+}
+
+type AggregateAccountActivationCode {
+  count: Int!
+}
 
 type AggregateMeetup {
   count: Int!
@@ -419,16 +573,22 @@ input MeetupWhereUniqueInput {
 type Mutation {
   createMeetup(data: MeetupCreateInput!): Meetup!
   createUser(data: UserCreateInput!): User!
+  createAccountActivationCode(data: AccountActivationCodeCreateInput!): AccountActivationCode!
   updateMeetup(data: MeetupUpdateInput!, where: MeetupWhereUniqueInput!): Meetup
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateAccountActivationCode(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   deleteMeetup(where: MeetupWhereUniqueInput!): Meetup
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   upsertMeetup(where: MeetupWhereUniqueInput!, create: MeetupCreateInput!, update: MeetupUpdateInput!): Meetup!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!, create: AccountActivationCodeCreateInput!, update: AccountActivationCodeUpdateInput!): AccountActivationCode!
   updateManyMeetups(data: MeetupUpdateInput!, where: MeetupWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyAccountActivationCodes(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereInput): BatchPayload!
   deleteManyMeetups(where: MeetupWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyAccountActivationCodes(where: AccountActivationCodeWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -461,10 +621,13 @@ type PageInfo {
 type Query {
   meetups(where: MeetupWhereInput, orderBy: MeetupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Meetup]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  accountActivationCodes(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AccountActivationCode]!
   meetup(where: MeetupWhereUniqueInput!): Meetup
   user(where: UserWhereUniqueInput!): User
+  accountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   meetupsConnection(where: MeetupWhereInput, orderBy: MeetupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MeetupConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  accountActivationCodesConnection(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountActivationCodeConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -476,11 +639,14 @@ type Query {
 type Subscription {
   meetup(where: MeetupSubscriptionWhereInput): MeetupSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  accountActivationCode(where: AccountActivationCodeSubscriptionWhereInput): AccountActivationCodeSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
-  login: String
+  activationCode(where: AccountActivationCodeWhereInput): AccountActivationCode
+  isActivated: Boolean
+  login: String!
   email: String!
   password: String!
   name: String!
@@ -499,10 +665,12 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  login: String
+  isActivated: Boolean
+  login: String!
   email: String!
   password: String!
   name: String!
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
   myMeetups: MeetupCreateManyWithoutOrganizerInput
   meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
@@ -512,24 +680,43 @@ input UserCreateManyWithoutMeetupsAttendingInput {
   connect: [UserWhereUniqueInput!]
 }
 
+input UserCreateOneWithoutActivationCodeInput {
+  create: UserCreateWithoutActivationCodeInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutMyMeetupsInput {
   create: UserCreateWithoutMyMeetupsInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutMeetupsAttendingInput {
-  login: String
+input UserCreateWithoutActivationCodeInput {
+  isActivated: Boolean
+  login: String!
   email: String!
   password: String!
   name: String!
   myMeetups: MeetupCreateManyWithoutOrganizerInput
+  meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
 
-input UserCreateWithoutMyMeetupsInput {
-  login: String
+input UserCreateWithoutMeetupsAttendingInput {
+  isActivated: Boolean
+  login: String!
   email: String!
   password: String!
   name: String!
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  myMeetups: MeetupCreateManyWithoutOrganizerInput
+}
+
+input UserCreateWithoutMyMeetupsInput {
+  isActivated: Boolean
+  login: String!
+  email: String!
+  password: String!
+  name: String!
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
   meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
 
@@ -545,6 +732,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  isActivated_ASC
+  isActivated_DESC
   login_ASC
   login_DESC
   email_ASC
@@ -561,7 +750,8 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  login: String
+  isActivated: Boolean
+  login: String!
   email: String!
   password: String!
   name: String!
@@ -607,10 +797,12 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  isActivated: Boolean
   login: String
   email: String
   password: String
   name: String
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
   myMeetups: MeetupUpdateManyWithoutOrganizerInput
   meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
@@ -624,6 +816,15 @@ input UserUpdateManyWithoutMeetupsAttendingInput {
   upsert: [UserUpsertWithWhereUniqueWithoutMeetupsAttendingInput!]
 }
 
+input UserUpdateOneWithoutActivationCodeInput {
+  create: UserCreateWithoutActivationCodeInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutActivationCodeDataInput
+  upsert: UserUpsertWithoutActivationCodeInput
+}
+
 input UserUpdateOneWithoutMyMeetupsInput {
   create: UserCreateWithoutMyMeetupsInput
   connect: UserWhereUniqueInput
@@ -632,25 +833,44 @@ input UserUpdateOneWithoutMyMeetupsInput {
   upsert: UserUpsertWithoutMyMeetupsInput
 }
 
-input UserUpdateWithoutMeetupsAttendingDataInput {
+input UserUpdateWithoutActivationCodeDataInput {
+  isActivated: Boolean
   login: String
   email: String
   password: String
   name: String
   myMeetups: MeetupUpdateManyWithoutOrganizerInput
+  meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
 
-input UserUpdateWithoutMyMeetupsDataInput {
+input UserUpdateWithoutMeetupsAttendingDataInput {
+  isActivated: Boolean
   login: String
   email: String
   password: String
   name: String
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  myMeetups: MeetupUpdateManyWithoutOrganizerInput
+}
+
+input UserUpdateWithoutMyMeetupsDataInput {
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
   meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
 
 input UserUpdateWithWhereUniqueWithoutMeetupsAttendingInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutMeetupsAttendingDataInput!
+}
+
+input UserUpsertWithoutActivationCodeInput {
+  update: UserUpdateWithoutActivationCodeDataInput!
+  create: UserCreateWithoutActivationCodeInput!
 }
 
 input UserUpsertWithoutMyMeetupsInput {
@@ -713,6 +933,10 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  isActivated: Boolean
+
+  """All values that are not equal to given value."""
+  isActivated_not: Boolean
   login: String
 
   """All values that are not equal to given value."""
@@ -873,6 +1097,7 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  activationCode: AccountActivationCodeWhereInput
   myMeetups_every: MeetupWhereInput
   myMeetups_some: MeetupWhereInput
   myMeetups_none: MeetupWhereInput

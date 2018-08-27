@@ -10,9 +10,9 @@ const Preloader = ({ height = 500 }: Props) => (
   <Fragment>
     <div className="text-center">
       <div className="preloader" style={{ height }}>
-        <div className=".bounce bounce--1" />
-        <div className=".bounce bounce--2" />
-        <div className=".bounce" />
+        <div className="bounce bounce--1" />
+        <div className="bounce bounce--2" />
+        <div className="bounce" />
       </div>
     </div>
     <style jsx>

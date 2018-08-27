@@ -1,0 +1,12 @@
+mutation {
+  migration_01: updateManyUsers(
+    where: {
+      isActivated: false
+    }
+    data: {
+      isActivated: true
+    }
+  ) {
+    __typename
+  }
+}

@@ -14,12 +14,14 @@ const server = new GraphQLServer({
   resolvers,
   context: req => ({ ...req, db }),
   resolverValidationOptions: {
-    requireResolversForResolveType: false
+    requireResolversForResolveType: false,
   },
 })
 
 const options = {
-  debug: true
+  debug: true,
 }
 
-server.start(options, ({ port }) => console.log(`Server is running on http://localhost:${port}`))
+server.start(options, ({ port }) =>
+  console.log(`Server is running on http://localhost:${port}`)
+)
