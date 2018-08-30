@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import * as jwt from 'jsonwebtoken'
 const bcrypt = require('bcryptjs')
 
 export function getUserId(ctx) {

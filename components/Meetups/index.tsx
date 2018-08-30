@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Card } from 'semantic-ui-react'
 
 import Meetup from './item'
+import Preloader from '../Preloader'
 
 interface Props {
   data?: [
@@ -16,11 +17,13 @@ interface Props {
       attendees: [{}]
     }
   ]
+  loading: boolean
 }
 
 export default class Meetups extends Component<Props> {
   render() {
-    const { data } = this.props
+    const { data, loading } = this.props
+    if (loading) return <Preloader />
     if (!data) return null
     return (
       <Fragment>
