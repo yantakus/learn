@@ -45,9 +45,9 @@ class HomePage extends Component {
         variables={{ skip: 0, first: 10 }}
         skip={this.state.skip}
       >
-        {({ data, loading, fetchMore }) => (
+        {({ data, fetchMore }) => (
           <Segment loading={this.state.skip} basic>
-            <Meetups data={data.meetups} loading={loading} />
+            <Meetups data={data.meetups} />
             <Sensor
               partialVisibility
               delayedCall

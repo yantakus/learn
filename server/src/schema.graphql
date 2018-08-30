@@ -11,6 +11,8 @@ type Query {
 type Mutation {
   signup(email: String!, password: String!, login: String!, name: String!): Payload!
   activate(activationCode: String!): Payload!
+  sendResetPasswordEmail(login: String!): Payload!
+  resetPassword(passwordResetCode: String!, password: String!): Payload!
   signin(login: String!, password: String!): AuthPayload!
   editProfile(name: String, login: String): User!
   createMeetup(title: String!, description: String!, date: DateTime!, location: String!): Meetup!
@@ -18,9 +20,7 @@ type Mutation {
 }
 
 type Payload {
-  result: Boolean!
-  message: String
-  error: String
+  message: String!
 }
 
 type AuthPayload {

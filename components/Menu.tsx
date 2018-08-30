@@ -65,7 +65,7 @@ export default class MenuComponent extends Component<Props> {
               ...defaultMenuItems,
               {
                 name: 'Sign In',
-                url: `/signin?redirect=${asPath}`,
+                url: `/signin`,
               },
               {
                 name: 'Sign Up',

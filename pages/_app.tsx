@@ -11,6 +11,7 @@ import withApolloClient from '../lib/withApolloClient'
 
 import Main from '../components/Main'
 import Menu from '../components/Menu'
+import Head from '../components/Head'
 
 const userQuery = gql`
   {
@@ -39,6 +40,7 @@ class MyApp extends App<Props> {
     }
     return (
       <Container>
+        <Head title="Reko food" />
         <ApolloProvider client={apolloClient}>
           <Query query={userQuery} errorPolicy="all" fetchPolicy="network-only">
             {() => (

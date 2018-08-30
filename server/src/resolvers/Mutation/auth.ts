@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { getUserId } = require('../../utils')
+const { getUserId, mailjet, cryptPassword } = require('../../utils')
 
 const auth = {
   async signup(parent, { name, email, login, ...args }, ctx) {
@@ -14,7 +14,7 @@ const auth = {
       throw new Error('A user with this login already exists.')
     }
 
-    const password = await bcrypt.hash(args.password, 10)
+    const password = await cryptPassword(args.password)
     const { id } = await ctx.db.mutation.createUser({
       data: { name, email, login, password, ...args },
     })
@@ -35,13 +35,9 @@ const auth = {
       const ACTIVATION_URL = process.env['ACCOUNT_ACTIVATION_URL']
       const activationUrl = `${ACTIVATION_URL}/${activationCode.id}`
 
-      const mailjet = require('node-mailjet').connect(
-        process.env['MJ_APIKEY_PUBLIC'],
-        process.env['MJ_APIKEY_PRIVATE']
-      )
       const request = mailjet.post('send').request({
         FromEmail: 'takushevich@gmail.com',
-        FromName: 'Yan Takushevich',
+        FromName: 'Reko team',
         Recipients: [{ Email: email }],
         Subject: 'Activate your account',
         'Text-part': `Click on the link below to activate your account:
@@ -51,31 +47,24 @@ const auth = {
         Thank you,
         Reko team.
 
-        If you never signed up to Reko immediately email us at support@reko.by.`,
+        If you never signed up to Reko just ignore this email.`,
       })
       const result = await request
         .then(() => {
           return {
-            result: true,
             message: 'Please, check your email to activate your account.',
           }
         })
         .catch(err => {
-          console.log(err.statusCode)
-          return {
-            result: false,
-            error: 'Failed to send email.',
-          }
+          console.error(err.statusCode)
+          throw new Error('Failed to send email.')
         })
-      console.log(result)
       return result
     } catch (e) {
-      console.log(e)
-      return {
-        result: false,
-        error:
-          'An unexpected error occured during creation of activation code.',
-      }
+      console.error(e)
+      throw new Error(
+        'An unexpected error occured during creation of activation code.'
+      )
     }
   },
 
@@ -104,14 +93,99 @@ const auth = {
 
     if (user) {
       return {
-        result: true,
         message: 'Your account is successfully activated. Now you can sign in.',
       }
     } else {
+      throw new Error('Unexpected error during account activation.')
+    }
+  },
+
+  async sendResetPasswordEmail(parent, { login }, ctx) {
+    let user = await ctx.db.query.user({ where: { login } })
+    if (!user) user = await ctx.db.query.user({ where: { email: login } })
+
+    if (!user) {
+      throw new Error('Wrong login/email.')
+    }
+    if (!user.isActivated) {
+      throw new Error('Your account is not activated.')
+    }
+
+    const passwordResetCode = await ctx.db.mutation.createPasswordResetCode({
+      data: {
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    })
+
+    try {
+      const RESET_PASSWORD_URL = process.env['RESET_PASSWORD_URL']
+      const resetPasswordUrl = `${RESET_PASSWORD_URL}/${passwordResetCode.id}`
+
+      const request = mailjet.post('send').request({
+        FromEmail: 'takushevich@gmail.com',
+        FromName: 'Reko team',
+        Recipients: [{ Email: user.email }],
+        Subject: 'Reset password',
+        'Text-part': `Click on the link below to reset your password:
+
+        ${resetPasswordUrl}
+
+        Thank you,
+        Reko team.
+
+        If you never requested password reset, just ignore this email.`,
+      })
+      const result = await request
+        .then(() => {
+          return {
+            message: 'Please, check your email to reset password.',
+          }
+        })
+        .catch(err => {
+          console.error(err)
+          throw new Error('Failed to send email.')
+        })
+      return result
+    } catch (e) {
+      console.error(e)
+      throw new Error(
+        'An unexpected error occured during creation of reset password code.'
+      )
+    }
+  },
+
+  async resetPassword(parent, { passwordResetCode, ...args }, ctx) {
+    const accounts = await ctx.db.query.users({
+      where: {
+        passwordResetCode: {
+          id: passwordResetCode,
+        },
+      },
+    })
+    const account = accounts[0]
+    if (!account) {
+      throw new Error("Reset password code doesn't exist.")
+    }
+
+    const password = await cryptPassword(args.password)
+
+    const user = await ctx.db.mutation.updateUser({
+      where: {
+        id: account.id,
+      },
+      data: { password },
+    })
+
+    if (user) {
       return {
-        result: false,
-        error: 'Unexpected error during account activation.',
+        message: 'Your password has been successfully changed.',
       }
+    } else {
+      throw new Error('Unexpected error during reset password.')
     }
   },
 

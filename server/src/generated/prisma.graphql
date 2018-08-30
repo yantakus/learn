@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/public-flickerleg-635/api/dev
-# timestamp: Mon Aug 27 2018 10:29:33 GMT+0300 (+03)
+# timestamp: Mon Aug 27 2018 12:24:17 GMT+0300 (+03)
 
 type AccountActivationCode implements Node {
   id: ID!
@@ -156,6 +156,10 @@ type AggregateAccountActivationCode {
 }
 
 type AggregateMeetup {
+  count: Int!
+}
+
+type AggregatePasswordResetCode {
   count: Int!
 }
 
@@ -574,21 +578,27 @@ type Mutation {
   createMeetup(data: MeetupCreateInput!): Meetup!
   createUser(data: UserCreateInput!): User!
   createAccountActivationCode(data: AccountActivationCodeCreateInput!): AccountActivationCode!
+  createPasswordResetCode(data: PasswordResetCodeCreateInput!): PasswordResetCode!
   updateMeetup(data: MeetupUpdateInput!, where: MeetupWhereUniqueInput!): Meetup
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateAccountActivationCode(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
+  updatePasswordResetCode(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   deleteMeetup(where: MeetupWhereUniqueInput!): Meetup
   deleteUser(where: UserWhereUniqueInput!): User
   deleteAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
+  deletePasswordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   upsertMeetup(where: MeetupWhereUniqueInput!, create: MeetupCreateInput!, update: MeetupUpdateInput!): Meetup!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!, create: AccountActivationCodeCreateInput!, update: AccountActivationCodeUpdateInput!): AccountActivationCode!
+  upsertPasswordResetCode(where: PasswordResetCodeWhereUniqueInput!, create: PasswordResetCodeCreateInput!, update: PasswordResetCodeUpdateInput!): PasswordResetCode!
   updateManyMeetups(data: MeetupUpdateInput!, where: MeetupWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyAccountActivationCodes(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereInput): BatchPayload!
+  updateManyPasswordResetCodes(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereInput): BatchPayload!
   deleteManyMeetups(where: MeetupWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyAccountActivationCodes(where: AccountActivationCodeWhereInput): BatchPayload!
+  deleteManyPasswordResetCodes(where: PasswordResetCodeWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -618,16 +628,169 @@ type PageInfo {
   endCursor: String
 }
 
+type PasswordResetCode implements Node {
+  id: ID!
+  user(where: UserWhereInput): User
+}
+
+"""A connection to a list of items."""
+type PasswordResetCodeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PasswordResetCodeEdge]!
+  aggregate: AggregatePasswordResetCode!
+}
+
+input PasswordResetCodeCreateInput {
+  user: UserCreateOneWithoutPasswordResetCodeInput
+}
+
+input PasswordResetCodeCreateOneWithoutUserInput {
+  connect: PasswordResetCodeWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type PasswordResetCodeEdge {
+  """The item at the end of the edge."""
+  node: PasswordResetCode!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PasswordResetCodeOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PasswordResetCodePreviousValues {
+  id: ID!
+}
+
+type PasswordResetCodeSubscriptionPayload {
+  mutation: MutationType!
+  node: PasswordResetCode
+  updatedFields: [String!]
+  previousValues: PasswordResetCodePreviousValues
+}
+
+input PasswordResetCodeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PasswordResetCodeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PasswordResetCodeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PasswordResetCodeSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PasswordResetCodeWhereInput
+}
+
+input PasswordResetCodeUpdateInput {
+  user: UserUpdateOneWithoutPasswordResetCodeInput
+}
+
+input PasswordResetCodeUpdateOneWithoutUserInput {
+  connect: PasswordResetCodeWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+}
+
+input PasswordResetCodeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PasswordResetCodeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PasswordResetCodeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PasswordResetCodeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  user: UserWhereInput
+}
+
+input PasswordResetCodeWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   meetups(where: MeetupWhereInput, orderBy: MeetupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Meetup]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   accountActivationCodes(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AccountActivationCode]!
+  passwordResetCodes(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PasswordResetCode]!
   meetup(where: MeetupWhereUniqueInput!): Meetup
   user(where: UserWhereUniqueInput!): User
   accountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
+  passwordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   meetupsConnection(where: MeetupWhereInput, orderBy: MeetupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MeetupConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   accountActivationCodesConnection(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountActivationCodeConnection!
+  passwordResetCodesConnection(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PasswordResetCodeConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -640,11 +803,13 @@ type Subscription {
   meetup(where: MeetupSubscriptionWhereInput): MeetupSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   accountActivationCode(where: AccountActivationCodeSubscriptionWhereInput): AccountActivationCodeSubscriptionPayload
+  passwordResetCode(where: PasswordResetCodeSubscriptionWhereInput): PasswordResetCodeSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
   activationCode(where: AccountActivationCodeWhereInput): AccountActivationCode
+  passwordResetCode(where: PasswordResetCodeWhereInput): PasswordResetCode
   isActivated: Boolean
   login: String!
   email: String!
@@ -671,6 +836,7 @@ input UserCreateInput {
   password: String!
   name: String!
   activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
   myMeetups: MeetupCreateManyWithoutOrganizerInput
   meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
@@ -690,12 +856,18 @@ input UserCreateOneWithoutMyMeetupsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutPasswordResetCodeInput {
+  create: UserCreateWithoutPasswordResetCodeInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutActivationCodeInput {
   isActivated: Boolean
   login: String!
   email: String!
   password: String!
   name: String!
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
   myMeetups: MeetupCreateManyWithoutOrganizerInput
   meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
@@ -707,6 +879,7 @@ input UserCreateWithoutMeetupsAttendingInput {
   password: String!
   name: String!
   activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
   myMeetups: MeetupCreateManyWithoutOrganizerInput
 }
 
@@ -717,6 +890,18 @@ input UserCreateWithoutMyMeetupsInput {
   password: String!
   name: String!
   activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
+  meetupsAttending: MeetupCreateManyWithoutAttendeesInput
+}
+
+input UserCreateWithoutPasswordResetCodeInput {
+  isActivated: Boolean
+  login: String!
+  email: String!
+  password: String!
+  name: String!
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  myMeetups: MeetupCreateManyWithoutOrganizerInput
   meetupsAttending: MeetupCreateManyWithoutAttendeesInput
 }
 
@@ -803,6 +988,7 @@ input UserUpdateInput {
   password: String
   name: String
   activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
   myMeetups: MeetupUpdateManyWithoutOrganizerInput
   meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
@@ -833,12 +1019,22 @@ input UserUpdateOneWithoutMyMeetupsInput {
   upsert: UserUpsertWithoutMyMeetupsInput
 }
 
+input UserUpdateOneWithoutPasswordResetCodeInput {
+  create: UserCreateWithoutPasswordResetCodeInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutPasswordResetCodeDataInput
+  upsert: UserUpsertWithoutPasswordResetCodeInput
+}
+
 input UserUpdateWithoutActivationCodeDataInput {
   isActivated: Boolean
   login: String
   email: String
   password: String
   name: String
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
   myMeetups: MeetupUpdateManyWithoutOrganizerInput
   meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
@@ -850,6 +1046,7 @@ input UserUpdateWithoutMeetupsAttendingDataInput {
   password: String
   name: String
   activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
   myMeetups: MeetupUpdateManyWithoutOrganizerInput
 }
 
@@ -860,6 +1057,18 @@ input UserUpdateWithoutMyMeetupsDataInput {
   password: String
   name: String
   activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
+  meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
+}
+
+input UserUpdateWithoutPasswordResetCodeDataInput {
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  myMeetups: MeetupUpdateManyWithoutOrganizerInput
   meetupsAttending: MeetupUpdateManyWithoutAttendeesInput
 }
 
@@ -876,6 +1085,11 @@ input UserUpsertWithoutActivationCodeInput {
 input UserUpsertWithoutMyMeetupsInput {
   update: UserUpdateWithoutMyMeetupsDataInput!
   create: UserCreateWithoutMyMeetupsInput!
+}
+
+input UserUpsertWithoutPasswordResetCodeInput {
+  update: UserUpdateWithoutPasswordResetCodeDataInput!
+  create: UserCreateWithoutPasswordResetCodeInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutMeetupsAttendingInput {
@@ -1098,6 +1312,7 @@ input UserWhereInput {
   """All values not ending with the given string."""
   name_not_ends_with: String
   activationCode: AccountActivationCodeWhereInput
+  passwordResetCode: PasswordResetCodeWhereInput
   myMeetups_every: MeetupWhereInput
   myMeetups_some: MeetupWhereInput
   myMeetups_none: MeetupWhereInput

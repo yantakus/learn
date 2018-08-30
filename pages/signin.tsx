@@ -2,18 +2,16 @@ import React, { Component } from 'react'
 import Link from 'next/link'
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
-import { Form, Message } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import cookie from 'cookie'
 import get from 'lodash/get'
 
 import redirect from '../lib/redirect'
+import printError from '../lib/printError'
 import { userQuery } from '../components/Menu'
+import Message from '../components/Message'
 
-interface IProps {
-  signin: Function
-}
-
-export default class Signin extends Component<IProps> {
+export default class Signin extends Component {
   static getInitialProps({ query }) {
     return { query }
   }
@@ -56,7 +54,7 @@ export default class Signin extends Component<IProps> {
         }}
       >
         {(signin, { loading, error }) => (
-          <div className="ui stackable three column centered grid container">
+          <div className="ui stackable two column centered grid container">
             <div className="column">
               <h3 className="ui horizontal divider header">Sign In</h3>
               <Form
@@ -84,16 +82,24 @@ export default class Signin extends Component<IProps> {
                   />
                 </div>
                 <Form.Button loading={loading} primary content="Sign In" />
-                <Message error content={String(error)} />
+                <Message error content={printError(error)} />
               </Form>
-              {errorMessage && <Message error content={errorMessage} />}
+              <Message error content={errorMessage} />
               <div className="ui divider" />
               <div className="ui column grid">
-                <div className="center aligned column">
-                  Don't have an account?{' '}
-                  <Link href="/signup">
-                    <a>Sign Up</a>
-                  </Link>
+                <div className="aligned column">
+                  <p>
+                    Don't have an account?{' '}
+                    <Link href="/signup">
+                      <a>Sign Up</a>
+                    </Link>
+                  </p>
+                  <p>
+                    Forgot password?{' '}
+                    <Link href="/reset-password">
+                      <a>Reset password</a>
+                    </Link>
+                  </p>
                 </div>
               </div>
             </div>

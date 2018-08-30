@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import get from 'lodash/get'
-import { Message } from 'semantic-ui-react'
+import Message from '../components/Message'
 import Preloader from '../components/Preloader'
 import printError from '../lib/printError'
 
@@ -22,21 +22,20 @@ class Activate extends Component<IProps> {
   }
   render() {
     const { loading, data, error } = this.props
-    return loading ? (
-      <Preloader height={66} />
-    ) : error ? (
-      <Message error content={printError(error)} />
-    ) : get(data, 'result') ? (
+    const message = get(data, 'message')
+    return (
       <Fragment>
-        <Message success content={get(data, 'message')} />
+        {loading ? (
+          <Preloader height={66} />
+        ) : error ? (
+          <Message error content={printError(error)} />
+        ) : (
+          <Message success content={message} />
+        )}
         <Link href="/signin">
           <a>Sign In</a>
         </Link>
       </Fragment>
-    ) : get(data, 'error') ? (
-      <Message error content={get(data, 'error')} />
-    ) : (
-      <Preloader height={66} />
     )
   }
 }
@@ -86,9 +85,7 @@ export default class ActivatePage extends Component<IPageProps> {
 const mutation = gql`
   mutation SignupMutation($activationCode: String!) {
     activate(activationCode: $activationCode) {
-      result
       message
-      error
     }
   }
 `

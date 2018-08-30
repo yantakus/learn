@@ -11,6 +11,7 @@ type Meetup {
 type User {
   id: ID! @unique
   activationCode: AccountActivationCode @relation(name: "AccountActivationCodeOnUser")
+  passwordResetCode: PasswordResetCode @relation(name: "PasswordResetCodeOnUser")
   isActivated: Boolean @default(value: false)
   login: String! @unique
   email: String! @unique
@@ -23,4 +24,9 @@ type User {
 type AccountActivationCode {
   id: ID! @unique
   user: User @relation(name: "AccountActivationCodeOnUser")
+}
+
+type PasswordResetCode {
+  id: ID! @unique
+  user: User @relation(name: "PasswordResetCodeOnUser")
 }
