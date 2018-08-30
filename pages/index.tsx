@@ -42,7 +42,7 @@ class HomePage extends Component {
     return (
       <Query
         query={query}
-        variables={{ skip: 0, first: 10 }}
+        variables={{ skip: 0, first: 20 }}
         skip={this.state.skip}
       >
         {({ data, fetchMore }) => (
