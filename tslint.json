@@ -7,5 +7,10 @@
     "rulesDirectory": [
       "tslint-plugin-prettier",
       "tslint-config-standard"
-    ]
+    ],
+    "linterOptions": {
+      "exclude": [
+          "server/src/generated/*.*"
+      ]
+  }
 }

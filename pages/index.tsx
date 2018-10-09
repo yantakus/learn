@@ -6,7 +6,7 @@ import { Loader } from 'semantic-ui-react'
 import get from 'lodash/get'
 import { Segment } from 'semantic-ui-react'
 
-import Meetups from '../components/Meetups'
+import Videos from '../components/Videos'
 
 class HomePage extends Component {
   state = {
@@ -23,7 +23,7 @@ class HomePage extends Component {
             skip,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
-            const left = get(fetchMoreResult, ['meetups', 'length'])
+            const left = get(fetchMoreResult, ['videos', 'length'])
             if (left < 10) {
               this.setState({ fetchMore: false })
             }
@@ -31,7 +31,7 @@ class HomePage extends Component {
               return prev
             }
             return Object.assign({}, prev, {
-              meetups: [...prev.meetups, ...fetchMoreResult.meetups],
+              videos: [...prev.videos, ...fetchMoreResult.videos],
             })
           },
         })
@@ -45,9 +45,9 @@ class HomePage extends Component {
         variables={{ skip: 0, first: 20 }}
         skip={this.state.skip}
       >
-        {({ data, fetchMore }) => (
+        {({ data, fetchMore, loading }) => (
           <Segment loading={this.state.skip} basic>
-            <Meetups data={data.meetups} />
+            <Videos data={data.videos} loading={loading} />
             <Sensor
               partialVisibility
               delayedCall
@@ -55,14 +55,12 @@ class HomePage extends Component {
                 this.onChange(
                   active,
                   fetchMore,
-                  get(data, ['meetups', 'length'])
+                  get(data, ['videos', 'length'])
                 )
               }
             >
               <Loader
-                active={
-                  !this.state.skip && data.meetups && this.state.fetchMore
-                }
+                active={!this.state.skip && data.videos && this.state.fetchMore}
                 inline="centered"
                 size="large"
                 className="tw__mt-10"
@@ -78,19 +76,9 @@ class HomePage extends Component {
 }
 
 export const query = gql`
-  query MeetupsQuery($skip: Int, $first: Int) {
-    meetups(skip: $skip, first: $first) @connection(key: "meetups") {
-      id
-      title
-      date
-      location
-      organizer {
-        login
-        name
-      }
-      attendees {
-        id
-      }
+  query VideosQuery($skip: Int, $first: Int) {
+    videos(skip: $skip, first: $first) @connection(key: "videos") {
+      ytId
     }
   }
 `

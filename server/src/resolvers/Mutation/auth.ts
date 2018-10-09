@@ -1,32 +1,35 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { getUserId, mailjet, cryptPassword } = require('../../utils')
+import { getUserId, mailjet, cryptPassword } from '../../utils'
+import { prisma } from '../../generated'
 
-const auth = {
-  async signup(parent, { name, email, login, ...args }, ctx) {
-    const emailExists = await ctx.db.query.user({ where: { email } })
+export const auth = {
+  async signup(parent, { name, email, login, ...args }) {
+    const emailExists = await prisma.user({ email })
     if (emailExists) {
       throw new Error('A user with this email already exists.')
     }
 
-    const loginExists = await ctx.db.query.user({ where: { login } })
+    const loginExists = await prisma.user({ login })
     if (loginExists) {
       throw new Error('A user with this login already exists.')
     }
 
     const password = await cryptPassword(args.password)
-    const { id } = await ctx.db.mutation.createUser({
-      data: { name, email, login, password, ...args },
+    const { id } = await prisma.createUser({
+      name,
+      email,
+      login,
+      password,
+      ...args,
     })
 
-    const activationCode = await ctx.db.mutation.createAccountActivationCode({
-      data: {
-        user: {
-          connect: {
-            id,
-            login,
-            email,
-          },
+    const activationCode = await prisma.createAccountActivationCode({
+      user: {
+        connect: {
+          id,
+          login,
+          email,
         },
       },
     })
@@ -68,8 +71,8 @@ const auth = {
     }
   },
 
-  async activate(parent, { activationCode }, ctx) {
-    const accounts = await ctx.db.query.users({
+  async activate(parent, { activationCode }) {
+    const accounts = await prisma.users({
       where: {
         activationCode: {
           id: activationCode,
@@ -84,7 +87,7 @@ const auth = {
       throw new Error('Account is already activated.')
     }
 
-    const user = await ctx.db.mutation.updateUser({
+    const user = await prisma.updateUser({
       where: {
         id: account.id,
       },
@@ -100,9 +103,9 @@ const auth = {
     }
   },
 
-  async sendResetPasswordEmail(parent, { login }, ctx) {
-    let user = await ctx.db.query.user({ where: { login } })
-    if (!user) user = await ctx.db.query.user({ where: { email: login } })
+  async sendResetPasswordEmail(parent, { login }) {
+    let user = await prisma.user({ login })
+    if (!user) user = await prisma.user({ email: login })
 
     if (!user) {
       throw new Error('Wrong login/email.')
@@ -111,12 +114,10 @@ const auth = {
       throw new Error('Your account is not activated.')
     }
 
-    const passwordResetCode = await ctx.db.mutation.createPasswordResetCode({
-      data: {
-        user: {
-          connect: {
-            id: user.id,
-          },
+    const passwordResetCode = await prisma.createPasswordResetCode({
+      user: {
+        connect: {
+          id: user.id,
         },
       },
     })
@@ -158,8 +159,8 @@ const auth = {
     }
   },
 
-  async resetPassword(parent, { passwordResetCode, ...args }, ctx) {
-    const accounts = await ctx.db.query.users({
+  async resetPassword(parent, { passwordResetCode, ...args }) {
+    const accounts = await prisma.users({
       where: {
         passwordResetCode: {
           id: passwordResetCode,
@@ -173,7 +174,7 @@ const auth = {
 
     const password = await cryptPassword(args.password)
 
-    const user = await ctx.db.mutation.updateUser({
+    const user = await prisma.updateUser({
       where: {
         id: account.id,
       },
@@ -189,9 +190,9 @@ const auth = {
     }
   },
 
-  async signin(parent, { login, password }, ctx) {
-    let user = await ctx.db.query.user({ where: { login } })
-    if (!user) user = await ctx.db.query.user({ where: { email: login } })
+  async signin(parent, { login, password }) {
+    let user = await prisma.user({ login })
+    if (!user) user = await prisma.user({ email: login })
 
     if (!user) {
       throw new Error('Wrong email/password combination.')
@@ -211,7 +212,7 @@ const auth = {
   async editProfile(parent, args, ctx) {
     const id = getUserId(ctx)
     if (id) {
-      const user = await ctx.db.mutation.updateUser({
+      const user = await prisma.updateUser({
         where: { id },
         data: { ...args },
       })
@@ -221,5 +222,3 @@ const auth = {
     }
   },
 }
-
-module.exports = { auth }

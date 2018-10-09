@@ -40,7 +40,7 @@ class MyApp extends App<Props> {
     }
     return (
       <Container>
-        <Head title="Reko food" />
+        <Head title="With apollo app" />
         <ApolloProvider client={apolloClient}>
           <Query query={userQuery} errorPolicy="all" fetchPolicy="network-only">
             {() => (

@@ -1,4 +1,4 @@
-type AccountActivationCode {
+export const typeDefs = /* GraphQL */ `type AccountActivationCode {
   id: ID!
   user: User
 }
@@ -1341,3 +1341,4 @@ input VideoWhereInput {
 input VideoWhereUniqueInput {
   ytId: String
 }
+`

@@ -21,7 +21,7 @@ interface Props {
   }
 }
 
-const defaultMenuItems = [{ name: 'All Meetups', url: '/' }]
+const defaultMenuItems = [{ name: 'All Videos', url: '/' }]
 let menuItems
 
 export default class MenuComponent extends Component<Props> {
@@ -34,7 +34,7 @@ export default class MenuComponent extends Component<Props> {
 
   render() {
     const {
-      router: { pathname, asPath },
+      router: { pathname },
     } = this.props
     return (
       <Query query={userQuery}>
@@ -48,16 +48,16 @@ export default class MenuComponent extends Component<Props> {
                 url: '/me',
               },
               {
-                name: 'My Meetups',
-                url: '/my-meetups',
+                name: 'My Videos',
+                url: '/my-videos',
               },
               {
-                name: "I'm going",
-                url: '/meetups-going',
+                name: 'Bookmarked Videos',
+                url: '/bookmarked-videos',
               },
               {
-                name: 'Create Meetup',
-                url: '/create',
+                name: 'Add Video',
+                url: '/add',
               },
             ]
           } else {

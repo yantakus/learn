@@ -13,6 +13,12 @@ hooks:
 seed:
   import: migrations.graphql
 
+generate:
+    - generator: typescript-client
+      output: ../src/generated
+    - generator: graphql-schema
+      output: ../src/generated
+
 # If specified, the `secret` must be used to generate a JWT which is attached
 # to the `Authorization` header of HTTP requests made against the Prisma API.
 # Info: https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo#authentication

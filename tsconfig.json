@@ -17,6 +17,11 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
+    "plugins": [
+      {
+        "name": "@divyenduz/ts-graphql-plugin"
+      }
+    ],
     "lib": [
       "dom",
       "es2015",

@@ -1,11 +1,10 @@
-type Meetup {
-  id: ID! @unique
-  organizer: User! @relation(name: "UserEvents")
-  title: String!
-  description: String!
-  location: String!
-  date: DateTime!
-  attendees: [User!]! @relation(name: "EventAttendees")
+type Video {
+  ytId: String! @unique
+  complexity: Complexity!
+  topics: [Topic!]!
+  tags: [Tag!]!
+  adder: User! @relation(name: "UserVideos")
+  bookmarkers: [User!]! @relation(name: "VideoBookmarkers")
 }
 
 type User {
@@ -17,8 +16,26 @@ type User {
   email: String! @unique
   password: String!
   name: String!
-  myMeetups: [Meetup!]! @relation(name: "UserEvents")
-  meetupsAttending: [Meetup!]! @relation(name: "EventAttendees")
+  myVideos: [Video!]! @relation(name: "UserVideos")
+  bookmarkedVideos: [Video!]! @relation(name: "VideoBookmarkers")
+}
+
+type Topic {
+  value: String! @unique
+  text: String! @unique
+}
+
+type Tag {
+  value: String! @unique
+  text: String! @unique
+}
+
+type Topics {
+  exist: [Topic!]!
+}
+
+type Tags {
+  exist: [Tag!]!
 }
 
 type AccountActivationCode {
@@ -29,4 +46,16 @@ type AccountActivationCode {
 type PasswordResetCode {
   id: ID! @unique
   user: User @relation(name: "PasswordResetCodeOnUser")
+}
+
+type Rating {
+  votes: Int!
+  total: Int!
+}
+
+enum Complexity {
+  ELEMENTARY
+  BASIC
+  ADVANCED
+  EXPERT
 }

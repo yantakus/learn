@@ -3,18 +3,18 @@ import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import get from 'lodash/get'
 
-import Meetups from '../components/Meetups'
+import Videos from '../components/Videos'
 
 export default () => (
   <Query query={query}>
     {props => {
       const { data, loading } = props
-      if (!get(data, ['user']) && !loading) {
+      if (!get(data, ['currentUser']) && !loading) {
         return 'You are not logged in'
       }
       return (
-        <Meetups
-          data={get(data, ['user', 'meetupsAttending'])}
+        <Videos
+          data={get(data, ['currentUser', 'myVideos'])}
           loading={loading}
         />
       )
@@ -24,12 +24,11 @@ export default () => (
 
 export const query = gql`
   {
-    user {
+    currentUser {
       id
-      meetupsAttending {
+      myVideos {
         id
         title
-        date
         location
         organizer {
           name
