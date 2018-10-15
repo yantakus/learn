@@ -6,12 +6,26 @@ import Link from 'next/link'
 import { Grid, Segment } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Router from 'next/router'
+import NProgress from 'nprogress'
 
 import withApolloClient from '../lib/withApolloClient'
 
 import Main from '../components/Main'
 import Menu from '../components/Menu'
 import Head from '../components/Head'
+
+Router.onRouteChangeStart = () => {
+  NProgress.start()
+}
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done()
+}
+
+Router.onRouteChangeError = () => {
+  NProgress.done()
+}
 
 const userQuery = gql`
   {

@@ -40,8 +40,8 @@ type Mutation {
   addVideo(
     ytId: String!
     complexity: Complexity!
-    topics: TopicCreateManyInput
-    tags: TagCreateManyInput
+    topics: TopicCreateManyInput!
+    tags: TagCreateManyInput!
   ): Video!
 
   bookmarkVideo(

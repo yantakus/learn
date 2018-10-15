@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { Query, Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
-import { Form, Message } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
+import { Form, Input, Dropdown } from 'formsy-semantic-ui-react'
 import redirect from '../lib/redirect'
-import { Dropdown } from 'semantic-ui-react'
 import { paramCase } from 'change-case'
 import printError from '../lib/printError'
-
-// import get from 'lodash/get'
-// import { query as indexQuery } from './index'
-// import produce from 'immer'
+import isEmpty from 'lodash/isEmpty'
+import find from 'lodash/find'
+import cx from 'classnames'
+import debounce from 'lodash/debounce'
+import { addValidationRule } from 'formsy-react'
+import fetch from 'isomorphic-unfetch'
 
 import Preloader from '../components/Preloader'
 
@@ -32,6 +34,27 @@ const complexities = [
   },
 ]
 
+// addValidationRule('isValidYtId', (_values, value) => {
+//   // console.log(value)
+//   // let requestId
+//   if (value.trim().length === 11) {
+//     fetch(
+//       `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyBy-34x0QPvNx6FsniDEeCT1PVur_fk528&id=${value}`
+//     ).then(json => {
+//       console.log(json)
+//       if (!json) {
+//         return Promise.reject()
+//       }
+//       return Promise.resolve(true)
+//     })
+//   }
+//   return false
+//   // if (requestId) {
+//   // const result = debounce(fetchVideo, 300, value)
+//   // return () => debounce(() => console.log(value), 300)
+//   // }
+// })
+
 interface IProps {
   addVideo: Function
 }
@@ -40,21 +63,48 @@ type Options = Array<{ text: string; value: string }>
 
 interface IState {
   ytId: string
+  ytIdError: string
+  validYtId: string
+  tags: Options
   tagsOptions: Options
+  tagsValue: Array<string>
+  topics: Options
   topicsOptions: Options
-  tagsValues: Options
-  topicsValues: Options
-  complexity: String
+  topicsValue: Array<string>
+  complexity?: String
+  isValidYtId: boolean
+}
+
+const errorLabel = <label />
+
+const createManyInput = data => {
+  const result: { connect?: []; create?: [] } = {}
+  const create = data.filter(i => !i.__typename)
+  const connect = data
+    .filter(i => i.__typename)
+    .map(({ text, value }) => ({ text, value }))
+  if (!isEmpty(create)) {
+    result.create = create
+  }
+  if (!isEmpty(connect)) {
+    result.connect = connect
+  }
+  return isEmpty(result) ? undefined : result
 }
 
 export default class addVideo extends Component<IProps, IState> {
   state = {
     ytId: '',
+    ytIdError: '',
+    validYtId: '',
+    tags: [],
     tagsOptions: [],
+    tagsValue: [],
+    topics: [],
     topicsOptions: [],
-    tagsValues: [],
-    topicsValues: [],
-    complexity: '',
+    topicsValue: [],
+    complexity: null,
+    isValidYtId: false,
   }
 
   handleChange = (_e, { name, value }) => {
@@ -64,10 +114,31 @@ export default class addVideo extends Component<IProps, IState> {
     }))
   }
 
-  handleMultipleChange = (_e, { name, value }) => {
+  validate = (_e, { name, value }) => {
+    this.handleChange(null, { name, value })
+    if (value.trim().length === 11) {
+      fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyBy-34x0QPvNx6FsniDEeCT1PVur_fk528&id=${value}`
+      )
+        .then(response => response.json())
+        .then(json => {
+          if (!json.pageInfo.totalResults) {
+            this.setState({ ytIdError: 'Invalid youtube video id or url' })
+          } else {
+            console.log(json)
+          }
+        })
+    }
+  }
+
+  handleMultipleChange = (_e, { name, options, value }) => {
     this.setState(prevState => ({
       ...prevState,
-      [`${name}Values`]: value.map(i => paramCase(i)),
+      [`${name}Value`]: value.map(i => paramCase(i)),
+      [`${name}`]: value.map(i => {
+        const existing = find(options, o => o.value === i)
+        return existing || { text: i, value: paramCase(i) }
+      }),
     }))
   }
 
@@ -84,10 +155,13 @@ export default class addVideo extends Component<IProps, IState> {
   render() {
     const {
       ytId,
+      ytIdError,
       complexity,
-      tagsValues,
+      tags,
+      tagsValue,
       tagsOptions,
-      topicsValues,
+      topics,
+      topicsValue,
       topicsOptions,
     } = this.state
     return (
@@ -102,20 +176,7 @@ export default class addVideo extends Component<IProps, IState> {
           queryLoading ? (
             <Preloader />
           ) : (
-            <Mutation
-              mutation={mutation}
-              onCompleted={() => redirect({}, '/')}
-              // update={(store, { data: { addVideo } }) => {
-              //   // read data from cache for this query
-              //   const data = store.readQuery({ query }) as IData
-              //   // add the new video from this mutation to existing videos
-              //   const newData = produce(data, draftState => {
-              //     draftState.videos.unshift(addVideo)
-              //   })
-              //   // write data back to the cache
-              //   store.writeQuery({ query, data: newData })
-              // }}
-            >
+            <Mutation mutation={mutation} onCompleted={() => redirect({}, '/')}>
               {(addVideo, { loading, error }) => {
                 return (
                   <div className="ui stackable three column centered grid container">
@@ -124,38 +185,36 @@ export default class addVideo extends Component<IProps, IState> {
                         Add video
                       </h3>
                       <Form
-                        onSubmit={() =>
+                        onValidSubmit={() =>
                           addVideo({
                             variables: {
                               ytId,
                               complexity,
-                              tags: {
-                                create: tagsOptions.filter(i => !i.__typename),
-                                connect: tagsOptions
-                                  .filter(i => i.__typename)
-                                  .map(({ text, value }) => ({ text, value })),
-                              },
-                              topics: {
-                                create: topicsOptions.filter(
-                                  i => !i.__typename
-                                ),
-                                connect: topicsOptions
-                                  .filter(i => i.__typename)
-                                  .map(({ text, value }) => ({ text, value })),
-                              },
+                              tags: createManyInput(tags),
+                              topics: createManyInput(topics),
                             },
                           })
                         }
                       >
                         <Form.Field>
-                          <label>Youtube video id</label>
-                          <Form.Input
+                          <label>Youtube video id or url</label>
+                          <Input
+                            className={cx({ 'error mb-0': ytIdError })}
                             type="text"
                             name="ytId"
                             value={ytId}
+                            onChange={this.validate}
                             required
-                            onChange={this.handleChange}
+                            validationErrors={{
+                              isDefaultRequiredValue: 'This field is required',
+                            }}
+                            errorLabel={errorLabel}
                           />
+                          {ytIdError && (
+                            <div className="field error">
+                              <label>{ytIdError}</label>
+                            </div>
+                          )}
                         </Form.Field>
                         <Form.Field>
                           <label>Complexity</label>
@@ -166,6 +225,11 @@ export default class addVideo extends Component<IProps, IState> {
                             options={complexities}
                             value={this.state.complexity}
                             onChange={this.handleChange}
+                            required
+                            validationErrors={{
+                              isDefaultRequiredValue: 'This field is required',
+                            }}
+                            errorLabel={errorLabel}
                           />
                         </Form.Field>
                         <Form.Field>
@@ -178,9 +242,15 @@ export default class addVideo extends Component<IProps, IState> {
                             fluid
                             multiple
                             allowAdditions
-                            value={topicsValues}
+                            value={topicsValue}
                             onAddItem={this.handleAddition}
                             onChange={this.handleMultipleChange}
+                            required
+                            validations="minLength:1"
+                            validationErrors={{
+                              minLength: 'This field is required',
+                            }}
+                            errorLabel={errorLabel}
                           />
                         </Form.Field>
                         <Form.Field>
@@ -193,9 +263,15 @@ export default class addVideo extends Component<IProps, IState> {
                             fluid
                             multiple
                             allowAdditions
-                            value={tagsValues}
+                            value={tagsValue}
                             onAddItem={this.handleAddition}
                             onChange={this.handleMultipleChange}
+                            required
+                            validations="minLength:1"
+                            validationErrors={{
+                              minLength: 'This field is required',
+                            }}
+                            errorLabel={errorLabel}
                           />
                         </Form.Field>
                         <Form.Button

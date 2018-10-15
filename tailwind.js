@@ -944,7 +944,7 @@ module.exports = {
   */
 
   options: {
-    prefix: 'tw__',
+    prefix: '',
     important: true,
     separator: ':',
   },
