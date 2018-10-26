@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import cookie from 'cookie'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-
+import { Mutation } from 'react-apollo'
+import { gql } from 'apollo-boost'
 import { Menu } from 'semantic-ui-react'
 import Link from 'next/link'
 
-export const userQuery = gql`
-  {
-    currentUser @client {
-      id
+import { CURRENT_USER_QUERY } from '../components/User'
+import User from '../components/User'
+
+const SIGN_OUT_MUTATION = gql`
+  mutation SIGN_OUT_MUTATION {
+    signout {
+      message
     }
   }
 `
@@ -25,21 +26,14 @@ const defaultMenuItems = [{ name: 'All Videos', url: '/' }]
 let menuItems
 
 export default class MenuComponent extends Component<Props> {
-  signout = client => {
-    document.cookie = cookie.serialize('token', '', {
-      maxAge: -1, // Expire the cookie immediately
-    })
-    client.writeData({ data: { currentUser: null } })
-  }
-
   render() {
     const {
       router: { pathname },
     } = this.props
     return (
-      <Query query={userQuery}>
-        {({ data, client }) => {
-          const user = data && data.currentUser
+      <User>
+        {({ data }) => {
+          const user = data && data.me
           if (user) {
             menuItems = [
               ...defaultMenuItems,
@@ -74,34 +68,41 @@ export default class MenuComponent extends Component<Props> {
             ]
           }
           return (
-            <Menu fluid vertical tabular="right">
-              {menuItems.map(i => (
-                <Menu.Item
-                  key={i.name}
-                  name={i.name}
-                  active={
-                    pathname === i.url || pathname.startsWith(`${i.url}/`)
-                  }
-                >
-                  <Link prefetch href={i.url}>
-                    <a>{i.name}</a>
-                  </Link>
-                </Menu.Item>
-              ))}
-              {user && (
-                <Menu.Item key="Sign Out">
-                  <a
-                    onClick={() => this.signout(client)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Sign Out
-                  </a>
-                </Menu.Item>
+            <Mutation
+              mutation={SIGN_OUT_MUTATION}
+              refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+            >
+              {signout => (
+                <Menu fluid vertical tabular="right">
+                  {menuItems.map(i => (
+                    <Menu.Item
+                      key={i.name}
+                      name={i.name}
+                      active={
+                        pathname === i.url || pathname.startsWith(`${i.url}/`)
+                      }
+                    >
+                      <Link prefetch href={i.url}>
+                        <a>{i.name}</a>
+                      </Link>
+                    </Menu.Item>
+                  ))}
+                  {user && (
+                    <Menu.Item key="Sign Out">
+                      <a
+                        onClick={() => signout()}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Sign Out
+                      </a>
+                    </Menu.Item>
+                  )}
+                </Menu>
               )}
-            </Menu>
+            </Mutation>
           )
         }}
-      </Query>
+      </User>
     )
   }
 }

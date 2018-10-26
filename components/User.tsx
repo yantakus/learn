@@ -1,36 +1,30 @@
-import React, { Component } from 'react'
+import { Query } from 'react-apollo'
+import { gql } from 'apollo-boost'
+import PropTypes from 'prop-types'
 
-import Preloader from './Preloader'
-
-interface Props {
-  data: {
-    name: String
-    login: String
-    email: String
+const CURRENT_USER_QUERY = gql`
+  query {
+    me {
+      id
+      name
+      login
+      email
+      videosAdded {
+        ytId
+      }
+    }
   }
-  loading: Boolean
-}
+`
 
-class User extends Component<Props> {
-  render() {
-    const { data, loading } = this.props
-    if (loading) return <Preloader />
-    if (!data) return <h1>This user does not exist</h1>
-    const { name, login: username, email } = data
-    return (
-      <div>
-        <p>
-          Name: <strong>{name}</strong>
-        </p>
-        <p>
-          Login: <strong>{username}</strong>
-        </p>
-        <p>
-          Email: <strong>{email}</strong>
-        </p>
-      </div>
-    )
-  }
+const User = props => (
+  <Query {...props} query={CURRENT_USER_QUERY}>
+    {payload => props.children(payload)}
+  </Query>
+)
+
+User.propTypes = {
+  children: PropTypes.func.isRequired,
 }
 
 export default User
+export { CURRENT_USER_QUERY }

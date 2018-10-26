@@ -1,42 +1,19 @@
 import React from 'react'
-import { gql } from 'apollo-boost'
-import { Query } from 'react-apollo'
 import get from 'lodash/get'
 
+import User from '../components/User'
 import Videos from '../components/Videos'
 
 export default () => (
-  <Query query={query}>
+  <User>
     {props => {
       const { data, loading } = props
-      if (!get(data, ['currentUser']) && !loading) {
+      if (!get(data, ['me']) && !loading) {
         return 'You are not logged in'
       }
       return (
-        <Videos
-          data={get(data, ['currentUser', 'myVideos'])}
-          loading={loading}
-        />
+        <Videos data={get(data, ['me', 'videosAdded'])} loading={loading} />
       )
     }}
-  </Query>
+  </User>
 )
-
-export const query = gql`
-  {
-    currentUser {
-      id
-      myVideos {
-        id
-        title
-        location
-        organizer {
-          name
-        }
-        attendees {
-          id
-        }
-      }
-    }
-  }
-`

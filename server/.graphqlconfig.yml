@@ -7,7 +7,7 @@ projects:
   database:
     schemaPath: src/generated/prisma.graphql
     extensions:
-      prisma: database/prisma.yml
+      prisma: prisma.yml
       prepare-binding:
         output: src/generated/prisma-schema.ts
         generator: prisma-ts

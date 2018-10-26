@@ -1,10 +1,11 @@
+import { prisma } from '../../generated/prisma'
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-import { getUserId, mailjet, cryptPassword } from '../../utils'
-import { prisma } from '../../generated'
+import { mailjet, cryptPassword } from '../utils'
 
-export const auth = {
-  async signup(parent, { name, email, login, ...args }) {
+export const Mutation = {
+  async signup(_parent, { name, email: rawEmail, login, ...args }) {
+    const email = rawEmail.toLowerCase().trim()
     const emailExists = await prisma.user({ email })
     if (emailExists) {
       throw new Error('A user with this email already exists.')
@@ -17,11 +18,11 @@ export const auth = {
 
     const password = await cryptPassword(args.password)
     const { id } = await prisma.createUser({
+      ...args,
       name,
       email,
       login,
       password,
-      ...args,
     })
 
     const activationCode = await prisma.createAccountActivationCode({
@@ -71,7 +72,7 @@ export const auth = {
     }
   },
 
-  async activate(parent, { activationCode }) {
+  async activate(_parent, { activationCode }) {
     const accounts = await prisma.users({
       where: {
         activationCode: {
@@ -103,7 +104,7 @@ export const auth = {
     }
   },
 
-  async sendResetPasswordEmail(parent, { login }) {
+  async sendResetPasswordEmail(_parent, { login }) {
     let user = await prisma.user({ login })
     if (!user) user = await prisma.user({ email: login })
 
@@ -159,7 +160,7 @@ export const auth = {
     }
   },
 
-  async resetPassword(parent, { passwordResetCode, ...args }) {
+  async resetPassword(_parent, { passwordResetCode, ...args }) {
     const accounts = await prisma.users({
       where: {
         passwordResetCode: {
@@ -190,35 +191,88 @@ export const auth = {
     }
   },
 
-  async signin(parent, { login, password }) {
+  async signin(_parent, { login, password }, ctx, info) {
     let user = await prisma.user({ login })
     if (!user) user = await prisma.user({ email: login })
 
     if (!user) {
-      throw new Error('Wrong email/password combination.')
+      throw new Error('Wrong login/email.')
+    }
+
+    if (!user.isActivated) {
+      throw new Error('You should activate your account first.')
     }
 
     const valid = await bcrypt.compare(password, user.password)
     if (!valid) {
-      throw new Error('Wrong email/password combination.')
+      throw new Error('Wrong login/email and password combination.')
     }
 
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      currentUser: user,
-    }
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET)
+
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    })
+
+    return user
   },
 
-  async editProfile(parent, args, ctx) {
-    const id = getUserId(ctx)
+  signout(_parent, _args, ctx) {
+    ctx.response.clearCookie('token')
+    return { message: 'Goodbye!' }
+  },
+
+  async editProfile(_parent, args, ctx) {
+    const id = ctx.request.userId
     if (id) {
       const user = await prisma.updateUser({
         where: { id },
         data: { ...args },
       })
       return user
-    } else {
-      throw new Error('You are not authenticated to perform this action.')
     }
+  },
+  async addVideo(_parent, args, ctx) {
+    const id = ctx.request.userId
+    if (id) {
+      const videoExists = await prisma.$exists.video({
+        ytId: args.ytId,
+      })
+      if (videoExists) {
+        throw new Error(
+          'Youtube video with this id already exists in our database.'
+        )
+      }
+      return prisma.createVideo({
+        adder: {
+          connect: {
+            id,
+          },
+        },
+        ...args,
+      })
+    }
+  },
+  async bookmarkVideo(_parent, { ytId, adding }, ctx) {
+    const videoExists = await prisma.$exists.video({
+      ytId,
+    })
+    if (!videoExists) {
+      throw new Error('Sorry, video not found!')
+    }
+    const id = ctx.request.userId
+    return prisma.updateVideo({
+      where: {
+        ytId,
+      },
+      data: {
+        bookmarkers: {
+          [Boolean(adding) ? 'connect' : 'disconnect']: {
+            id,
+          },
+        },
+      },
+    })
   },
 }

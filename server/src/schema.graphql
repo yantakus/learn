@@ -1,11 +1,11 @@
-# import Video, Topic, Tag, Complexity, TopicCreateManyInput, TagCreateManyInput from "./generated/prisma.graphql"
+# import * from "../generated/prisma/prisma.graphql"
 
 type Query {
   videos(skip: Int, first: Int): [Video!]!
   video(id: ID!): Video!
   users: [User!]!
   user(login: String!): User
-  currentUser: User
+  me: User
   topics: [Topic!]!
   tags: [Tag!]!
 }
@@ -30,7 +30,9 @@ type Mutation {
   signin(
     login: String!,
     password: String!
-  ): AuthPayload!
+  ): User!
+
+  signout: Payload!
 
   editProfile(
     name: String,
@@ -50,21 +52,12 @@ type Mutation {
   ): Video!
 }
 
-type Payload {
-  message: String!
-}
-
-type AuthPayload {
-  token: String!
-  currentUser: User!
-}
-
 type User {
   id: ID!
   isActivated: Boolean!
   email: String!
   name: String!
   login: String
-  myVideos: [Video!]!
-  bookmarkedVideos: [Video!]!
+  videosAdded: [Video!]!
+  videosBookmarked: [Video!]!
 }

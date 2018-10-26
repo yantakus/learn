@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
-import Sensor from 'react-visibility-sensor'
-import { Loader } from 'semantic-ui-react'
 import get from 'lodash/get'
-import { Segment } from 'semantic-ui-react'
 
 import Videos from '../components/Videos'
 
@@ -40,44 +37,18 @@ class HomePage extends Component {
   }
   render() {
     return (
-      <Query
-        query={query}
-        variables={{ skip: 0, first: 20 }}
-        skip={this.state.skip}
-      >
-        {({ data, fetchMore, loading }) => (
-          <Segment loading={this.state.skip} basic>
-            <Videos data={data.videos} loading={loading} />
-            <Sensor
-              partialVisibility
-              delayedCall
-              onChange={active =>
-                this.onChange(
-                  active,
-                  fetchMore,
-                  get(data, ['videos', 'length'])
-                )
-              }
-            >
-              <Loader
-                active={!this.state.skip && data.videos && this.state.fetchMore}
-                inline="centered"
-                size="large"
-                className="tw__mt-10"
-              >
-                Loading
-              </Loader>
-            </Sensor>
-          </Segment>
-        )}
+      <Query query={VIDEOS_QUERY} variables={{ skip: 0, first: 20 }}>
+        {({ data, loading }) => {
+          return <Videos data={data.videos} loading={loading} />
+        }}
       </Query>
     )
   }
 }
 
-export const query = gql`
+export const VIDEOS_QUERY = gql`
   query VideosQuery($skip: Int, $first: Int) {
-    videos(skip: $skip, first: $first) @connection(key: "videos") {
+    videos(skip: $skip, first: $first) {
       ytId
     }
   }

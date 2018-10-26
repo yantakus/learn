@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
-import YouTube from '@u-wave/react-youtube'
+
+import YouTube from '../Youtube'
 
 interface Props {
   video: {
@@ -14,7 +15,7 @@ export default class Video extends Component<Props> {
     return (
       <Card>
         <Card.Content>
-          <YouTube video={video.ytId} />
+          <YouTube id={video.ytId} />
           <Card.Header>{video.ytId}</Card.Header>
         </Card.Content>
       </Card>

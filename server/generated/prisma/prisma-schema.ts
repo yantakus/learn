@@ -96,6 +96,10 @@ type AggregatePasswordResetCode {
   count: Int!
 }
 
+type AggregatePayload {
+  count: Int!
+}
+
 type AggregateRating {
   count: Int!
 }
@@ -150,6 +154,9 @@ type Mutation {
   upsertPasswordResetCode(where: PasswordResetCodeWhereUniqueInput!, create: PasswordResetCodeCreateInput!, update: PasswordResetCodeUpdateInput!): PasswordResetCode!
   deletePasswordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   deleteManyPasswordResetCodes(where: PasswordResetCodeWhereInput): BatchPayload!
+  createPayload(data: PayloadCreateInput!): Payload!
+  updateManyPayloads(data: PayloadUpdateInput!, where: PayloadWhereInput): BatchPayload!
+  deleteManyPayloads(where: PayloadWhereInput): BatchPayload!
   createRating(data: RatingCreateInput!): Rating!
   updateManyRatings(data: RatingUpdateInput!, where: RatingWhereInput): BatchPayload!
   deleteManyRatings(where: RatingWhereInput): BatchPayload!
@@ -292,6 +299,82 @@ input PasswordResetCodeWhereUniqueInput {
   id: ID
 }
 
+type Payload {
+  message: String!
+}
+
+type PayloadConnection {
+  pageInfo: PageInfo!
+  edges: [PayloadEdge]!
+  aggregate: AggregatePayload!
+}
+
+input PayloadCreateInput {
+  message: String!
+}
+
+type PayloadEdge {
+  node: Payload!
+  cursor: String!
+}
+
+enum PayloadOrderByInput {
+  message_ASC
+  message_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PayloadPreviousValues {
+  message: String!
+}
+
+type PayloadSubscriptionPayload {
+  mutation: MutationType!
+  node: Payload
+  updatedFields: [String!]
+  previousValues: PayloadPreviousValues
+}
+
+input PayloadSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PayloadWhereInput
+  AND: [PayloadSubscriptionWhereInput!]
+  OR: [PayloadSubscriptionWhereInput!]
+  NOT: [PayloadSubscriptionWhereInput!]
+}
+
+input PayloadUpdateInput {
+  message: String
+}
+
+input PayloadWhereInput {
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  AND: [PayloadWhereInput!]
+  OR: [PayloadWhereInput!]
+  NOT: [PayloadWhereInput!]
+}
+
 type Query {
   accountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   accountActivationCodes(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AccountActivationCode]!
@@ -299,6 +382,8 @@ type Query {
   passwordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   passwordResetCodes(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PasswordResetCode]!
   passwordResetCodesConnection(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PasswordResetCodeConnection!
+  payloads(where: PayloadWhereInput, orderBy: PayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Payload]!
+  payloadsConnection(where: PayloadWhereInput, orderBy: PayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PayloadConnection!
   ratings(where: RatingWhereInput, orderBy: RatingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rating]!
   ratingsConnection(where: RatingWhereInput, orderBy: RatingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RatingConnection!
   tag(where: TagWhereUniqueInput!): Tag
@@ -407,6 +492,7 @@ input RatingWhereInput {
 type Subscription {
   accountActivationCode(where: AccountActivationCodeSubscriptionWhereInput): AccountActivationCodeSubscriptionPayload
   passwordResetCode(where: PasswordResetCodeSubscriptionWhereInput): PasswordResetCodeSubscriptionPayload
+  payload(where: PayloadSubscriptionWhereInput): PayloadSubscriptionPayload
   rating(where: RatingSubscriptionWhereInput): RatingSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   tags(where: TagsSubscriptionWhereInput): TagsSubscriptionPayload
@@ -548,11 +634,11 @@ input TagUpdateInput {
 
 input TagUpdateManyInput {
   create: [TagCreateInput!]
+  update: [TagUpdateWithWhereUniqueNestedInput!]
+  upsert: [TagUpsertWithWhereUniqueNestedInput!]
   delete: [TagWhereUniqueInput!]
   connect: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
-  update: [TagUpdateWithWhereUniqueNestedInput!]
-  upsert: [TagUpsertWithWhereUniqueNestedInput!]
 }
 
 input TagUpdateWithWhereUniqueNestedInput {
@@ -737,11 +823,11 @@ input TopicUpdateInput {
 
 input TopicUpdateManyInput {
   create: [TopicCreateInput!]
+  update: [TopicUpdateWithWhereUniqueNestedInput!]
+  upsert: [TopicUpsertWithWhereUniqueNestedInput!]
   delete: [TopicWhereUniqueInput!]
   connect: [TopicWhereUniqueInput!]
   disconnect: [TopicWhereUniqueInput!]
-  update: [TopicUpdateWithWhereUniqueNestedInput!]
-  upsert: [TopicUpsertWithWhereUniqueNestedInput!]
 }
 
 input TopicUpdateWithWhereUniqueNestedInput {
@@ -803,8 +889,8 @@ type User {
   email: String!
   password: String!
   name: String!
-  myVideos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
-  bookmarkedVideos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  videosAdded(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  videosBookmarked(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
 }
 
 type UserConnection {
@@ -821,12 +907,12 @@ input UserCreateInput {
   email: String!
   password: String!
   name: String!
-  myVideos: VideoCreateManyWithoutAdderInput
-  bookmarkedVideos: VideoCreateManyWithoutBookmarkersInput
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
 }
 
-input UserCreateManyWithoutBookmarkedVideosInput {
-  create: [UserCreateWithoutBookmarkedVideosInput!]
+input UserCreateManyWithoutVideosBookmarkedInput {
+  create: [UserCreateWithoutVideosBookmarkedInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -835,13 +921,13 @@ input UserCreateOneWithoutActivationCodeInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutMyVideosInput {
-  create: UserCreateWithoutMyVideosInput
+input UserCreateOneWithoutPasswordResetCodeInput {
+  create: UserCreateWithoutPasswordResetCodeInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutPasswordResetCodeInput {
-  create: UserCreateWithoutPasswordResetCodeInput
+input UserCreateOneWithoutVideosAddedInput {
+  create: UserCreateWithoutVideosAddedInput
   connect: UserWhereUniqueInput
 }
 
@@ -852,30 +938,8 @@ input UserCreateWithoutActivationCodeInput {
   email: String!
   password: String!
   name: String!
-  myVideos: VideoCreateManyWithoutAdderInput
-  bookmarkedVideos: VideoCreateManyWithoutBookmarkersInput
-}
-
-input UserCreateWithoutBookmarkedVideosInput {
-  activationCode: AccountActivationCodeCreateOneWithoutUserInput
-  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
-  isActivated: Boolean
-  login: String!
-  email: String!
-  password: String!
-  name: String!
-  myVideos: VideoCreateManyWithoutAdderInput
-}
-
-input UserCreateWithoutMyVideosInput {
-  activationCode: AccountActivationCodeCreateOneWithoutUserInput
-  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
-  isActivated: Boolean
-  login: String!
-  email: String!
-  password: String!
-  name: String!
-  bookmarkedVideos: VideoCreateManyWithoutBookmarkersInput
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
 }
 
 input UserCreateWithoutPasswordResetCodeInput {
@@ -885,8 +949,30 @@ input UserCreateWithoutPasswordResetCodeInput {
   email: String!
   password: String!
   name: String!
-  myVideos: VideoCreateManyWithoutAdderInput
-  bookmarkedVideos: VideoCreateManyWithoutBookmarkersInput
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+}
+
+input UserCreateWithoutVideosAddedInput {
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
+  isActivated: Boolean
+  login: String!
+  email: String!
+  password: String!
+  name: String!
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+}
+
+input UserCreateWithoutVideosBookmarkedInput {
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
+  isActivated: Boolean
+  login: String!
+  email: String!
+  password: String!
+  name: String!
+  videosAdded: VideoCreateManyWithoutAdderInput
 }
 
 type UserEdge {
@@ -948,23 +1034,23 @@ input UserUpdateInput {
   email: String
   password: String
   name: String
-  myVideos: VideoUpdateManyWithoutAdderInput
-  bookmarkedVideos: VideoUpdateManyWithoutBookmarkersInput
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
 }
 
-input UserUpdateManyWithoutBookmarkedVideosInput {
-  create: [UserCreateWithoutBookmarkedVideosInput!]
+input UserUpdateManyWithoutVideosBookmarkedInput {
+  create: [UserCreateWithoutVideosBookmarkedInput!]
   delete: [UserWhereUniqueInput!]
   connect: [UserWhereUniqueInput!]
   disconnect: [UserWhereUniqueInput!]
-  update: [UserUpdateWithWhereUniqueWithoutBookmarkedVideosInput!]
-  upsert: [UserUpsertWithWhereUniqueWithoutBookmarkedVideosInput!]
+  update: [UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput!]
 }
 
-input UserUpdateOneRequiredWithoutMyVideosInput {
-  create: UserCreateWithoutMyVideosInput
-  update: UserUpdateWithoutMyVideosDataInput
-  upsert: UserUpsertWithoutMyVideosInput
+input UserUpdateOneRequiredWithoutVideosAddedInput {
+  create: UserCreateWithoutVideosAddedInput
+  update: UserUpdateWithoutVideosAddedDataInput
+  upsert: UserUpsertWithoutVideosAddedInput
   connect: UserWhereUniqueInput
 }
 
@@ -993,30 +1079,8 @@ input UserUpdateWithoutActivationCodeDataInput {
   email: String
   password: String
   name: String
-  myVideos: VideoUpdateManyWithoutAdderInput
-  bookmarkedVideos: VideoUpdateManyWithoutBookmarkersInput
-}
-
-input UserUpdateWithoutBookmarkedVideosDataInput {
-  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
-  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
-  isActivated: Boolean
-  login: String
-  email: String
-  password: String
-  name: String
-  myVideos: VideoUpdateManyWithoutAdderInput
-}
-
-input UserUpdateWithoutMyVideosDataInput {
-  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
-  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
-  isActivated: Boolean
-  login: String
-  email: String
-  password: String
-  name: String
-  bookmarkedVideos: VideoUpdateManyWithoutBookmarkersInput
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
 }
 
 input UserUpdateWithoutPasswordResetCodeDataInput {
@@ -1026,13 +1090,35 @@ input UserUpdateWithoutPasswordResetCodeDataInput {
   email: String
   password: String
   name: String
-  myVideos: VideoUpdateManyWithoutAdderInput
-  bookmarkedVideos: VideoUpdateManyWithoutBookmarkersInput
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
 }
 
-input UserUpdateWithWhereUniqueWithoutBookmarkedVideosInput {
+input UserUpdateWithoutVideosAddedDataInput {
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+}
+
+input UserUpdateWithoutVideosBookmarkedDataInput {
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  videosAdded: VideoUpdateManyWithoutAdderInput
+}
+
+input UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
   where: UserWhereUniqueInput!
-  data: UserUpdateWithoutBookmarkedVideosDataInput!
+  data: UserUpdateWithoutVideosBookmarkedDataInput!
 }
 
 input UserUpsertWithoutActivationCodeInput {
@@ -1040,20 +1126,20 @@ input UserUpsertWithoutActivationCodeInput {
   create: UserCreateWithoutActivationCodeInput!
 }
 
-input UserUpsertWithoutMyVideosInput {
-  update: UserUpdateWithoutMyVideosDataInput!
-  create: UserCreateWithoutMyVideosInput!
-}
-
 input UserUpsertWithoutPasswordResetCodeInput {
   update: UserUpdateWithoutPasswordResetCodeDataInput!
   create: UserCreateWithoutPasswordResetCodeInput!
 }
 
-input UserUpsertWithWhereUniqueWithoutBookmarkedVideosInput {
+input UserUpsertWithoutVideosAddedInput {
+  update: UserUpdateWithoutVideosAddedDataInput!
+  create: UserCreateWithoutVideosAddedInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
   where: UserWhereUniqueInput!
-  update: UserUpdateWithoutBookmarkedVideosDataInput!
-  create: UserCreateWithoutBookmarkedVideosInput!
+  update: UserUpdateWithoutVideosBookmarkedDataInput!
+  create: UserCreateWithoutVideosBookmarkedInput!
 }
 
 input UserWhereInput {
@@ -1131,12 +1217,12 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  myVideos_every: VideoWhereInput
-  myVideos_some: VideoWhereInput
-  myVideos_none: VideoWhereInput
-  bookmarkedVideos_every: VideoWhereInput
-  bookmarkedVideos_some: VideoWhereInput
-  bookmarkedVideos_none: VideoWhereInput
+  videosAdded_every: VideoWhereInput
+  videosAdded_some: VideoWhereInput
+  videosAdded_none: VideoWhereInput
+  videosBookmarked_every: VideoWhereInput
+  videosBookmarked_some: VideoWhereInput
+  videosBookmarked_none: VideoWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -1149,6 +1235,7 @@ input UserWhereUniqueInput {
 }
 
 type Video {
+  id: ID!
   ytId: String!
   complexity: Complexity!
   topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
@@ -1168,8 +1255,8 @@ input VideoCreateInput {
   complexity: Complexity!
   topics: TopicCreateManyInput
   tags: TagCreateManyInput
-  adder: UserCreateOneWithoutMyVideosInput!
-  bookmarkers: UserCreateManyWithoutBookmarkedVideosInput
+  adder: UserCreateOneWithoutVideosAddedInput!
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
 }
 
 input VideoCreateManyWithoutAdderInput {
@@ -1187,7 +1274,7 @@ input VideoCreateWithoutAdderInput {
   complexity: Complexity!
   topics: TopicCreateManyInput
   tags: TagCreateManyInput
-  bookmarkers: UserCreateManyWithoutBookmarkedVideosInput
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
 }
 
 input VideoCreateWithoutBookmarkersInput {
@@ -1195,7 +1282,7 @@ input VideoCreateWithoutBookmarkersInput {
   complexity: Complexity!
   topics: TopicCreateManyInput
   tags: TagCreateManyInput
-  adder: UserCreateOneWithoutMyVideosInput!
+  adder: UserCreateOneWithoutVideosAddedInput!
 }
 
 type VideoEdge {
@@ -1204,12 +1291,12 @@ type VideoEdge {
 }
 
 enum VideoOrderByInput {
+  id_ASC
+  id_DESC
   ytId_ASC
   ytId_DESC
   complexity_ASC
   complexity_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1217,6 +1304,7 @@ enum VideoOrderByInput {
 }
 
 type VideoPreviousValues {
+  id: ID!
   ytId: String!
   complexity: Complexity!
 }
@@ -1244,8 +1332,8 @@ input VideoUpdateInput {
   complexity: Complexity
   topics: TopicUpdateManyInput
   tags: TagUpdateManyInput
-  adder: UserUpdateOneRequiredWithoutMyVideosInput
-  bookmarkers: UserUpdateManyWithoutBookmarkedVideosInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
 }
 
 input VideoUpdateManyWithoutAdderInput {
@@ -1271,7 +1359,7 @@ input VideoUpdateWithoutAdderDataInput {
   complexity: Complexity
   topics: TopicUpdateManyInput
   tags: TagUpdateManyInput
-  bookmarkers: UserUpdateManyWithoutBookmarkedVideosInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
 }
 
 input VideoUpdateWithoutBookmarkersDataInput {
@@ -1279,7 +1367,7 @@ input VideoUpdateWithoutBookmarkersDataInput {
   complexity: Complexity
   topics: TopicUpdateManyInput
   tags: TagUpdateManyInput
-  adder: UserUpdateOneRequiredWithoutMyVideosInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
 }
 
 input VideoUpdateWithWhereUniqueWithoutAdderInput {
@@ -1305,6 +1393,20 @@ input VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
 }
 
 input VideoWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   ytId: String
   ytId_not: String
   ytId_in: [String!]
@@ -1339,6 +1441,7 @@ input VideoWhereInput {
 }
 
 input VideoWhereUniqueInput {
+  id: ID
   ytId: String
 }
 `

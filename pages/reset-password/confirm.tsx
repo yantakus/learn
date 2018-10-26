@@ -13,10 +13,6 @@ interface IProps {
 }
 
 export default class ResetPasswordConfirm extends Component<IProps> {
-  static getInitialProps({ query }) {
-    return { query }
-  }
-
   state = { password: '' }
 
   handleChange = (e, { name, value }) => {

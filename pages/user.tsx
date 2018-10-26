@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import get from 'lodash/get'
 
-import User from '../components/User'
+import UserProfile from '../components/UserProfile'
 
 interface Props {
   query: {
@@ -12,9 +12,6 @@ interface Props {
 }
 
 class UserPage extends Component<Props> {
-  static async getInitialProps({ query }) {
-    return { query }
-  }
   render() {
     const {
       query: { login },
@@ -22,7 +19,7 @@ class UserPage extends Component<Props> {
     return (
       <Query query={query} variables={{ login }}>
         {({ data, loading }) => (
-          <User data={get(data, ['user'])} loading={loading} />
+          <UserProfile data={get(data, ['user'])} loading={loading} />
         )}
       </Query>
     )

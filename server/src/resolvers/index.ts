@@ -1,13 +1,15 @@
 import { Query } from './Query'
-import { auth } from './Mutation/auth'
-import { video } from './Mutation/video'
-import { AuthPayload } from './AuthPayload'
+import { Mutation } from './Mutation'
+import { User } from './User'
+import { Video } from './Video'
+import { Topic } from './Topic'
+import { Tag } from './Tag'
 
-export = {
+export const resolvers = {
   Query,
-  Mutation: {
-    ...auth,
-    ...video,
-  },
-  AuthPayload,
+  Mutation,
+  User,
+  Video,
+  Topic,
+  Tag,
 }

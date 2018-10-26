@@ -47,9 +47,6 @@ interface IPageProps {
 }
 
 export default class ActivatePage extends Component<IPageProps> {
-  static getInitialProps({ query }) {
-    return { query }
-  }
   render() {
     const {
       query: { id },

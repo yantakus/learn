@@ -1,10 +1,11 @@
 type Video {
+  id: ID! @unique
   ytId: String! @unique
   complexity: Complexity!
   topics: [Topic!]!
   tags: [Tag!]!
   adder: User! @relation(name: "UserVideos")
-  bookmarkers: [User!]! @relation(name: "VideoBookmarkers")
+  bookmarkers: [User!]! @relation(name: "UserBookmarks")
 }
 
 type User {
@@ -16,8 +17,8 @@ type User {
   email: String! @unique
   password: String!
   name: String!
-  myVideos: [Video!]! @relation(name: "UserVideos")
-  bookmarkedVideos: [Video!]! @relation(name: "VideoBookmarkers")
+  videosAdded: [Video!]! @relation(name: "UserVideos")
+  videosBookmarked: [Video!]! @relation(name: "UserBookmarks")
 }
 
 type Topic {
@@ -58,4 +59,8 @@ enum Complexity {
   BASIC
   ADVANCED
   EXPERT
+}
+
+type Payload {
+  message: String!
 }

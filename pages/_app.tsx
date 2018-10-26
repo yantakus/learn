@@ -4,12 +4,10 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-boost'
 import Link from 'next/link'
 import { Grid, Segment } from 'semantic-ui-react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 
-import withApolloClient from '../lib/withApolloClient'
+import withData from '../lib/withData.js'
 
 import Main from '../components/Main'
 import Menu from '../components/Menu'
@@ -27,16 +25,18 @@ Router.onRouteChangeError = () => {
   NProgress.done()
 }
 
-const userQuery = gql`
-  {
-    currentUser {
-      id
-    }
-  }
-`
 interface Props {
-  apolloClient: ApolloClient<{}>
+  apollo: ApolloClient<{}>
   loggedInUser?: Object
+  query: Object
+  router: {
+    pathname: String
+    asPath: String
+  }
+}
+
+interface State {
+  hasError: boolean
 }
 
 class MyApp extends App<Props> {
@@ -48,43 +48,40 @@ class MyApp extends App<Props> {
     this.setState({ hasError: true })
   }
   render() {
-    const { Component, pageProps, apolloClient, router } = this.props
-    if (this.state.hasError) {
+    const { Component, apollo, router } = this.props
+    const { hasError } = this.state as State
+    if (hasError) {
       return <h1>Something went wrong.</h1>
     }
     return (
       <Container>
         <Head title="With apollo app" />
-        <ApolloProvider client={apolloClient}>
-          <Query query={userQuery} errorPolicy="all" fetchPolicy="network-only">
-            {() => (
-              <Main>
-                <div className="ui stackable relaxed container">
-                  <div className="header item">
-                    <h1>
-                      <Link href="/">
-                        <a className="navbar-item">Techies</a>
-                      </Link>
-                    </h1>
-                  </div>
-                  <Grid>
-                    <Grid.Column stretched width={12}>
-                      <Segment stacked>
-                        <Component {...pageProps} />
-                      </Segment>
-                    </Grid.Column>
-                    <Grid.Column width={4}>
-                      <Menu router={router} />
-                    </Grid.Column>
-                  </Grid>
-                </div>
-              </Main>
-            )}
-          </Query>
+        <ApolloProvider client={apollo}>
+          <Main>
+            <div className="ui stackable relaxed container">
+              <div className="header item">
+                <h1>
+                  <Link href="/">
+                    <a className="navbar-item">Techies</a>
+                  </Link>
+                </h1>
+              </div>
+              <Grid>
+                <Grid.Column stretched width={12}>
+                  <Segment stacked>
+                    <Component router={router} />
+                  </Segment>
+                </Grid.Column>
+                <Grid.Column width={4}>
+                  <Menu router={router} />
+                </Grid.Column>
+              </Grid>
+            </div>
+          </Main>
         </ApolloProvider>
       </Container>
     )
   }
 }
 
-export default withApolloClient(MyApp)
+export default withData(MyApp)

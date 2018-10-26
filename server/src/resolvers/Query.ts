@@ -1,30 +1,29 @@
-import { getUserId } from '../utils'
-import { prisma } from '../generated'
+import { prisma } from '../../generated/prisma'
 
 export const Query = {
-  users() {
-    return prisma.users({ orderBy: 'name_DESC' })
+  users(_parent, args) {
+    return prisma.users(args)
   },
-  user(_parent, { login }) {
-    return prisma.user({ login })
+  user(_parent, args) {
+    return prisma.user(args)
   },
-  currentUser(_parent, _args, ctx) {
-    const id = getUserId(ctx)
-    return prisma.user({ id })
+  me(_parent, _args, ctx) {
+    const id = ctx.request.userId
+    if (id) {
+      return prisma.user({ id })
+    }
+    return null
   },
-  videos(_parent, { skip, first }) {
-    return prisma.videos({
-      skip,
-      first,
-    })
+  videos(_parent, args) {
+    return prisma.videos(args)
   },
-  video(_parent, { ytId }) {
-    return prisma.video({ ytId })
+  video(_parent, args) {
+    return prisma.video(args)
   },
-  topics() {
-    return prisma.topics({})
+  topics(_parent, args) {
+    return prisma.topics(args)
   },
-  tags() {
-    return prisma.tags({})
+  tags(_parent, args) {
+    return prisma.tags(args)
   },
 }
