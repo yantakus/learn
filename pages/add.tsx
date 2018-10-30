@@ -306,8 +306,8 @@ const mutation = gql`
   mutation(
     $ytId: String!
     $complexity: Complexity!
-    $topics: TopicCreateManyInput!
-    $tags: TagCreateManyInput!
+    $topics: TopicCreateWithoutParentInput!
+    $tags: TagCreateWithoutParentInput!
   ) {
     addVideo(
       ytId: $ytId

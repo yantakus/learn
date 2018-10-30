@@ -6,16 +6,19 @@ import { VideoResolvers } from '../graphqlgen'
 export const Video: VideoResolvers.Type = {
   ...VideoResolvers.defaultResolvers,
 
-  topics: (parent, args) => {
+  topics: parent => {
     throw new Error('Resolver not implemented')
   },
-  tags: (parent, args) => {
+  tags: parent => {
     throw new Error('Resolver not implemented')
   },
   adder: parent => {
     throw new Error('Resolver not implemented')
   },
-  bookmarkers: (parent, args) => {
+  bookmarkers: parent => {
+    throw new Error('Resolver not implemented')
+  },
+  snippet: parent => {
     throw new Error('Resolver not implemented')
   },
 }

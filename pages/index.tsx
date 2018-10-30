@@ -50,6 +50,16 @@ export const VIDEOS_QUERY = gql`
   query VideosQuery($skip: Int, $first: Int) {
     videos(skip: $skip, first: $first) {
       ytId
+      complexity
+      tags {
+        text
+        value
+      }
+      topics {
+        text
+        value
+      }
+      snippet
     }
   }
 `

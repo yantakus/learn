@@ -108,15 +108,7 @@ type AggregateTag {
   count: Int!
 }
 
-type AggregateTags {
-  count: Int!
-}
-
 type AggregateTopic {
-  count: Int!
-}
-
-type AggregateTopics {
   count: Int!
 }
 
@@ -166,18 +158,12 @@ type Mutation {
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
-  createTags(data: TagsCreateInput!): Tags!
-  updateManyTagses(data: TagsUpdateInput!, where: TagsWhereInput): BatchPayload!
-  deleteManyTagses(where: TagsWhereInput): BatchPayload!
   createTopic(data: TopicCreateInput!): Topic!
   updateTopic(data: TopicUpdateInput!, where: TopicWhereUniqueInput!): Topic
   updateManyTopics(data: TopicUpdateInput!, where: TopicWhereInput): BatchPayload!
   upsertTopic(where: TopicWhereUniqueInput!, create: TopicCreateInput!, update: TopicUpdateInput!): Topic!
   deleteTopic(where: TopicWhereUniqueInput!): Topic
   deleteManyTopics(where: TopicWhereInput): BatchPayload!
-  createTopics(data: TopicsCreateInput!): Topics!
-  updateManyTopicses(data: TopicsUpdateInput!, where: TopicsWhereInput): BatchPayload!
-  deleteManyTopicses(where: TopicsWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
@@ -389,13 +375,9 @@ type Query {
   tag(where: TagWhereUniqueInput!): Tag
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
-  tagses(where: TagsWhereInput, orderBy: TagsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tags]!
-  tagsesConnection(where: TagsWhereInput, orderBy: TagsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagsConnection!
   topic(where: TopicWhereUniqueInput!): Topic
   topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic]!
   topicsConnection(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TopicConnection!
-  topicses(where: TopicsWhereInput, orderBy: TopicsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topics]!
-  topicsesConnection(where: TopicsWhereInput, orderBy: TopicsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TopicsConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -495,16 +477,16 @@ type Subscription {
   payload(where: PayloadSubscriptionWhereInput): PayloadSubscriptionPayload
   rating(where: RatingSubscriptionWhereInput): RatingSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
-  tags(where: TagsSubscriptionWhereInput): TagsSubscriptionPayload
   topic(where: TopicSubscriptionWhereInput): TopicSubscriptionPayload
-  topics(where: TopicsSubscriptionWhereInput): TopicsSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
 }
 
 type Tag {
+  id: ID!
   value: String!
   text: String!
+  parent: Video
 }
 
 type TagConnection {
@@ -516,11 +498,17 @@ type TagConnection {
 input TagCreateInput {
   value: String!
   text: String!
+  parent: VideoCreateOneWithoutTagsInput
 }
 
-input TagCreateManyInput {
-  create: [TagCreateInput!]
+input TagCreateManyWithoutParentInput {
+  create: [TagCreateWithoutParentInput!]
   connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateWithoutParentInput {
+  value: String!
+  text: String!
 }
 
 type TagEdge {
@@ -529,12 +517,12 @@ type TagEdge {
 }
 
 enum TagOrderByInput {
+  id_ASC
+  id_DESC
   value_ASC
   value_DESC
   text_ASC
   text_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -542,53 +530,9 @@ enum TagOrderByInput {
 }
 
 type TagPreviousValues {
+  id: ID!
   value: String!
   text: String!
-}
-
-type Tags {
-  exist(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
-}
-
-type TagsConnection {
-  pageInfo: PageInfo!
-  edges: [TagsEdge]!
-  aggregate: AggregateTags!
-}
-
-input TagsCreateInput {
-  exist: TagCreateManyInput
-}
-
-type TagsEdge {
-  node: Tags!
-  cursor: String!
-}
-
-enum TagsOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type TagsSubscriptionPayload {
-  mutation: MutationType!
-  node: Tags
-  updatedFields: [String!]
-}
-
-input TagsSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: TagsWhereInput
-  AND: [TagsSubscriptionWhereInput!]
-  OR: [TagsSubscriptionWhereInput!]
-  NOT: [TagsSubscriptionWhereInput!]
 }
 
 type TagSubscriptionPayload {
@@ -609,50 +553,52 @@ input TagSubscriptionWhereInput {
   NOT: [TagSubscriptionWhereInput!]
 }
 
-input TagsUpdateInput {
-  exist: TagUpdateManyInput
-}
-
-input TagsWhereInput {
-  exist_every: TagWhereInput
-  exist_some: TagWhereInput
-  exist_none: TagWhereInput
-  AND: [TagsWhereInput!]
-  OR: [TagsWhereInput!]
-  NOT: [TagsWhereInput!]
-}
-
-input TagUpdateDataInput {
-  value: String
-  text: String
-}
-
 input TagUpdateInput {
   value: String
   text: String
+  parent: VideoUpdateOneWithoutTagsInput
 }
 
-input TagUpdateManyInput {
-  create: [TagCreateInput!]
-  update: [TagUpdateWithWhereUniqueNestedInput!]
-  upsert: [TagUpsertWithWhereUniqueNestedInput!]
+input TagUpdateManyWithoutParentInput {
+  create: [TagCreateWithoutParentInput!]
   delete: [TagWhereUniqueInput!]
   connect: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutParentInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutParentInput!]
 }
 
-input TagUpdateWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput!
-  data: TagUpdateDataInput!
+input TagUpdateWithoutParentDataInput {
+  value: String
+  text: String
 }
 
-input TagUpsertWithWhereUniqueNestedInput {
+input TagUpdateWithWhereUniqueWithoutParentInput {
   where: TagWhereUniqueInput!
-  update: TagUpdateDataInput!
-  create: TagCreateInput!
+  data: TagUpdateWithoutParentDataInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutParentInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutParentDataInput!
+  create: TagCreateWithoutParentInput!
 }
 
 input TagWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   value: String
   value_not: String
   value_in: [String!]
@@ -681,19 +627,23 @@ input TagWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
+  parent: VideoWhereInput
   AND: [TagWhereInput!]
   OR: [TagWhereInput!]
   NOT: [TagWhereInput!]
 }
 
 input TagWhereUniqueInput {
+  id: ID
   value: String
   text: String
 }
 
 type Topic {
+  id: ID!
   value: String!
   text: String!
+  parent: Video
 }
 
 type TopicConnection {
@@ -705,11 +655,17 @@ type TopicConnection {
 input TopicCreateInput {
   value: String!
   text: String!
+  parent: VideoCreateOneWithoutTopicsInput
 }
 
-input TopicCreateManyInput {
-  create: [TopicCreateInput!]
+input TopicCreateManyWithoutParentInput {
+  create: [TopicCreateWithoutParentInput!]
   connect: [TopicWhereUniqueInput!]
+}
+
+input TopicCreateWithoutParentInput {
+  value: String!
+  text: String!
 }
 
 type TopicEdge {
@@ -718,12 +674,12 @@ type TopicEdge {
 }
 
 enum TopicOrderByInput {
+  id_ASC
+  id_DESC
   value_ASC
   value_DESC
   text_ASC
   text_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -731,53 +687,9 @@ enum TopicOrderByInput {
 }
 
 type TopicPreviousValues {
+  id: ID!
   value: String!
   text: String!
-}
-
-type Topics {
-  exist(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
-}
-
-type TopicsConnection {
-  pageInfo: PageInfo!
-  edges: [TopicsEdge]!
-  aggregate: AggregateTopics!
-}
-
-input TopicsCreateInput {
-  exist: TopicCreateManyInput
-}
-
-type TopicsEdge {
-  node: Topics!
-  cursor: String!
-}
-
-enum TopicsOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type TopicsSubscriptionPayload {
-  mutation: MutationType!
-  node: Topics
-  updatedFields: [String!]
-}
-
-input TopicsSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: TopicsWhereInput
-  AND: [TopicsSubscriptionWhereInput!]
-  OR: [TopicsSubscriptionWhereInput!]
-  NOT: [TopicsSubscriptionWhereInput!]
 }
 
 type TopicSubscriptionPayload {
@@ -798,50 +710,52 @@ input TopicSubscriptionWhereInput {
   NOT: [TopicSubscriptionWhereInput!]
 }
 
-input TopicsUpdateInput {
-  exist: TopicUpdateManyInput
-}
-
-input TopicsWhereInput {
-  exist_every: TopicWhereInput
-  exist_some: TopicWhereInput
-  exist_none: TopicWhereInput
-  AND: [TopicsWhereInput!]
-  OR: [TopicsWhereInput!]
-  NOT: [TopicsWhereInput!]
-}
-
-input TopicUpdateDataInput {
-  value: String
-  text: String
-}
-
 input TopicUpdateInput {
   value: String
   text: String
+  parent: VideoUpdateOneWithoutTopicsInput
 }
 
-input TopicUpdateManyInput {
-  create: [TopicCreateInput!]
-  update: [TopicUpdateWithWhereUniqueNestedInput!]
-  upsert: [TopicUpsertWithWhereUniqueNestedInput!]
+input TopicUpdateManyWithoutParentInput {
+  create: [TopicCreateWithoutParentInput!]
   delete: [TopicWhereUniqueInput!]
   connect: [TopicWhereUniqueInput!]
   disconnect: [TopicWhereUniqueInput!]
+  update: [TopicUpdateWithWhereUniqueWithoutParentInput!]
+  upsert: [TopicUpsertWithWhereUniqueWithoutParentInput!]
 }
 
-input TopicUpdateWithWhereUniqueNestedInput {
-  where: TopicWhereUniqueInput!
-  data: TopicUpdateDataInput!
+input TopicUpdateWithoutParentDataInput {
+  value: String
+  text: String
 }
 
-input TopicUpsertWithWhereUniqueNestedInput {
+input TopicUpdateWithWhereUniqueWithoutParentInput {
   where: TopicWhereUniqueInput!
-  update: TopicUpdateDataInput!
-  create: TopicCreateInput!
+  data: TopicUpdateWithoutParentDataInput!
+}
+
+input TopicUpsertWithWhereUniqueWithoutParentInput {
+  where: TopicWhereUniqueInput!
+  update: TopicUpdateWithoutParentDataInput!
+  create: TopicCreateWithoutParentInput!
 }
 
 input TopicWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   value: String
   value_not: String
   value_in: [String!]
@@ -870,12 +784,14 @@ input TopicWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
+  parent: VideoWhereInput
   AND: [TopicWhereInput!]
   OR: [TopicWhereInput!]
   NOT: [TopicWhereInput!]
 }
 
 input TopicWhereUniqueInput {
+  id: ID
   value: String
   text: String
 }
@@ -1253,8 +1169,8 @@ type VideoConnection {
 input VideoCreateInput {
   ytId: String!
   complexity: Complexity!
-  topics: TopicCreateManyInput
-  tags: TagCreateManyInput
+  topics: TopicCreateManyWithoutParentInput
+  tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
 }
@@ -1269,20 +1185,46 @@ input VideoCreateManyWithoutBookmarkersInput {
   connect: [VideoWhereUniqueInput!]
 }
 
+input VideoCreateOneWithoutTagsInput {
+  create: VideoCreateWithoutTagsInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoCreateOneWithoutTopicsInput {
+  create: VideoCreateWithoutTopicsInput
+  connect: VideoWhereUniqueInput
+}
+
 input VideoCreateWithoutAdderInput {
   ytId: String!
   complexity: Complexity!
-  topics: TopicCreateManyInput
-  tags: TagCreateManyInput
+  topics: TopicCreateManyWithoutParentInput
+  tags: TagCreateManyWithoutParentInput
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
 }
 
 input VideoCreateWithoutBookmarkersInput {
   ytId: String!
   complexity: Complexity!
-  topics: TopicCreateManyInput
-  tags: TagCreateManyInput
+  topics: TopicCreateManyWithoutParentInput
+  tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
+}
+
+input VideoCreateWithoutTagsInput {
+  ytId: String!
+  complexity: Complexity!
+  topics: TopicCreateManyWithoutParentInput
+  adder: UserCreateOneWithoutVideosAddedInput!
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+}
+
+input VideoCreateWithoutTopicsInput {
+  ytId: String!
+  complexity: Complexity!
+  tags: TagCreateManyWithoutParentInput
+  adder: UserCreateOneWithoutVideosAddedInput!
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
 }
 
 type VideoEdge {
@@ -1330,8 +1272,8 @@ input VideoSubscriptionWhereInput {
 input VideoUpdateInput {
   ytId: String
   complexity: Complexity
-  topics: TopicUpdateManyInput
-  tags: TagUpdateManyInput
+  topics: TopicUpdateManyWithoutParentInput
+  tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
 }
@@ -1354,20 +1296,54 @@ input VideoUpdateManyWithoutBookmarkersInput {
   upsert: [VideoUpsertWithWhereUniqueWithoutBookmarkersInput!]
 }
 
+input VideoUpdateOneWithoutTagsInput {
+  create: VideoCreateWithoutTagsInput
+  update: VideoUpdateWithoutTagsDataInput
+  upsert: VideoUpsertWithoutTagsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: VideoWhereUniqueInput
+}
+
+input VideoUpdateOneWithoutTopicsInput {
+  create: VideoCreateWithoutTopicsInput
+  update: VideoUpdateWithoutTopicsDataInput
+  upsert: VideoUpsertWithoutTopicsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: VideoWhereUniqueInput
+}
+
 input VideoUpdateWithoutAdderDataInput {
   ytId: String
   complexity: Complexity
-  topics: TopicUpdateManyInput
-  tags: TagUpdateManyInput
+  topics: TopicUpdateManyWithoutParentInput
+  tags: TagUpdateManyWithoutParentInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
 }
 
 input VideoUpdateWithoutBookmarkersDataInput {
   ytId: String
   complexity: Complexity
-  topics: TopicUpdateManyInput
-  tags: TagUpdateManyInput
+  topics: TopicUpdateManyWithoutParentInput
+  tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
+}
+
+input VideoUpdateWithoutTagsDataInput {
+  ytId: String
+  complexity: Complexity
+  topics: TopicUpdateManyWithoutParentInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+}
+
+input VideoUpdateWithoutTopicsDataInput {
+  ytId: String
+  complexity: Complexity
+  tags: TagUpdateManyWithoutParentInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
 }
 
 input VideoUpdateWithWhereUniqueWithoutAdderInput {
@@ -1378,6 +1354,16 @@ input VideoUpdateWithWhereUniqueWithoutAdderInput {
 input VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
   where: VideoWhereUniqueInput!
   data: VideoUpdateWithoutBookmarkersDataInput!
+}
+
+input VideoUpsertWithoutTagsInput {
+  update: VideoUpdateWithoutTagsDataInput!
+  create: VideoCreateWithoutTagsInput!
+}
+
+input VideoUpsertWithoutTopicsInput {
+  update: VideoUpdateWithoutTopicsDataInput!
+  create: VideoCreateWithoutTopicsInput!
 }
 
 input VideoUpsertWithWhereUniqueWithoutAdderInput {

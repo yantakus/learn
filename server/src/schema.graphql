@@ -1,5 +1,7 @@
 # import * from "../generated/prisma/prisma.graphql"
 
+scalar JSON
+
 type Query {
   videos(skip: Int, first: Int): [Video!]!
   video(id: ID!): Video!
@@ -42,8 +44,8 @@ type Mutation {
   addVideo(
     ytId: String!
     complexity: Complexity!
-    topics: TopicCreateManyInput!
-    tags: TagCreateManyInput!
+    topics: TopicCreateWithoutParentInput!
+    tags: TagCreateWithoutParentInput!
   ): Video!
 
   bookmarkVideo(
@@ -60,4 +62,15 @@ type User {
   login: String
   videosAdded: [Video!]!
   videosBookmarked: [Video!]!
+}
+
+type Video {
+  id: ID!
+  ytId: String!
+  complexity: Complexity!
+  topics: [Topic!]!
+  tags: [Tag!]!
+  adder: User!
+  bookmarkers: [User!]!
+  snippet: JSON
 }

@@ -2,8 +2,8 @@ type Video {
   id: ID! @unique
   ytId: String! @unique
   complexity: Complexity!
-  topics: [Topic!]!
-  tags: [Tag!]!
+  topics: [Topic!]! @relation(name: "VideoTopics")
+  tags: [Tag!]! @relation(name: "VideoTags")
   adder: User! @relation(name: "UserVideos")
   bookmarkers: [User!]! @relation(name: "UserBookmarks")
 }
@@ -22,21 +22,17 @@ type User {
 }
 
 type Topic {
+  id: ID! @unique
   value: String! @unique
   text: String! @unique
+  parent: Video @relation(name: "VideoTopics")
 }
 
 type Tag {
+  id: ID! @unique
   value: String! @unique
   text: String! @unique
-}
-
-type Topics {
-  exist: [Topic!]!
-}
-
-type Tags {
-  exist: [Tag!]!
+  parent: Video @relation(name: "VideoTags")
 }
 
 type AccountActivationCode {

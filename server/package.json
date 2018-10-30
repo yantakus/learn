@@ -13,7 +13,8 @@
     "cookie-parser": "^1.4.3",
     "graphql-yoga": "1.16.2",
     "graphqlgen": "^0.2.12",
-    "jsonwebtoken": "8.3.0"
+    "jsonwebtoken": "8.3.0",
+    "node-fetch": "^2.2.0"
   },
   "devDependencies": {
     "@types/node": "^10.7.1",

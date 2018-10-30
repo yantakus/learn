@@ -8,9 +8,6 @@ import { Topic } from './prisma'
 import { Tag } from './prisma'
 import { Payload } from './prisma'
 import { Complexity } from './prisma'
-import { TopicOrderByInput } from './prisma'
-import { TagOrderByInput } from './prisma'
-import { UserOrderByInput } from './prisma'
 
 export namespace QueryResolvers {
   export const defaultResolvers = {}
@@ -430,188 +427,6 @@ export namespace VideoResolvers {
     complexity: (parent: Video) => parent.complexity,
   }
 
-  export interface TopicWhereInput {
-    value: string
-    value_not: string
-    value_in: string
-    value_not_in: string
-    value_lt: string
-    value_lte: string
-    value_gt: string
-    value_gte: string
-    value_contains: string
-    value_not_contains: string
-    value_starts_with: string
-    value_not_starts_with: string
-    value_ends_with: string
-    value_not_ends_with: string
-    text: string
-    text_not: string
-    text_in: string
-    text_not_in: string
-    text_lt: string
-    text_lte: string
-    text_gt: string
-    text_gte: string
-    text_contains: string
-    text_not_contains: string
-    text_starts_with: string
-    text_not_starts_with: string
-    text_ends_with: string
-    text_not_ends_with: string
-    AND: string
-    OR: string
-    NOT: string
-  }
-  export interface TagWhereInput {
-    value: string
-    value_not: string
-    value_in: string
-    value_not_in: string
-    value_lt: string
-    value_lte: string
-    value_gt: string
-    value_gte: string
-    value_contains: string
-    value_not_contains: string
-    value_starts_with: string
-    value_not_starts_with: string
-    value_ends_with: string
-    value_not_ends_with: string
-    text: string
-    text_not: string
-    text_in: string
-    text_not_in: string
-    text_lt: string
-    text_lte: string
-    text_gt: string
-    text_gte: string
-    text_contains: string
-    text_not_contains: string
-    text_starts_with: string
-    text_not_starts_with: string
-    text_ends_with: string
-    text_not_ends_with: string
-    AND: string
-    OR: string
-    NOT: string
-  }
-  export interface UserWhereInput {
-    id: string
-    id_not: string
-    id_in: string
-    id_not_in: string
-    id_lt: string
-    id_lte: string
-    id_gt: string
-    id_gte: string
-    id_contains: string
-    id_not_contains: string
-    id_starts_with: string
-    id_not_starts_with: string
-    id_ends_with: string
-    id_not_ends_with: string
-    activationCode: string
-    passwordResetCode: string
-    isActivated: boolean
-    isActivated_not: boolean
-    login: string
-    login_not: string
-    login_in: string
-    login_not_in: string
-    login_lt: string
-    login_lte: string
-    login_gt: string
-    login_gte: string
-    login_contains: string
-    login_not_contains: string
-    login_starts_with: string
-    login_not_starts_with: string
-    login_ends_with: string
-    login_not_ends_with: string
-    email: string
-    email_not: string
-    email_in: string
-    email_not_in: string
-    email_lt: string
-    email_lte: string
-    email_gt: string
-    email_gte: string
-    email_contains: string
-    email_not_contains: string
-    email_starts_with: string
-    email_not_starts_with: string
-    email_ends_with: string
-    email_not_ends_with: string
-    password: string
-    password_not: string
-    password_in: string
-    password_not_in: string
-    password_lt: string
-    password_lte: string
-    password_gt: string
-    password_gte: string
-    password_contains: string
-    password_not_contains: string
-    password_starts_with: string
-    password_not_starts_with: string
-    password_ends_with: string
-    password_not_ends_with: string
-    name: string
-    name_not: string
-    name_in: string
-    name_not_in: string
-    name_lt: string
-    name_lte: string
-    name_gt: string
-    name_gte: string
-    name_contains: string
-    name_not_contains: string
-    name_starts_with: string
-    name_not_starts_with: string
-    name_ends_with: string
-    name_not_ends_with: string
-    videosAdded_every: string
-    videosAdded_some: string
-    videosAdded_none: string
-    videosBookmarked_every: string
-    videosBookmarked_some: string
-    videosBookmarked_none: string
-    AND: string
-    OR: string
-    NOT: string
-  }
-
-  export interface ArgsTopics {
-    where: TopicWhereInput | null
-    orderBy: TopicOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
-  }
-
-  export interface ArgsTags {
-    where: TagWhereInput | null
-    orderBy: TagOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
-  }
-
-  export interface ArgsBookmarkers {
-    where: UserWhereInput | null
-    orderBy: UserOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
-  }
-
   export type IdResolver = (
     parent: Video,
     args: {},
@@ -635,14 +450,14 @@ export namespace VideoResolvers {
 
   export type TopicsResolver = (
     parent: Video,
-    args: ArgsTopics,
+    args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Topic[] | Promise<Topic[]>
 
   export type TagsResolver = (
     parent: Video,
-    args: ArgsTags,
+    args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Tag[] | Promise<Tag[]>
@@ -656,10 +471,17 @@ export namespace VideoResolvers {
 
   export type BookmarkersResolver = (
     parent: Video,
-    args: ArgsBookmarkers,
+    args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => User[] | Promise<User[]>
+
+  export type SnippetResolver = (
+    parent: Video,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | null | Promise<string | null>
 
   export interface Type {
     id: (
@@ -685,14 +507,14 @@ export namespace VideoResolvers {
 
     topics: (
       parent: Video,
-      args: ArgsTopics,
+      args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Topic[] | Promise<Topic[]>
 
     tags: (
       parent: Video,
-      args: ArgsTags,
+      args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Tag[] | Promise<Tag[]>
@@ -706,10 +528,17 @@ export namespace VideoResolvers {
 
     bookmarkers: (
       parent: Video,
-      args: ArgsBookmarkers,
+      args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => User[] | Promise<User[]>
+
+    snippet: (
+      parent: Video,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | null | Promise<string | null>
   }
 }
 

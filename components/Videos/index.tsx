@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import { Card } from 'semantic-ui-react'
 
 import Video from './item'
 import Preloader from '../Preloader'
@@ -21,11 +20,15 @@ export default class Videos extends Component<Props> {
     return (
       <Fragment>
         <h2 className="ui header">All Videos</h2>
-        <Card.Group itemsPerRow={2}>
+        <div className="flex -mx-2">
           {data.length
-            ? data.map(video => <Video key={video.ytId} video={video} />)
+            ? data.map(video => (
+                <div className="px-2" key={video.ytId}>
+                  <Video video={video} />
+                </div>
+              ))
             : 'No videos yet'}
-        </Card.Group>
+        </div>
       </Fragment>
     )
   }
