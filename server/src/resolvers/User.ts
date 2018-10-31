@@ -1,6 +1,9 @@
+import { UserResolvers } from '../../generated/graphqlgen'
 import { prisma } from '../../generated/prisma'
 
-export const User = {
+export const User: UserResolvers.Type = {
+  ...UserResolvers.defaultResolvers,
+
   videosAdded: ({ id }) => {
     return prisma.videos({ where: { adder: { id } } })
   },

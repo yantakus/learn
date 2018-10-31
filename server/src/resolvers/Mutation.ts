@@ -2,8 +2,11 @@ import { prisma } from '../../generated/prisma'
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 import { mailjet, cryptPassword } from '../utils'
+import { MutationResolvers } from '../../generated/graphqlgen'
 
-export const Mutation = {
+export const Mutation: MutationResolvers.Type = {
+  ...MutationResolvers.defaultResolvers,
+
   async signup(_parent, { name, email: rawEmail, login, ...args }) {
     const email = rawEmail.toLowerCase().trim()
     const emailExists = await prisma.user({ email })
@@ -234,8 +237,8 @@ export const Mutation = {
     }
   },
   async addVideo(_parent, args, ctx) {
-    const id = ctx.request.userId
-    if (id) {
+    const userId = ctx.request.userId
+    if (userId) {
       const videoExists = await prisma.$exists.video({
         ytId: args.ytId,
       })
@@ -244,32 +247,33 @@ export const Mutation = {
           'Youtube video with this id already exists in our database.'
         )
       }
-      return prisma.createVideo({
+      // https://github.com/prisma/graphqlgen/issues/67
+      return (<any>prisma).createVideo({
         adder: {
           connect: {
-            id,
+            id: userId,
           },
         },
         ...args,
       })
     }
   },
-  async bookmarkVideo(_parent, { ytId, adding }, ctx) {
+  async bookmarkVideo(_parent, { id, adding }, ctx) {
     const videoExists = await prisma.$exists.video({
-      ytId,
+      id,
     })
     if (!videoExists) {
       throw new Error('Sorry, video not found!')
     }
-    const id = ctx.request.userId
+    const userId = ctx.request.userId
     return prisma.updateVideo({
       where: {
-        ytId,
+        id,
       },
       data: {
         bookmarkers: {
           [Boolean(adding) ? 'connect' : 'disconnect']: {
-            id,
+            id: userId,
           },
         },
       },

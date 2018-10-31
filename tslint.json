@@ -10,7 +10,7 @@
     ],
     "linterOptions": {
       "exclude": [
-          "server/generated/*.*"
+          "server/generated/**/*.*"
       ]
   }
 }

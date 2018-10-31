@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 import find from 'lodash/find'
 import cx from 'classnames'
 import fetch from 'isomorphic-unfetch'
+import { VIDEOS_QUERY } from '../pages/index'
 
 import Youtube from '../components/Youtube'
 import Private from '../components/Private'
@@ -171,7 +172,13 @@ class AddVideo extends Component<IProps, IState> {
 
     return (
       <Private>
-        <Mutation mutation={mutation} onCompleted={() => redirect({}, '/')}>
+        <Mutation
+          mutation={mutation}
+          onCompleted={() => {
+            redirect({}, '/')
+          }}
+          refetchQueries={[{ query: VIDEOS_QUERY }]}
+        >
           {(addVideo, { loading, error }) => {
             return (
               <Fragment>
@@ -306,8 +313,8 @@ const mutation = gql`
   mutation(
     $ytId: String!
     $complexity: Complexity!
-    $topics: TopicCreateWithoutParentInput!
-    $tags: TagCreateWithoutParentInput!
+    $topics: TopicCreateManyWithoutParentInput!
+    $tags: TagCreateManyWithoutParentInput!
   ) {
     addVideo(
       ytId: $ytId

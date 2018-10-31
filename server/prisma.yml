@@ -9,4 +9,5 @@ generate:
 
 hooks:
   post-deploy:
-    - prisma generate
+    - npm run prisma generate
+    - npm run graphqlgen

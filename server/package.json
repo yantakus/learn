@@ -6,7 +6,7 @@
     "playground": "graphql playground --server-only",
     "dev": "npm-run-all --parallel start playground",
     "prisma": "prisma",
-    "gen": "graphqlgen"
+    "graphqlgen": "graphqlgen"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",

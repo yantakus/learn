@@ -6,7 +6,8 @@
     "sourceMap": true,
     "rootDir": "./",
     "lib": [
-      "esnext", "dom"
+      "es2015",
+      "esnext"
     ]
   }
 }

@@ -62,7 +62,7 @@ class MyApp extends App<Props> {
               <div className="header item">
                 <h1>
                   <Link href="/">
-                    <a className="navbar-item">Techies</a>
+                    <a className="navbar-item">Learn</a>
                   </Link>
                 </h1>
               </div>

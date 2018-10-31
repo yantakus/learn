@@ -1,14 +1,10 @@
 import React, { Component, Fragment } from 'react'
 
-import Video from './item'
+import Video, { IVideo } from './item'
 import Preloader from '../Preloader'
 
 interface Props {
-  data?: [
-    {
-      ytId: string
-    }
-  ]
+  data?: [IVideo]
   loading: boolean
 }
 
@@ -20,10 +16,10 @@ export default class Videos extends Component<Props> {
     return (
       <Fragment>
         <h2 className="ui header">All Videos</h2>
-        <div className="flex -mx-2">
+        <div className="flex flex-wrap -mx-2">
           {data.length
             ? data.map(video => (
-                <div className="px-2" key={video.ytId}>
+                <div className="w-1/3 px-2 mb-2" key={video.ytId}>
                   <Video video={video} />
                 </div>
               ))

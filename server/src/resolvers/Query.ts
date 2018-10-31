@@ -1,8 +1,11 @@
 const fetch = require('node-fetch')
 import { prisma } from '../../generated/prisma'
 import { find } from 'lodash'
+import { QueryResolvers } from '../../generated/graphqlgen'
 
-export const Query = {
+export const Query: QueryResolvers.Type = {
+  ...QueryResolvers.defaultResolvers,
+
   users(_parent, args) {
     return prisma.users(args)
   },

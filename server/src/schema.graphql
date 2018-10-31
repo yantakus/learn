@@ -44,8 +44,8 @@ type Mutation {
   addVideo(
     ytId: String!
     complexity: Complexity!
-    topics: TopicCreateWithoutParentInput!
-    tags: TagCreateWithoutParentInput!
+    topics: TopicCreateManyWithoutParentInput!
+    tags: TagCreateManyWithoutParentInput!
   ): Video!
 
   bookmarkVideo(
