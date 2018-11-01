@@ -35,25 +35,35 @@ export default class Video extends Component<Props> {
     const { video } = this.props
     return (
       <Fragment>
-        <Card className="overflow-hidden" style={{ width: '320px' }}>
-          <Link href={`/video/${video.ytId}`}>
-            <a>
-              <Image src={video.snippet.thumbnails.medium.url} />
-            </a>
-          </Link>
-          <Card.Content>
-            <Card.Header className="mb-3 leading-none">
-              <Link href={`/video/${video.ytId}`}>
-                <a className="text-grey-darkest">{video.snippet.title}</a>
-              </Link>
-            </Card.Header>
+        <Card
+          className="overflow-hidden"
+          style={{ width: '320px', height: '100%' }}
+        >
+          <div className="position-relative">
+            <Image src={video.snippet.thumbnails.medium.url} />
+            <Link href={`/video/${video.ytId}/edit`}>
+              <a className="edit">
+                <Icon
+                  style={{ color: 'white', margin: 0 }}
+                  name="edit outline"
+                />
+              </a>
+            </Link>
+          </div>
 
-            <Card.Meta>
+          <Card.Content>
+            <Card.Meta className="mb-2">
               <span className="date capitalize">
                 {video.complexity.toLowerCase()}
               </span>
             </Card.Meta>
+            <Card.Header className="leading-none">
+              <Link href={`/video/${video.ytId}`}>
+                <a className="text-grey-darkest">{video.snippet.title}</a>
+              </Link>
+            </Card.Header>
           </Card.Content>
+
           <Card.Content className="text-sm" extra>
             <div className="mb-2 leading-none">
               <Icon
@@ -82,6 +92,20 @@ export default class Video extends Component<Props> {
             </div>
           </Card.Content>
         </Card>
+        <style jsx>{`
+          .edit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: block;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 50%;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.75);
+            }
+          }
+        `}</style>
       </Fragment>
     )
   }

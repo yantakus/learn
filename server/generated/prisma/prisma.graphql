@@ -486,7 +486,7 @@ type Tag {
   id: ID!
   value: String!
   text: String!
-  parent: Video
+  parent(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
 }
 
 type TagConnection {
@@ -498,7 +498,7 @@ type TagConnection {
 input TagCreateInput {
   value: String!
   text: String!
-  parent: VideoCreateOneWithoutTagsInput
+  parent: VideoCreateManyWithoutTagsInput
 }
 
 input TagCreateManyWithoutParentInput {
@@ -556,7 +556,7 @@ input TagSubscriptionWhereInput {
 input TagUpdateInput {
   value: String
   text: String
-  parent: VideoUpdateOneWithoutTagsInput
+  parent: VideoUpdateManyWithoutTagsInput
 }
 
 input TagUpdateManyWithoutParentInput {
@@ -627,7 +627,9 @@ input TagWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
-  parent: VideoWhereInput
+  parent_every: VideoWhereInput
+  parent_some: VideoWhereInput
+  parent_none: VideoWhereInput
   AND: [TagWhereInput!]
   OR: [TagWhereInput!]
   NOT: [TagWhereInput!]
@@ -643,7 +645,7 @@ type Topic {
   id: ID!
   value: String!
   text: String!
-  parent: Video
+  parent(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
 }
 
 type TopicConnection {
@@ -655,7 +657,7 @@ type TopicConnection {
 input TopicCreateInput {
   value: String!
   text: String!
-  parent: VideoCreateOneWithoutTopicsInput
+  parent: VideoCreateManyWithoutTopicsInput
 }
 
 input TopicCreateManyWithoutParentInput {
@@ -713,7 +715,7 @@ input TopicSubscriptionWhereInput {
 input TopicUpdateInput {
   value: String
   text: String
-  parent: VideoUpdateOneWithoutTopicsInput
+  parent: VideoUpdateManyWithoutTopicsInput
 }
 
 input TopicUpdateManyWithoutParentInput {
@@ -784,7 +786,9 @@ input TopicWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
-  parent: VideoWhereInput
+  parent_every: VideoWhereInput
+  parent_some: VideoWhereInput
+  parent_none: VideoWhereInput
   AND: [TopicWhereInput!]
   OR: [TopicWhereInput!]
   NOT: [TopicWhereInput!]
@@ -1185,14 +1189,14 @@ input VideoCreateManyWithoutBookmarkersInput {
   connect: [VideoWhereUniqueInput!]
 }
 
-input VideoCreateOneWithoutTagsInput {
-  create: VideoCreateWithoutTagsInput
-  connect: VideoWhereUniqueInput
+input VideoCreateManyWithoutTagsInput {
+  create: [VideoCreateWithoutTagsInput!]
+  connect: [VideoWhereUniqueInput!]
 }
 
-input VideoCreateOneWithoutTopicsInput {
-  create: VideoCreateWithoutTopicsInput
-  connect: VideoWhereUniqueInput
+input VideoCreateManyWithoutTopicsInput {
+  create: [VideoCreateWithoutTopicsInput!]
+  connect: [VideoWhereUniqueInput!]
 }
 
 input VideoCreateWithoutAdderInput {
@@ -1296,22 +1300,22 @@ input VideoUpdateManyWithoutBookmarkersInput {
   upsert: [VideoUpsertWithWhereUniqueWithoutBookmarkersInput!]
 }
 
-input VideoUpdateOneWithoutTagsInput {
-  create: VideoCreateWithoutTagsInput
-  update: VideoUpdateWithoutTagsDataInput
-  upsert: VideoUpsertWithoutTagsInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: VideoWhereUniqueInput
+input VideoUpdateManyWithoutTagsInput {
+  create: [VideoCreateWithoutTagsInput!]
+  delete: [VideoWhereUniqueInput!]
+  connect: [VideoWhereUniqueInput!]
+  disconnect: [VideoWhereUniqueInput!]
+  update: [VideoUpdateWithWhereUniqueWithoutTagsInput!]
+  upsert: [VideoUpsertWithWhereUniqueWithoutTagsInput!]
 }
 
-input VideoUpdateOneWithoutTopicsInput {
-  create: VideoCreateWithoutTopicsInput
-  update: VideoUpdateWithoutTopicsDataInput
-  upsert: VideoUpsertWithoutTopicsInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: VideoWhereUniqueInput
+input VideoUpdateManyWithoutTopicsInput {
+  create: [VideoCreateWithoutTopicsInput!]
+  delete: [VideoWhereUniqueInput!]
+  connect: [VideoWhereUniqueInput!]
+  disconnect: [VideoWhereUniqueInput!]
+  update: [VideoUpdateWithWhereUniqueWithoutTopicsInput!]
+  upsert: [VideoUpsertWithWhereUniqueWithoutTopicsInput!]
 }
 
 input VideoUpdateWithoutAdderDataInput {
@@ -1356,14 +1360,14 @@ input VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
   data: VideoUpdateWithoutBookmarkersDataInput!
 }
 
-input VideoUpsertWithoutTagsInput {
-  update: VideoUpdateWithoutTagsDataInput!
-  create: VideoCreateWithoutTagsInput!
+input VideoUpdateWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateWithoutTagsDataInput!
 }
 
-input VideoUpsertWithoutTopicsInput {
-  update: VideoUpdateWithoutTopicsDataInput!
-  create: VideoCreateWithoutTopicsInput!
+input VideoUpdateWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateWithoutTopicsDataInput!
 }
 
 input VideoUpsertWithWhereUniqueWithoutAdderInput {
@@ -1376,6 +1380,18 @@ input VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
   where: VideoWhereUniqueInput!
   update: VideoUpdateWithoutBookmarkersDataInput!
   create: VideoCreateWithoutBookmarkersInput!
+}
+
+input VideoUpsertWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput!
+  update: VideoUpdateWithoutTagsDataInput!
+  create: VideoCreateWithoutTagsInput!
+}
+
+input VideoUpsertWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput!
+  update: VideoUpdateWithoutTopicsDataInput!
+  create: VideoCreateWithoutTopicsInput!
 }
 
 input VideoWhereInput {

@@ -1,27 +1,37 @@
 import { prisma } from '../../generated/prisma'
 import { VideoResolvers } from '../../generated/graphqlgen'
-import { Overwrite } from '../types'
+const fetch = require('node-fetch')
+import { get } from 'lodash'
 
-type IVideoResolvers = Overwrite<
-  VideoResolvers.Type,
-  {
-    snippet?: any // exclude snippet so that we can include remote data as snippet in Videos resolver
-  }
->
-
-export const Video: IVideoResolvers = {
+export const Video: VideoResolvers.Type = {
   ...VideoResolvers.defaultResolvers,
 
   topics: ({ id }, args) => {
-    return prisma.topics({ where: { parent: { id } } })
+    return prisma.topics({ where: { parent_some: { id } } })
   },
   tags: ({ id }, args) => {
-    return prisma.tags({ where: { parent: { id } } })
+    return prisma.tags({ where: { parent_some: { id } } })
   },
   adder: parent => {
     throw new Error('Resolver not implemented')
   },
   bookmarkers: (parent, args) => {
     throw new Error('Resolver not implemented')
+  },
+  snippet: async (parent, args) => {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?key=${
+        process.env.YOUTUBE_API_KEY
+      }&part=snippet&id=${parent.ytId}`
+    )
+    if (!response.ok) {
+      throw new Error(response.status)
+    }
+    const result = await response.json()
+    const snippet = get(result, ['items', 0, 'snippet'])
+    if (!snippet) {
+      throw new Error('Something went wrong when fetching snippet')
+    }
+    return snippet
   },
 }

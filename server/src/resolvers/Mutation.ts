@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 import { mailjet, cryptPassword } from '../utils'
 import { MutationResolvers } from '../../generated/graphqlgen'
+import { AuthError } from '../utils'
 
 export const Mutation: MutationResolvers.Type = {
   ...MutationResolvers.defaultResolvers,
@@ -236,9 +237,14 @@ export const Mutation: MutationResolvers.Type = {
       return user
     }
   },
+
   async addVideo(_parent, args, ctx) {
     const userId = ctx.request.userId
     if (userId) {
+      if (args.ytId.length !== 11) {
+        throw new Error('Incorrect youtube video id.')
+      }
+
       const videoExists = await prisma.$exists.video({
         ytId: args.ytId,
       })
@@ -256,8 +262,11 @@ export const Mutation: MutationResolvers.Type = {
         },
         ...args,
       })
+    } else {
+      throw new AuthError()
     }
   },
+
   async bookmarkVideo(_parent, { id, adding }, ctx) {
     const videoExists = await prisma.$exists.video({
       id,

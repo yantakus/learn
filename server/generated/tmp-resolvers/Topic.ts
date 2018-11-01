@@ -6,7 +6,7 @@ import { TopicResolvers } from '../graphqlgen'
 export const Topic: TopicResolvers.Type = {
   ...TopicResolvers.defaultResolvers,
 
-  parent: parent => {
+  parent: (parent, args) => {
     throw new Error('Resolver not implemented')
   },
 }

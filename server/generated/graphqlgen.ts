@@ -8,6 +8,7 @@ import { Topic } from './prisma'
 import { Tag } from './prisma'
 import { Payload } from './prisma'
 import { Complexity } from './prisma'
+import { VideoOrderByInput } from './prisma'
 
 export namespace QueryResolvers {
   export const defaultResolvers = {}
@@ -549,6 +550,64 @@ export namespace TopicResolvers {
     text: (parent: Topic) => parent.text,
   }
 
+  export interface VideoWhereInput {
+    id: string
+    id_not: string
+    id_in: string
+    id_not_in: string
+    id_lt: string
+    id_lte: string
+    id_gt: string
+    id_gte: string
+    id_contains: string
+    id_not_contains: string
+    id_starts_with: string
+    id_not_starts_with: string
+    id_ends_with: string
+    id_not_ends_with: string
+    ytId: string
+    ytId_not: string
+    ytId_in: string
+    ytId_not_in: string
+    ytId_lt: string
+    ytId_lte: string
+    ytId_gt: string
+    ytId_gte: string
+    ytId_contains: string
+    ytId_not_contains: string
+    ytId_starts_with: string
+    ytId_not_starts_with: string
+    ytId_ends_with: string
+    ytId_not_ends_with: string
+    complexity: string
+    complexity_not: string
+    complexity_in: string
+    complexity_not_in: string
+    topics_every: string
+    topics_some: string
+    topics_none: string
+    tags_every: string
+    tags_some: string
+    tags_none: string
+    adder: string
+    bookmarkers_every: string
+    bookmarkers_some: string
+    bookmarkers_none: string
+    AND: string
+    OR: string
+    NOT: string
+  }
+
+  export interface ArgsParent {
+    where: VideoWhereInput | null
+    orderBy: VideoOrderByInput | null
+    skip: number | null
+    after: string | null
+    before: string | null
+    first: number | null
+    last: number | null
+  }
+
   export type IdResolver = (
     parent: Topic,
     args: {},
@@ -572,10 +631,10 @@ export namespace TopicResolvers {
 
   export type ParentResolver = (
     parent: Topic,
-    args: {},
+    args: ArgsParent,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Video | null | Promise<Video | null>
+  ) => Video[] | Promise<Video[]>
 
   export interface Type {
     id: (
@@ -601,10 +660,10 @@ export namespace TopicResolvers {
 
     parent: (
       parent: Topic,
-      args: {},
+      args: ArgsParent,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Video | null | Promise<Video | null>
+    ) => Video[] | Promise<Video[]>
   }
 }
 
@@ -615,6 +674,64 @@ export namespace TagResolvers {
     text: (parent: Tag) => parent.text,
   }
 
+  export interface VideoWhereInput {
+    id: string
+    id_not: string
+    id_in: string
+    id_not_in: string
+    id_lt: string
+    id_lte: string
+    id_gt: string
+    id_gte: string
+    id_contains: string
+    id_not_contains: string
+    id_starts_with: string
+    id_not_starts_with: string
+    id_ends_with: string
+    id_not_ends_with: string
+    ytId: string
+    ytId_not: string
+    ytId_in: string
+    ytId_not_in: string
+    ytId_lt: string
+    ytId_lte: string
+    ytId_gt: string
+    ytId_gte: string
+    ytId_contains: string
+    ytId_not_contains: string
+    ytId_starts_with: string
+    ytId_not_starts_with: string
+    ytId_ends_with: string
+    ytId_not_ends_with: string
+    complexity: string
+    complexity_not: string
+    complexity_in: string
+    complexity_not_in: string
+    topics_every: string
+    topics_some: string
+    topics_none: string
+    tags_every: string
+    tags_some: string
+    tags_none: string
+    adder: string
+    bookmarkers_every: string
+    bookmarkers_some: string
+    bookmarkers_none: string
+    AND: string
+    OR: string
+    NOT: string
+  }
+
+  export interface ArgsParent {
+    where: VideoWhereInput | null
+    orderBy: VideoOrderByInput | null
+    skip: number | null
+    after: string | null
+    before: string | null
+    first: number | null
+    last: number | null
+  }
+
   export type IdResolver = (
     parent: Tag,
     args: {},
@@ -638,10 +755,10 @@ export namespace TagResolvers {
 
   export type ParentResolver = (
     parent: Tag,
-    args: {},
+    args: ArgsParent,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Video | null | Promise<Video | null>
+  ) => Video[] | Promise<Video[]>
 
   export interface Type {
     id: (
@@ -667,10 +784,10 @@ export namespace TagResolvers {
 
     parent: (
       parent: Tag,
-      args: {},
+      args: ArgsParent,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Video | null | Promise<Video | null>
+    ) => Video[] | Promise<Video[]>
   }
 }
 

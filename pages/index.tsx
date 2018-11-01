@@ -37,7 +37,7 @@ class HomePage extends Component {
   }
   render() {
     return (
-      <Query query={VIDEOS_QUERY} variables={{ skip: 0, first: 20 }}>
+      <Query query={VIDEOS_QUERY}>
         {({ data, loading }) => {
           return <Videos data={data.videos} loading={loading} />
         }}
@@ -47,8 +47,8 @@ class HomePage extends Component {
 }
 
 export const VIDEOS_QUERY = gql`
-  query VideosQuery($skip: Int, $first: Int) {
-    videos(skip: $skip, first: $first) {
+  query VIDEOS_QUERY {
+    videos(skip: 0, first: 20, orderBy: "createdAt_DESC") {
       ytId
       complexity
       tags {

@@ -3,7 +3,7 @@
 scalar JSON
 
 type Query {
-  videos(skip: Int, first: Int): [Video!]!
+  videos(skip: Int, first: Int, orderBy: String): [Video!]!
   video(id: ID!): Video!
   users: [User!]!
   user(login: String!): User

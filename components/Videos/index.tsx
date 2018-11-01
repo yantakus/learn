@@ -19,7 +19,7 @@ export default class Videos extends Component<Props> {
         <div className="flex flex-wrap -mx-2">
           {data.length
             ? data.map(video => (
-                <div className="w-1/3 px-2 mb-2" key={video.ytId}>
+                <div className="w-1/3 px-2 mb-4" key={video.ytId}>
                   <Video video={video} />
                 </div>
               ))

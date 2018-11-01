@@ -25,14 +25,14 @@ type Topic {
   id: ID! @unique
   value: String! @unique
   text: String! @unique
-  parent: Video @relation(name: "VideoTopics")
+  parent: [Video!]! @relation(name: "VideoTopics")
 }
 
 type Tag {
   id: ID! @unique
   value: String! @unique
   text: String! @unique
-  parent: Video @relation(name: "VideoTags")
+  parent: [Video!]! @relation(name: "VideoTags")
 }
 
 type AccountActivationCode {

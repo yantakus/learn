@@ -6,7 +6,7 @@ import { TagResolvers } from '../graphqlgen'
 export const Tag: TagResolvers.Type = {
   ...TagResolvers.defaultResolvers,
 
-  parent: parent => {
+  parent: (parent, args) => {
     throw new Error('Resolver not implemented')
   },
 }

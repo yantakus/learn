@@ -503,19 +503,27 @@ export type RatingOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface PasswordResetCodeUpdateOneWithoutUserInput {
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: PasswordResetCodeWhereUniqueInput;
+export interface VideoUpdateManyWithoutAdderInput {
+  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutAdderInput[]
+    | VideoUpdateWithWhereUniqueWithoutAdderInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutAdderInput[]
+    | VideoUpsertWithWhereUniqueWithoutAdderInput;
 }
 
 export type AccountActivationCodeWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface TopicUpdateWithoutParentDataInput {
-  value?: String;
-  text?: String;
+export interface TopicUpsertWithWhereUniqueWithoutParentInput {
+  where: TopicWhereUniqueInput;
+  update: TopicUpdateWithoutParentDataInput;
+  create: TopicCreateWithoutParentInput;
 }
 
 export interface AccountActivationCodeWhereInput {
@@ -539,10 +547,17 @@ export interface AccountActivationCodeWhereInput {
   NOT?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
 }
 
-export interface TopicUpsertWithWhereUniqueWithoutParentInput {
-  where: TopicWhereUniqueInput;
-  update: TopicUpdateWithoutParentDataInput;
-  create: TopicCreateWithoutParentInput;
+export interface TagUpdateManyWithoutParentInput {
+  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
+  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  update?:
+    | TagUpdateWithWhereUniqueWithoutParentInput[]
+    | TagUpdateWithWhereUniqueWithoutParentInput;
+  upsert?:
+    | TagUpsertWithWhereUniqueWithoutParentInput[]
+    | TagUpsertWithWhereUniqueWithoutParentInput;
 }
 
 export interface UserWhereInput {
@@ -631,41 +646,31 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface UserCreateWithoutActivationCodeInput {
-  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosAdded?: VideoCreateManyWithoutAdderInput;
-  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
-}
-
-export interface PasswordResetCodeCreateInput {
-  user?: UserCreateOneWithoutPasswordResetCodeInput;
-}
-
 export interface PasswordResetCodeCreateOneWithoutUserInput {
   connect?: PasswordResetCodeWhereUniqueInput;
 }
 
-export interface TagUpdateManyWithoutParentInput {
-  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
-  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  update?:
-    | TagUpdateWithWhereUniqueWithoutParentInput[]
-    | TagUpdateWithWhereUniqueWithoutParentInput;
-  upsert?:
-    | TagUpsertWithWhereUniqueWithoutParentInput[]
-    | TagUpsertWithWhereUniqueWithoutParentInput;
+export interface UserCreateOneWithoutPasswordResetCodeInput {
+  create?: UserCreateWithoutPasswordResetCodeInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface VideoCreateManyWithoutAdderInput {
   create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
   connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+}
+
+export interface TagUpdateWithWhereUniqueWithoutParentInput {
+  where: TagWhereUniqueInput;
+  data: TagUpdateWithoutParentDataInput;
+}
+
+export interface VideoCreateWithoutAdderInput {
+  ytId: String;
+  complexity: Complexity;
+  topics?: TopicCreateManyWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
 }
 
 export interface TopicWhereInput {
@@ -711,18 +716,17 @@ export interface TopicWhereInput {
   text_not_starts_with?: String;
   text_ends_with?: String;
   text_not_ends_with?: String;
-  parent?: VideoWhereInput;
+  parent_every?: VideoWhereInput;
+  parent_some?: VideoWhereInput;
+  parent_none?: VideoWhereInput;
   AND?: TopicWhereInput[] | TopicWhereInput;
   OR?: TopicWhereInput[] | TopicWhereInput;
   NOT?: TopicWhereInput[] | TopicWhereInput;
 }
 
-export interface VideoCreateWithoutAdderInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  tags?: TagCreateManyWithoutParentInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+export interface TopicCreateManyWithoutParentInput {
+  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
+  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
 }
 
 export interface VideoWhereInput {
@@ -773,9 +777,9 @@ export interface VideoWhereInput {
   NOT?: VideoWhereInput[] | VideoWhereInput;
 }
 
-export interface TopicCreateManyWithoutParentInput {
-  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
-  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+export interface TopicCreateWithoutParentInput {
+  value: String;
+  text: String;
 }
 
 export interface TagSubscriptionWhereInput {
@@ -789,9 +793,9 @@ export interface TagSubscriptionWhereInput {
   NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
 }
 
-export interface TopicCreateWithoutParentInput {
-  value: String;
-  text: String;
+export interface TagCreateManyWithoutParentInput {
+  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
 }
 
 export interface PayloadSubscriptionWhereInput {
@@ -805,18 +809,20 @@ export interface PayloadSubscriptionWhereInput {
   NOT?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
 }
 
-export interface TagCreateManyWithoutParentInput {
-  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+export interface TagCreateWithoutParentInput {
+  value: String;
+  text: String;
 }
 
 export type PasswordResetCodeWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface TagCreateWithoutParentInput {
-  value: String;
-  text: String;
+export interface UserCreateManyWithoutVideosBookmarkedInput {
+  create?:
+    | UserCreateWithoutVideosBookmarkedInput[]
+    | UserCreateWithoutVideosBookmarkedInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
 }
 
 export interface VideoUpdateInput {
@@ -828,11 +834,15 @@ export interface VideoUpdateInput {
   bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
-export interface UserCreateManyWithoutVideosBookmarkedInput {
-  create?:
-    | UserCreateWithoutVideosBookmarkedInput[]
-    | UserCreateWithoutVideosBookmarkedInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+export interface UserCreateWithoutVideosBookmarkedInput {
+  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosAdded?: VideoCreateManyWithoutAdderInput;
 }
 
 export interface UserUpdateInput {
@@ -847,15 +857,8 @@ export interface UserUpdateInput {
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
-export interface UserCreateWithoutVideosBookmarkedInput {
-  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosAdded?: VideoCreateManyWithoutAdderInput;
+export interface AccountActivationCodeCreateOneWithoutUserInput {
+  connect?: AccountActivationCodeWhereUniqueInput;
 }
 
 export interface UserCreateInput {
@@ -870,8 +873,11 @@ export interface UserCreateInput {
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
 }
 
-export interface AccountActivationCodeCreateOneWithoutUserInput {
-  connect?: AccountActivationCodeWhereUniqueInput;
+export interface VideoCreateManyWithoutBookmarkersInput {
+  create?:
+    | VideoCreateWithoutBookmarkersInput[]
+    | VideoCreateWithoutBookmarkersInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
 export interface VideoUpdateWithoutTopicsDataInput {
@@ -882,19 +888,6 @@ export interface VideoUpdateWithoutTopicsDataInput {
   bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
-export interface VideoCreateManyWithoutBookmarkersInput {
-  create?:
-    | VideoCreateWithoutBookmarkersInput[]
-    | VideoCreateWithoutBookmarkersInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-}
-
-export interface TopicUpdateInput {
-  value?: String;
-  text?: String;
-  parent?: VideoUpdateOneWithoutTopicsInput;
-}
-
 export interface VideoCreateWithoutBookmarkersInput {
   ytId: String;
   complexity: Complexity;
@@ -903,12 +896,17 @@ export interface VideoCreateWithoutBookmarkersInput {
   adder: UserCreateOneWithoutVideosAddedInput;
 }
 
-export interface VideoCreateWithoutTopicsInput {
-  ytId: String;
-  complexity: Complexity;
-  tags?: TagCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+export interface VideoUpdateManyWithoutTopicsInput {
+  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutTopicsInput[]
+    | VideoUpdateWithWhereUniqueWithoutTopicsInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutTopicsInput[]
+    | VideoUpsertWithWhereUniqueWithoutTopicsInput;
 }
 
 export interface UserCreateOneWithoutVideosAddedInput {
@@ -916,10 +914,10 @@ export interface UserCreateOneWithoutVideosAddedInput {
   connect?: UserWhereUniqueInput;
 }
 
-export interface TopicCreateInput {
-  value: String;
-  text: String;
-  parent?: VideoCreateOneWithoutTopicsInput;
+export interface TopicUpdateInput {
+  value?: String;
+  text?: String;
+  parent?: VideoUpdateManyWithoutTopicsInput;
 }
 
 export interface UserCreateWithoutVideosAddedInput {
@@ -933,25 +931,19 @@ export interface UserCreateWithoutVideosAddedInput {
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
 }
 
-export interface VideoUpdateWithoutTagsDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  topics?: TopicUpdateManyWithoutParentInput;
-  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
-  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
+export interface VideoCreateManyWithoutTopicsInput {
+  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
 export interface AccountActivationCodeUpdateInput {
   user?: UserUpdateOneWithoutActivationCodeInput;
 }
 
-export interface VideoUpdateOneWithoutTagsInput {
-  create?: VideoCreateWithoutTagsInput;
-  update?: VideoUpdateWithoutTagsDataInput;
-  upsert?: VideoUpsertWithoutTagsInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: VideoWhereUniqueInput;
+export interface VideoUpsertWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutTagsDataInput;
+  create: VideoCreateWithoutTagsInput;
 }
 
 export interface UserUpdateOneWithoutActivationCodeInput {
@@ -963,12 +955,12 @@ export interface UserUpdateOneWithoutActivationCodeInput {
   connect?: UserWhereUniqueInput;
 }
 
-export interface VideoCreateWithoutTagsInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+export interface VideoUpdateWithoutTagsDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  topics?: TopicUpdateManyWithoutParentInput;
+  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
 export interface UserUpdateWithoutActivationCodeDataInput {
@@ -982,36 +974,45 @@ export interface UserUpdateWithoutActivationCodeDataInput {
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
-export interface VideoCreateOneWithoutTagsInput {
-  create?: VideoCreateWithoutTagsInput;
-  connect?: VideoWhereUniqueInput;
-}
-
-export interface PasswordResetCodeUpdateInput {
-  user?: UserUpdateOneWithoutPasswordResetCodeInput;
-}
-
-export interface RatingUpdateInput {
-  votes?: Int;
-  total?: Int;
-}
-
-export interface VideoUpdateManyWithoutAdderInput {
-  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
+export interface VideoUpdateManyWithoutTagsInput {
+  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
   delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   update?:
-    | VideoUpdateWithWhereUniqueWithoutAdderInput[]
-    | VideoUpdateWithWhereUniqueWithoutAdderInput;
+    | VideoUpdateWithWhereUniqueWithoutTagsInput[]
+    | VideoUpdateWithWhereUniqueWithoutTagsInput;
   upsert?:
-    | VideoUpsertWithWhereUniqueWithoutAdderInput[]
-    | VideoUpsertWithWhereUniqueWithoutAdderInput;
+    | VideoUpsertWithWhereUniqueWithoutTagsInput[]
+    | VideoUpsertWithWhereUniqueWithoutTagsInput;
 }
 
-export interface RatingCreateInput {
-  votes: Int;
-  total: Int;
+export interface PasswordResetCodeUpdateOneWithoutUserInput {
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: PasswordResetCodeWhereUniqueInput;
+}
+
+export interface TagUpdateInput {
+  value?: String;
+  text?: String;
+  parent?: VideoUpdateManyWithoutTagsInput;
+}
+
+export interface UserUpdateWithoutPasswordResetCodeDataInput {
+  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login?: String;
+  email?: String;
+  password?: String;
+  name?: String;
+  videosAdded?: VideoUpdateManyWithoutAdderInput;
+  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+}
+
+export interface VideoCreateManyWithoutTagsInput {
+  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
 export interface VideoUpdateWithWhereUniqueWithoutAdderInput {
@@ -1019,8 +1020,10 @@ export interface VideoUpdateWithWhereUniqueWithoutAdderInput {
   data: VideoUpdateWithoutAdderDataInput;
 }
 
-export interface PayloadCreateInput {
-  message: String;
+export interface TagCreateInput {
+  value: String;
+  text: String;
+  parent?: VideoCreateManyWithoutTagsInput;
 }
 
 export interface VideoUpdateWithoutAdderDataInput {
@@ -1031,9 +1034,9 @@ export interface VideoUpdateWithoutAdderDataInput {
   bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
-export interface UserUpsertWithoutPasswordResetCodeInput {
-  update: UserUpdateWithoutPasswordResetCodeDataInput;
-  create: UserCreateWithoutPasswordResetCodeInput;
+export interface RatingCreateInput {
+  votes: Int;
+  total: Int;
 }
 
 export interface TopicUpdateManyWithoutParentInput {
@@ -1049,18 +1052,23 @@ export interface TopicUpdateManyWithoutParentInput {
     | TopicUpsertWithWhereUniqueWithoutParentInput;
 }
 
-export interface UserUpdateOneWithoutPasswordResetCodeInput {
-  create?: UserCreateWithoutPasswordResetCodeInput;
-  update?: UserUpdateWithoutPasswordResetCodeDataInput;
-  upsert?: UserUpsertWithoutPasswordResetCodeInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
+export interface PayloadUpdateInput {
+  message?: String;
 }
 
 export interface TopicUpdateWithWhereUniqueWithoutParentInput {
   where: TopicWhereUniqueInput;
   data: TopicUpdateWithoutParentDataInput;
+}
+
+export interface UserUpsertWithoutPasswordResetCodeInput {
+  update: UserUpdateWithoutPasswordResetCodeDataInput;
+  create: UserCreateWithoutPasswordResetCodeInput;
+}
+
+export interface TopicUpdateWithoutParentDataInput {
+  value?: String;
+  text?: String;
 }
 
 export interface AccountActivationCodeCreateInput {
@@ -1088,19 +1096,8 @@ export interface PasswordResetCodeWhereInput {
   NOT?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
 }
 
-export interface VideoSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoWhereInput;
-  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-}
-
-export interface UserCreateWithoutPasswordResetCodeInput {
-  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+export interface UserCreateWithoutActivationCodeInput {
+  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
   isActivated?: Boolean;
   login: String;
   email: String;
@@ -1110,15 +1107,24 @@ export interface UserCreateWithoutPasswordResetCodeInput {
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
 }
 
-export interface TopicSubscriptionWhereInput {
+export interface UserUpdateOneWithoutPasswordResetCodeInput {
+  create?: UserCreateWithoutPasswordResetCodeInput;
+  update?: UserUpdateWithoutPasswordResetCodeDataInput;
+  upsert?: UserUpsertWithoutPasswordResetCodeInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: TopicWhereInput;
-  AND?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
-  OR?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
-  NOT?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface TagWhereInput {
@@ -1164,180 +1170,12 @@ export interface TagWhereInput {
   text_not_starts_with?: String;
   text_ends_with?: String;
   text_not_ends_with?: String;
-  parent?: VideoWhereInput;
+  parent_every?: VideoWhereInput;
+  parent_some?: VideoWhereInput;
+  parent_none?: VideoWhereInput;
   AND?: TagWhereInput[] | TagWhereInput;
   OR?: TagWhereInput[] | TagWhereInput;
   NOT?: TagWhereInput[] | TagWhereInput;
-}
-
-export interface PasswordResetCodeSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PasswordResetCodeWhereInput;
-  AND?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-  OR?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-  NOT?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-}
-
-export interface TagUpdateWithWhereUniqueWithoutParentInput {
-  where: TagWhereUniqueInput;
-  data: TagUpdateWithoutParentDataInput;
-}
-
-export interface VideoCreateInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  tags?: TagCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
-}
-
-export interface TagUpdateWithoutParentDataInput {
-  value?: String;
-  text?: String;
-}
-
-export interface VideoUpsertWithoutTopicsInput {
-  update: VideoUpdateWithoutTopicsDataInput;
-  create: VideoCreateWithoutTopicsInput;
-}
-
-export interface TagUpsertWithWhereUniqueWithoutParentInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateWithoutParentDataInput;
-  create: TagCreateWithoutParentInput;
-}
-
-export interface RatingWhereInput {
-  votes?: Int;
-  votes_not?: Int;
-  votes_in?: Int[] | Int;
-  votes_not_in?: Int[] | Int;
-  votes_lt?: Int;
-  votes_lte?: Int;
-  votes_gt?: Int;
-  votes_gte?: Int;
-  total?: Int;
-  total_not?: Int;
-  total_in?: Int[] | Int;
-  total_not_in?: Int[] | Int;
-  total_lt?: Int;
-  total_lte?: Int;
-  total_gt?: Int;
-  total_gte?: Int;
-  AND?: RatingWhereInput[] | RatingWhereInput;
-  OR?: RatingWhereInput[] | RatingWhereInput;
-  NOT?: RatingWhereInput[] | RatingWhereInput;
-}
-
-export interface UserUpdateManyWithoutVideosBookmarkedInput {
-  create?:
-    | UserCreateWithoutVideosBookmarkedInput[]
-    | UserCreateWithoutVideosBookmarkedInput;
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  update?:
-    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput[]
-    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput;
-  upsert?:
-    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput[]
-    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput;
-}
-
-export interface VideoUpsertWithoutTagsInput {
-  update: VideoUpdateWithoutTagsDataInput;
-  create: VideoCreateWithoutTagsInput;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutVideosBookmarkedDataInput;
-}
-
-export interface TagUpdateInput {
-  value?: String;
-  text?: String;
-  parent?: VideoUpdateOneWithoutTagsInput;
-}
-
-export interface UserUpdateWithoutVideosBookmarkedDataInput {
-  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login?: String;
-  email?: String;
-  password?: String;
-  name?: String;
-  videosAdded?: VideoUpdateManyWithoutAdderInput;
-}
-
-export interface TagCreateInput {
-  value: String;
-  text: String;
-  parent?: VideoCreateOneWithoutTagsInput;
-}
-
-export interface AccountActivationCodeUpdateOneWithoutUserInput {
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: AccountActivationCodeWhereUniqueInput;
-}
-
-export interface PayloadUpdateInput {
-  message?: String;
-}
-
-export interface UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutVideosBookmarkedDataInput;
-  create: UserCreateWithoutVideosBookmarkedInput;
-}
-
-export interface UserUpdateWithoutPasswordResetCodeDataInput {
-  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login?: String;
-  email?: String;
-  password?: String;
-  name?: String;
-  videosAdded?: VideoUpdateManyWithoutAdderInput;
-  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
-}
-
-export interface VideoUpsertWithWhereUniqueWithoutAdderInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutAdderDataInput;
-  create: VideoCreateWithoutAdderInput;
-}
-
-export interface UserCreateOneWithoutActivationCodeInput {
-  create?: UserCreateWithoutActivationCodeInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface VideoUpdateManyWithoutBookmarkersInput {
-  create?:
-    | VideoCreateWithoutBookmarkersInput[]
-    | VideoCreateWithoutBookmarkersInput;
-  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  update?:
-    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput[]
-    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput;
-  upsert?:
-    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput[]
-    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput;
 }
 
 export interface RatingSubscriptionWhereInput {
@@ -1351,9 +1189,32 @@ export interface RatingSubscriptionWhereInput {
   NOT?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
 }
 
-export interface VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
-  where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutBookmarkersDataInput;
+export interface TagUpdateWithoutParentDataInput {
+  value?: String;
+  text?: String;
+}
+
+export interface AccountActivationCodeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AccountActivationCodeWhereInput;
+  AND?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+  OR?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+  NOT?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+}
+
+export interface TagUpsertWithWhereUniqueWithoutParentInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateWithoutParentDataInput;
+  create: TagCreateWithoutParentInput;
 }
 
 export interface PayloadWhereInput {
@@ -1376,6 +1237,139 @@ export interface PayloadWhereInput {
   NOT?: PayloadWhereInput[] | PayloadWhereInput;
 }
 
+export interface UserUpdateManyWithoutVideosBookmarkedInput {
+  create?:
+    | UserCreateWithoutVideosBookmarkedInput[]
+    | UserCreateWithoutVideosBookmarkedInput;
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  update?:
+    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput[]
+    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput;
+  upsert?:
+    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput[]
+    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutTopicsDataInput;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutVideosBookmarkedDataInput;
+}
+
+export interface VideoCreateWithoutTopicsInput {
+  ytId: String;
+  complexity: Complexity;
+  tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+}
+
+export interface UserUpdateWithoutVideosBookmarkedDataInput {
+  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login?: String;
+  email?: String;
+  password?: String;
+  name?: String;
+  videosAdded?: VideoUpdateManyWithoutAdderInput;
+}
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  value?: String;
+  text?: String;
+}>;
+
+export interface AccountActivationCodeUpdateOneWithoutUserInput {
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: AccountActivationCodeWhereUniqueInput;
+}
+
+export type TopicWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  value?: String;
+  text?: String;
+}>;
+
+export interface UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutVideosBookmarkedDataInput;
+  create: UserCreateWithoutVideosBookmarkedInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  login?: String;
+  email?: String;
+}>;
+
+export interface VideoUpsertWithWhereUniqueWithoutAdderInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutAdderDataInput;
+  create: VideoCreateWithoutAdderInput;
+}
+
+export type VideoWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  ytId?: String;
+}>;
+
+export interface VideoUpdateManyWithoutBookmarkersInput {
+  create?:
+    | VideoCreateWithoutBookmarkersInput[]
+    | VideoCreateWithoutBookmarkersInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput[]
+    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput[]
+    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput;
+}
+
+export interface VideoSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoWhereInput;
+  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutBookmarkersDataInput;
+}
+
+export interface PasswordResetCodeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PasswordResetCodeWhereInput;
+  AND?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+  OR?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+  NOT?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+}
+
 export interface VideoUpdateWithoutBookmarkersDataInput {
   ytId?: String;
   complexity?: Complexity;
@@ -1384,9 +1378,10 @@ export interface VideoUpdateWithoutBookmarkersDataInput {
   adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
 }
 
-export interface VideoCreateOneWithoutTopicsInput {
-  create?: VideoCreateWithoutTopicsInput;
-  connect?: VideoWhereUniqueInput;
+export interface VideoUpsertWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutTopicsDataInput;
+  create: VideoCreateWithoutTopicsInput;
 }
 
 export interface UserUpdateOneRequiredWithoutVideosAddedInput {
@@ -1396,11 +1391,11 @@ export interface UserUpdateOneRequiredWithoutVideosAddedInput {
   connect?: UserWhereUniqueInput;
 }
 
-export type TopicWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  value?: String;
-  text?: String;
-}>;
+export interface TopicCreateInput {
+  value: String;
+  text: String;
+  parent?: VideoCreateManyWithoutTopicsInput;
+}
 
 export interface UserUpdateWithoutVideosAddedDataInput {
   activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
@@ -1413,30 +1408,21 @@ export interface UserUpdateWithoutVideosAddedDataInput {
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
-export type VideoWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  ytId?: String;
-}>;
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface VideoCreateWithoutTagsInput {
+  ytId: String;
+  complexity: Complexity;
+  topics?: TopicCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
 }
 
-export interface UserCreateOneWithoutPasswordResetCodeInput {
-  create?: UserCreateWithoutPasswordResetCodeInput;
-  connect?: UserWhereUniqueInput;
+export interface UserUpsertWithoutVideosAddedInput {
+  update: UserUpdateWithoutVideosAddedDataInput;
+  create: UserCreateWithoutVideosAddedInput;
 }
 
-export interface UserUpsertWithoutActivationCodeInput {
-  update: UserUpdateWithoutActivationCodeDataInput;
-  create: UserCreateWithoutActivationCodeInput;
+export interface PayloadCreateInput {
+  message: String;
 }
 
 export interface VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
@@ -1445,47 +1431,85 @@ export interface VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
   create: VideoCreateWithoutBookmarkersInput;
 }
 
-export interface UserUpsertWithoutVideosAddedInput {
-  update: UserUpdateWithoutVideosAddedDataInput;
-  create: UserCreateWithoutVideosAddedInput;
-}
-
-export interface AccountActivationCodeSubscriptionWhereInput {
+export interface TopicSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: AccountActivationCodeWhereInput;
-  AND?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
-  OR?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
-  NOT?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
+  node?: TopicWhereInput;
+  AND?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  OR?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  NOT?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  login?: String;
-  email?: String;
-}>;
+export interface PasswordResetCodeCreateInput {
+  user?: UserCreateOneWithoutPasswordResetCodeInput;
+}
 
-export type TagWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  value?: String;
-  text?: String;
-}>;
+export interface UserCreateWithoutPasswordResetCodeInput {
+  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosAdded?: VideoCreateManyWithoutAdderInput;
+  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+}
 
-export interface VideoUpdateOneWithoutTopicsInput {
-  create?: VideoCreateWithoutTopicsInput;
-  update?: VideoUpdateWithoutTopicsDataInput;
-  upsert?: VideoUpsertWithoutTopicsInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: VideoWhereUniqueInput;
+export interface PasswordResetCodeUpdateInput {
+  user?: UserUpdateOneWithoutPasswordResetCodeInput;
+}
+
+export interface UserUpsertWithoutActivationCodeInput {
+  update: UserUpdateWithoutActivationCodeDataInput;
+  create: UserCreateWithoutActivationCodeInput;
+}
+
+export interface VideoCreateInput {
+  ytId: String;
+  complexity: Complexity;
+  topics?: TopicCreateManyWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+}
+
+export interface UserCreateOneWithoutActivationCodeInput {
+  create?: UserCreateWithoutActivationCodeInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface RatingUpdateInput {
+  votes?: Int;
+  total?: Int;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutTagsDataInput;
+}
+
+export interface RatingWhereInput {
+  votes?: Int;
+  votes_not?: Int;
+  votes_in?: Int[] | Int;
+  votes_not_in?: Int[] | Int;
+  votes_lt?: Int;
+  votes_lte?: Int;
+  votes_gt?: Int;
+  votes_gte?: Int;
+  total?: Int;
+  total_not?: Int;
+  total_in?: Int[] | Int;
+  total_not_in?: Int[] | Int;
+  total_lt?: Int;
+  total_lte?: Int;
+  total_gt?: Int;
+  total_gte?: Int;
+  AND?: RatingWhereInput[] | RatingWhereInput;
+  OR?: RatingWhereInput[] | RatingWhereInput;
+  NOT?: RatingWhereInput[] | RatingWhereInput;
 }
 
 export interface Node {
@@ -1742,7 +1766,17 @@ export interface TopicPromise extends Promise<Topic>, Fragmentable {
   id: () => Promise<ID_Output>;
   value: () => Promise<String>;
   text: () => Promise<String>;
-  parent: <T = Video>() => T;
+  parent: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface TopicSubscription
@@ -1751,7 +1785,17 @@ export interface TopicSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   value: () => Promise<AsyncIterator<String>>;
   text: () => Promise<AsyncIterator<String>>;
-  parent: <T = VideoSubscription>() => T;
+  parent: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface AggregateUser {
@@ -2350,7 +2394,17 @@ export interface TagPromise extends Promise<Tag>, Fragmentable {
   id: () => Promise<ID_Output>;
   value: () => Promise<String>;
   text: () => Promise<String>;
-  parent: <T = Video>() => T;
+  parent: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface TagSubscription
@@ -2359,7 +2413,17 @@ export interface TagSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   value: () => Promise<AsyncIterator<String>>;
   text: () => Promise<AsyncIterator<String>>;
-  parent: <T = VideoSubscription>() => T;
+  parent: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface TopicPreviousValues {
