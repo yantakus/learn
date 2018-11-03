@@ -3,7 +3,7 @@
 scalar JSON
 
 type Query {
-  videos(skip: Int, first: Int, orderBy: String): [Video!]!
+  videos(skip: Int, first: Int, orderBy: String, where: VideoWhereInput): [Video!]!
   video(id: ID!): Video!
   users: [User!]!
   user(login: String!): User
@@ -14,9 +14,9 @@ type Query {
 
 type Mutation {
   signup(
-    email: String!,
-    password: String!,
-    login: String!,
+    email: String!
+    password: String!
+    login: String!
     name: String!
   ): Payload!
 
@@ -25,23 +25,24 @@ type Mutation {
   sendResetPasswordEmail(login: String!): Payload!
 
   resetPassword(
-    passwordResetCode: String!,
+    passwordResetCode: String!
     password: String!
   ): Payload!
 
   signin(
-    login: String!,
+    login: String!
     password: String!
   ): User!
 
   signout: Payload!
 
   editProfile(
-    name: String,
+    name: String
     login: String
   ): User!
 
-  addVideo(
+  upsertVideo(
+    update: Boolean
     ytId: String!
     complexity: Complexity!
     topics: TopicCreateManyWithoutParentInput!
@@ -49,7 +50,7 @@ type Mutation {
   ): Video!
 
   bookmarkVideo(
-    id: ID!,
+    id: ID!
     adding: Boolean!
   ): Video!
 }

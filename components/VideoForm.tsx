@@ -12,6 +12,8 @@ import find from 'lodash/find'
 import cx from 'classnames'
 import fetch from 'isomorphic-unfetch'
 import { VIDEOS_QUERY } from '../pages/index'
+import transformOptions from '../lib/transformOptions'
+import get from 'lodash/get'
 
 import Youtube from '../components/Youtube'
 import Private from '../components/Private'
@@ -35,9 +37,17 @@ const complexities = [
   },
 ]
 
-interface IProps {}
-
 type Options = Array<{ text: string; value: string }>
+
+interface IProps {
+  currentData?: {
+    ytId: string
+    complexity: string
+    topics: Options
+    tags: Options
+  }
+  data?: any
+}
 
 interface IState {
   ytId: string
@@ -80,18 +90,29 @@ class AddVideo extends Component<IProps, IState> {
     }
     return null
   }
-  state = {
-    ytId: '',
-    ytValue: '',
-    ytIdError: '',
-    tags: [],
-    tagsOptions: null,
-    tagsValue: [],
-    topics: [],
-    topicsOptions: null,
-    topicsValue: [],
-    complexity: null,
-    isValidYtId: false,
+
+  constructor(props: IProps) {
+    super(props)
+
+    const { currentData } = props
+
+    const ytId = get(currentData, 'ytId')
+    const tags = get(currentData, 'tags')
+    const topics = get(currentData, 'topics')
+
+    this.state = {
+      ytId: ytId || '',
+      ytValue: ytId || '',
+      ytIdError: '',
+      tags: tags || [],
+      tagsOptions: null,
+      tagsValue: transformOptions(tags) || [],
+      topics: topics || [],
+      topicsOptions: null,
+      topicsValue: transformOptions(topics) || [],
+      complexity: get(currentData, 'complexity') || null,
+      isValidYtId: false,
+    }
   }
 
   handleChange = (_e, { name, value }) => {
@@ -170,27 +191,32 @@ class AddVideo extends Component<IProps, IState> {
       topicsOptions,
     } = this.state
 
+    const updateMode = !!this.props.currentData
+
     return (
       <Private>
         <Mutation
-          mutation={ADD_VIDEO_MUTATION}
+          mutation={MUTATE_VIDEO_MUTATION}
           onCompleted={() => {
             redirect({}, '/')
           }}
           refetchQueries={[{ query: VIDEOS_QUERY }]}
         >
-          {(addVideo, { loading, error }) => {
+          {(upsertVideo, { loading, error }) => {
             return (
               <Fragment>
                 {ytId && <Youtube className="mb-10" id={ytId} />}
                 <div className="ui stackable two column centered grid container">
                   <div className="column">
-                    <h3 className="ui horizontal divider header">Add video</h3>
+                    <h3 className="ui horizontal divider header">
+                      {updateMode ? 'Update' : 'Add'} video
+                    </h3>
                     <Form
                       onValidSubmit={() => {
                         if (!ytIdError) {
-                          addVideo({
+                          upsertVideo({
                             variables: {
+                              update: updateMode,
                               ytId,
                               complexity,
                               tags: createManyInput(tags),
@@ -281,7 +307,7 @@ class AddVideo extends Component<IProps, IState> {
                       <Form.Button
                         loading={loading}
                         primary
-                        content="Add Video"
+                        content={`${updateMode ? 'Update' : 'Add'} Video`}
                       />
                     </Form>
                     {error && <Message error>{printError(error)}</Message>}
@@ -309,14 +335,16 @@ const VIDEO_META_QUERY = gql`
   }
 `
 
-const ADD_VIDEO_MUTATION = gql`
+const MUTATE_VIDEO_MUTATION = gql`
   mutation(
+    $update: Boolean
     $ytId: String!
     $complexity: Complexity!
     $topics: TopicCreateManyWithoutParentInput!
     $tags: TagCreateManyWithoutParentInput!
   ) {
-    addVideo(
+    upsertVideo(
+      update: $update
       ytId: $ytId
       complexity: $complexity
       topics: $topics

@@ -26,7 +26,7 @@ export const Mutation: MutationResolvers.Type = {
   editProfile: (parent, args) => {
     throw new Error('Resolver not implemented')
   },
-  addVideo: (parent, args) => {
+  upsertVideo: (parent, args) => {
     throw new Error('Resolver not implemented')
   },
   bookmarkVideo: (parent, args) => {

@@ -13,9 +13,59 @@ import { VideoOrderByInput } from './prisma'
 export namespace QueryResolvers {
   export const defaultResolvers = {}
 
+  export interface VideoWhereInput {
+    id: string
+    id_not: string
+    id_in: string
+    id_not_in: string
+    id_lt: string
+    id_lte: string
+    id_gt: string
+    id_gte: string
+    id_contains: string
+    id_not_contains: string
+    id_starts_with: string
+    id_not_starts_with: string
+    id_ends_with: string
+    id_not_ends_with: string
+    ytId: string
+    ytId_not: string
+    ytId_in: string
+    ytId_not_in: string
+    ytId_lt: string
+    ytId_lte: string
+    ytId_gt: string
+    ytId_gte: string
+    ytId_contains: string
+    ytId_not_contains: string
+    ytId_starts_with: string
+    ytId_not_starts_with: string
+    ytId_ends_with: string
+    ytId_not_ends_with: string
+    complexity: string
+    complexity_not: string
+    complexity_in: string
+    complexity_not_in: string
+    topics_every: string
+    topics_some: string
+    topics_none: string
+    tags_every: string
+    tags_some: string
+    tags_none: string
+    adder: string
+    bookmarkers_every: string
+    bookmarkers_some: string
+    bookmarkers_none: string
+    AND: string
+    OR: string
+    NOT: string
+  }
+
   export interface ArgsVideos {
     skip: number | null
     first: number | null
+    orderBy: string | null
+    where: VideoWhereInput | null
   }
 
   export interface ArgsVideo {
@@ -169,7 +219,8 @@ export namespace MutationResolvers {
     login: string | null
   }
 
-  export interface ArgsAddVideo {
+  export interface ArgsUpsertVideo {
+    update: boolean | null
     ytId: string
     complexity: Complexity
     topics: TopicCreateManyWithoutParentInput
@@ -230,9 +281,9 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo
   ) => User | Promise<User>
 
-  export type AddVideoResolver = (
+  export type UpsertVideoResolver = (
     parent: {},
-    args: ArgsAddVideo,
+    args: ArgsUpsertVideo,
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Video | Promise<Video>
@@ -294,9 +345,9 @@ export namespace MutationResolvers {
       info: GraphQLResolveInfo
     ) => User | Promise<User>
 
-    addVideo: (
+    upsertVideo: (
       parent: {},
-      args: ArgsAddVideo,
+      args: ArgsUpsertVideo,
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Video | Promise<Video>

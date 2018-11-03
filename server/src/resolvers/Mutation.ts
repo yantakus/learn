@@ -238,30 +238,42 @@ export const Mutation: MutationResolvers.Type = {
     }
   },
 
-  async addVideo(_parent, args, ctx) {
+  async upsertVideo(_parent, { update, ...args }, ctx) {
     const userId = ctx.request.userId
     if (userId) {
       if (args.ytId.length !== 11) {
         throw new Error('Incorrect youtube video id.')
       }
 
-      const videoExists = await prisma.$exists.video({
+      const video = await prisma.video({
         ytId: args.ytId,
       })
-      if (videoExists) {
-        throw new Error(
-          'Youtube video with this id already exists in our database.'
-        )
-      }
-      // https://github.com/prisma/graphqlgen/issues/67
-      return (<any>prisma).createVideo({
-        adder: {
-          connect: {
-            id: userId,
+      if (update) {
+        // https://github.com/prisma/graphqlgen/issues/67
+        return (<any>prisma).updateVideo({
+          where: {
+            id: video.id,
           },
-        },
-        ...args,
-      })
+          data: {
+            ...args,
+          },
+        })
+      } else {
+        if (video) {
+          throw new Error(
+            'Youtube video with this id already exists in our database.'
+          )
+        }
+        // https://github.com/prisma/graphqlgen/issues/67
+        return (<any>prisma).createVideo({
+          adder: {
+            connect: {
+              id: userId,
+            },
+          },
+          ...args,
+        })
+      }
     } else {
       throw new AuthError()
     }
