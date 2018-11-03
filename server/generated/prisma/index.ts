@@ -14,6 +14,7 @@ export interface Exists {
   accountActivationCode: (
     where?: AccountActivationCodeWhereInput
   ) => Promise<boolean>;
+  language: (where?: LanguageWhereInput) => Promise<boolean>;
   passwordResetCode: (where?: PasswordResetCodeWhereInput) => Promise<boolean>;
   payload: (where?: PayloadWhereInput) => Promise<boolean>;
   rating: (where?: RatingWhereInput) => Promise<boolean>;
@@ -67,6 +68,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => AccountActivationCodeConnection;
+  language: (where: LanguageWhereUniqueInput) => Language;
+  languages: (
+    args?: {
+      where?: LanguageWhereInput;
+      orderBy?: LanguageOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Language>;
+  languagesConnection: (
+    args?: {
+      where?: LanguageWhereInput;
+      orderBy?: LanguageOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => LanguageConnection;
   passwordResetCode: (
     where: PasswordResetCodeWhereUniqueInput
   ) => PasswordResetCode;
@@ -262,6 +286,22 @@ export interface Prisma {
   deleteManyAccountActivationCodes: (
     where?: AccountActivationCodeWhereInput
   ) => BatchPayload;
+  createLanguage: (data: LanguageCreateInput) => Language;
+  updateLanguage: (
+    args: { data: LanguageUpdateInput; where: LanguageWhereUniqueInput }
+  ) => Language;
+  updateManyLanguages: (
+    args: { data: LanguageUpdateInput; where?: LanguageWhereInput }
+  ) => BatchPayload;
+  upsertLanguage: (
+    args: {
+      where: LanguageWhereUniqueInput;
+      create: LanguageCreateInput;
+      update: LanguageUpdateInput;
+    }
+  ) => Language;
+  deleteLanguage: (where: LanguageWhereUniqueInput) => Language;
+  deleteManyLanguages: (where?: LanguageWhereInput) => BatchPayload;
   createPasswordResetCode: (
     data: PasswordResetCodeCreateInput
   ) => PasswordResetCode;
@@ -376,6 +416,9 @@ export interface Subscription {
   accountActivationCode: (
     where?: AccountActivationCodeSubscriptionWhereInput
   ) => AccountActivationCodeSubscriptionPayloadSubscription;
+  language: (
+    where?: LanguageSubscriptionWhereInput
+  ) => LanguageSubscriptionPayloadSubscription;
   passwordResetCode: (
     where?: PasswordResetCodeSubscriptionWhereInput
   ) => PasswordResetCodeSubscriptionPayloadSubscription;
@@ -451,8 +494,6 @@ export type TagOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Complexity = "ELEMENTARY" | "BASIC" | "ADVANCED" | "EXPERT";
-
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -471,7 +512,21 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type Complexity = "ELEMENTARY" | "BASIC" | "ADVANCED" | "EXPERT";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type LanguageOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "value_ASC"
+  | "value_DESC"
+  | "text_ASC"
+  | "text_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type PasswordResetCodeOrderByInput =
   | "id_ASC"
@@ -503,17 +558,11 @@ export type RatingOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface VideoUpdateManyWithoutAdderInput {
-  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
-  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  update?:
-    | VideoUpdateWithWhereUniqueWithoutAdderInput[]
-    | VideoUpdateWithWhereUniqueWithoutAdderInput;
-  upsert?:
-    | VideoUpsertWithWhereUniqueWithoutAdderInput[]
-    | VideoUpsertWithWhereUniqueWithoutAdderInput;
+export interface LanguageUpdateOneRequiredWithoutParentInput {
+  create?: LanguageCreateWithoutParentInput;
+  update?: LanguageUpdateWithoutParentDataInput;
+  upsert?: LanguageUpsertWithoutParentInput;
+  connect?: LanguageWhereUniqueInput;
 }
 
 export type AccountActivationCodeWhereUniqueInput = AtLeastOne<{
@@ -646,18 +695,27 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface PasswordResetCodeCreateOneWithoutUserInput {
-  connect?: PasswordResetCodeWhereUniqueInput;
+export interface VideoCreateWithoutAdderInput {
+  ytId: String;
+  complexity: Complexity;
+  language: LanguageCreateOneWithoutParentInput;
+  topics?: TopicCreateManyWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
 }
 
-export interface UserCreateOneWithoutPasswordResetCodeInput {
-  create?: UserCreateWithoutPasswordResetCodeInput;
-  connect?: UserWhereUniqueInput;
+export interface VideoUpdateWithoutLanguageDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  topics?: TopicUpdateManyWithoutParentInput;
+  tags?: TagUpdateManyWithoutParentInput;
+  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
-export interface VideoCreateManyWithoutAdderInput {
-  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+export interface LanguageCreateOneWithoutParentInput {
+  create?: LanguageCreateWithoutParentInput;
+  connect?: LanguageWhereUniqueInput;
 }
 
 export interface TagUpdateWithWhereUniqueWithoutParentInput {
@@ -665,12 +723,485 @@ export interface TagUpdateWithWhereUniqueWithoutParentInput {
   data: TagUpdateWithoutParentDataInput;
 }
 
-export interface VideoCreateWithoutAdderInput {
+export interface LanguageCreateWithoutParentInput {
+  value: String;
+  text: String;
+}
+
+export interface VideoSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoWhereInput;
+  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+}
+
+export interface TopicCreateManyWithoutParentInput {
+  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
+  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface TopicCreateWithoutParentInput {
+  value: String;
+  text: String;
+}
+
+export interface VideoWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  ytId?: String;
+  ytId_not?: String;
+  ytId_in?: String[] | String;
+  ytId_not_in?: String[] | String;
+  ytId_lt?: String;
+  ytId_lte?: String;
+  ytId_gt?: String;
+  ytId_gte?: String;
+  ytId_contains?: String;
+  ytId_not_contains?: String;
+  ytId_starts_with?: String;
+  ytId_not_starts_with?: String;
+  ytId_ends_with?: String;
+  ytId_not_ends_with?: String;
+  complexity?: Complexity;
+  complexity_not?: Complexity;
+  complexity_in?: Complexity[] | Complexity;
+  complexity_not_in?: Complexity[] | Complexity;
+  language?: LanguageWhereInput;
+  topics_every?: TopicWhereInput;
+  topics_some?: TopicWhereInput;
+  topics_none?: TopicWhereInput;
+  tags_every?: TagWhereInput;
+  tags_some?: TagWhereInput;
+  tags_none?: TagWhereInput;
+  adder?: UserWhereInput;
+  bookmarkers_every?: UserWhereInput;
+  bookmarkers_some?: UserWhereInput;
+  bookmarkers_none?: UserWhereInput;
+  AND?: VideoWhereInput[] | VideoWhereInput;
+  OR?: VideoWhereInput[] | VideoWhereInput;
+  NOT?: VideoWhereInput[] | VideoWhereInput;
+}
+
+export interface TagCreateManyWithoutParentInput {
+  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TagWhereInput;
+  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+}
+
+export interface TagCreateWithoutParentInput {
+  value: String;
+  text: String;
+}
+
+export interface PayloadSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PayloadWhereInput;
+  AND?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
+  OR?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
+  NOT?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
+}
+
+export interface UserCreateManyWithoutVideosBookmarkedInput {
+  create?:
+    | UserCreateWithoutVideosBookmarkedInput[]
+    | UserCreateWithoutVideosBookmarkedInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+}
+
+export interface PasswordResetCodeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PasswordResetCodeWhereInput;
+  AND?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+  OR?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+  NOT?:
+    | PasswordResetCodeSubscriptionWhereInput[]
+    | PasswordResetCodeSubscriptionWhereInput;
+}
+
+export interface UserCreateWithoutVideosBookmarkedInput {
+  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosAdded?: VideoCreateManyWithoutAdderInput;
+}
+
+export interface AccountActivationCodeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AccountActivationCodeWhereInput;
+  AND?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+  OR?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+  NOT?:
+    | AccountActivationCodeSubscriptionWhereInput[]
+    | AccountActivationCodeSubscriptionWhereInput;
+}
+
+export interface AccountActivationCodeCreateOneWithoutUserInput {
+  connect?: AccountActivationCodeWhereUniqueInput;
+}
+
+export type PasswordResetCodeWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface VideoCreateManyWithoutBookmarkersInput {
+  create?:
+    | VideoCreateWithoutBookmarkersInput[]
+    | VideoCreateWithoutBookmarkersInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+}
+
+export interface UserUpdateInput {
+  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login?: String;
+  email?: String;
+  password?: String;
+  name?: String;
+  videosAdded?: VideoUpdateManyWithoutAdderInput;
+  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+}
+
+export interface VideoCreateWithoutBookmarkersInput {
   ytId: String;
   complexity: Complexity;
+  language: LanguageCreateOneWithoutParentInput;
   topics?: TopicCreateManyWithoutParentInput;
   tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+}
+
+export interface VideoUpsertWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutTopicsDataInput;
+  create: VideoCreateWithoutTopicsInput;
+}
+
+export interface UserCreateOneWithoutVideosAddedInput {
+  create?: UserCreateWithoutVideosAddedInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface VideoUpdateWithoutTopicsDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
+  tags?: TagUpdateManyWithoutParentInput;
+  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
+}
+
+export interface UserCreateWithoutVideosAddedInput {
+  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+}
+
+export interface VideoUpdateManyWithoutTopicsInput {
+  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutTopicsInput[]
+    | VideoUpdateWithWhereUniqueWithoutTopicsInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutTopicsInput[]
+    | VideoUpsertWithWhereUniqueWithoutTopicsInput;
+}
+
+export interface AccountActivationCodeUpdateInput {
+  user?: UserUpdateOneWithoutActivationCodeInput;
+}
+
+export interface VideoCreateWithoutTopicsInput {
+  ytId: String;
+  complexity: Complexity;
+  language: LanguageCreateOneWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
   bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+}
+
+export interface UserUpdateOneWithoutActivationCodeInput {
+  create?: UserCreateWithoutActivationCodeInput;
+  update?: UserUpdateWithoutActivationCodeDataInput;
+  upsert?: UserUpsertWithoutActivationCodeInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface VideoCreateManyWithoutTopicsInput {
+  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutActivationCodeDataInput {
+  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login?: String;
+  email?: String;
+  password?: String;
+  name?: String;
+  videosAdded?: VideoUpdateManyWithoutAdderInput;
+  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+}
+
+export interface VideoUpsertWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutTagsDataInput;
+  create: VideoCreateWithoutTagsInput;
+}
+
+export interface PasswordResetCodeUpdateOneWithoutUserInput {
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: PasswordResetCodeWhereUniqueInput;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutTagsInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutTagsDataInput;
+}
+
+export interface VideoUpdateManyWithoutAdderInput {
+  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutAdderInput[]
+    | VideoUpdateWithWhereUniqueWithoutAdderInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutAdderInput[]
+    | VideoUpsertWithWhereUniqueWithoutAdderInput;
+}
+
+export interface VideoUpdateManyWithoutTagsInput {
+  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutTagsInput[]
+    | VideoUpdateWithWhereUniqueWithoutTagsInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutTagsInput[]
+    | VideoUpsertWithWhereUniqueWithoutTagsInput;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutAdderInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutAdderDataInput;
+}
+
+export interface VideoCreateWithoutTagsInput {
+  ytId: String;
+  complexity: Complexity;
+  language: LanguageCreateOneWithoutParentInput;
+  topics?: TopicCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+}
+
+export interface VideoUpdateWithoutAdderDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
+  topics?: TopicUpdateManyWithoutParentInput;
+  tags?: TagUpdateManyWithoutParentInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
+}
+
+export interface VideoCreateManyWithoutTagsInput {
+  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+}
+
+export interface PasswordResetCodeUpdateInput {
+  user?: UserUpdateOneWithoutPasswordResetCodeInput;
+}
+
+export interface RatingUpdateInput {
+  votes?: Int;
+  total?: Int;
+}
+
+export interface LanguageUpdateWithoutParentDataInput {
+  value?: String;
+  text?: String;
+}
+
+export interface RatingCreateInput {
+  votes: Int;
+  total: Int;
+}
+
+export interface LanguageUpsertWithoutParentInput {
+  update: LanguageUpdateWithoutParentDataInput;
+  create: LanguageCreateWithoutParentInput;
+}
+
+export interface PayloadCreateInput {
+  message: String;
+}
+
+export interface TopicUpdateManyWithoutParentInput {
+  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
+  delete?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+  disconnect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+  update?:
+    | TopicUpdateWithWhereUniqueWithoutParentInput[]
+    | TopicUpdateWithWhereUniqueWithoutParentInput;
+  upsert?:
+    | TopicUpsertWithWhereUniqueWithoutParentInput[]
+    | TopicUpsertWithWhereUniqueWithoutParentInput;
+}
+
+export interface UserUpsertWithoutPasswordResetCodeInput {
+  update: UserUpdateWithoutPasswordResetCodeDataInput;
+  create: UserCreateWithoutPasswordResetCodeInput;
+}
+
+export interface TopicUpdateWithWhereUniqueWithoutParentInput {
+  where: TopicWhereUniqueInput;
+  data: TopicUpdateWithoutParentDataInput;
+}
+
+export interface UserUpdateOneWithoutPasswordResetCodeInput {
+  create?: UserCreateWithoutPasswordResetCodeInput;
+  update?: UserUpdateWithoutPasswordResetCodeDataInput;
+  upsert?: UserUpsertWithoutPasswordResetCodeInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface TopicUpdateWithoutParentDataInput {
+  value?: String;
+  text?: String;
+}
+
+export interface AccountActivationCodeCreateInput {
+  user?: UserCreateOneWithoutActivationCodeInput;
+}
+
+export interface PasswordResetCodeWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  user?: UserWhereInput;
+  AND?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+  OR?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+  NOT?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+}
+
+export interface UserCreateWithoutActivationCodeInput {
+  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosAdded?: VideoCreateManyWithoutAdderInput;
+  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+}
+
+export interface UserCreateWithoutPasswordResetCodeInput {
+  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+  videosAdded?: VideoCreateManyWithoutAdderInput;
+  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+}
+
+export interface VideoCreateManyWithoutAdderInput {
+  create?: VideoCreateWithoutAdderInput[] | VideoCreateWithoutAdderInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+}
+
+export interface UserCreateOneWithoutPasswordResetCodeInput {
+  create?: UserCreateWithoutPasswordResetCodeInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface TopicWhereInput {
@@ -724,141 +1255,62 @@ export interface TopicWhereInput {
   NOT?: TopicWhereInput[] | TopicWhereInput;
 }
 
-export interface TopicCreateManyWithoutParentInput {
-  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
-  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
+export interface TagUpdateWithoutParentDataInput {
+  value?: String;
+  text?: String;
 }
 
-export interface VideoWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  ytId?: String;
-  ytId_not?: String;
-  ytId_in?: String[] | String;
-  ytId_not_in?: String[] | String;
-  ytId_lt?: String;
-  ytId_lte?: String;
-  ytId_gt?: String;
-  ytId_gte?: String;
-  ytId_contains?: String;
-  ytId_not_contains?: String;
-  ytId_starts_with?: String;
-  ytId_not_starts_with?: String;
-  ytId_ends_with?: String;
-  ytId_not_ends_with?: String;
-  complexity?: Complexity;
-  complexity_not?: Complexity;
-  complexity_in?: Complexity[] | Complexity;
-  complexity_not_in?: Complexity[] | Complexity;
-  topics_every?: TopicWhereInput;
-  topics_some?: TopicWhereInput;
-  topics_none?: TopicWhereInput;
-  tags_every?: TagWhereInput;
-  tags_some?: TagWhereInput;
-  tags_none?: TagWhereInput;
-  adder?: UserWhereInput;
-  bookmarkers_every?: UserWhereInput;
-  bookmarkers_some?: UserWhereInput;
-  bookmarkers_none?: UserWhereInput;
-  AND?: VideoWhereInput[] | VideoWhereInput;
-  OR?: VideoWhereInput[] | VideoWhereInput;
-  NOT?: VideoWhereInput[] | VideoWhereInput;
-}
-
-export interface TopicCreateWithoutParentInput {
-  value: String;
-  text: String;
-}
-
-export interface TagSubscriptionWhereInput {
+export interface TopicSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: TagWhereInput;
-  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  node?: TopicWhereInput;
+  AND?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  OR?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  NOT?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
 }
 
-export interface TagCreateManyWithoutParentInput {
-  create?: TagCreateWithoutParentInput[] | TagCreateWithoutParentInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+export interface TagUpsertWithWhereUniqueWithoutParentInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateWithoutParentDataInput;
+  create: TagCreateWithoutParentInput;
 }
 
-export interface PayloadSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PayloadWhereInput;
-  AND?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
-  OR?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
-  NOT?: PayloadSubscriptionWhereInput[] | PayloadSubscriptionWhereInput;
-}
-
-export interface TagCreateWithoutParentInput {
-  value: String;
-  text: String;
-}
-
-export type PasswordResetCodeWhereUniqueInput = AtLeastOne<{
+export type LanguageWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  value?: String;
+  text?: String;
 }>;
 
-export interface UserCreateManyWithoutVideosBookmarkedInput {
+export interface UserUpdateManyWithoutVideosBookmarkedInput {
   create?:
     | UserCreateWithoutVideosBookmarkedInput[]
     | UserCreateWithoutVideosBookmarkedInput;
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
   connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  update?:
+    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput[]
+    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput;
+  upsert?:
+    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput[]
+    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput;
 }
 
 export interface VideoUpdateInput {
   ytId?: String;
   complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
   topics?: TopicUpdateManyWithoutParentInput;
   tags?: TagUpdateManyWithoutParentInput;
   adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
   bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
-export interface UserCreateWithoutVideosBookmarkedInput {
-  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosAdded?: VideoCreateManyWithoutAdderInput;
-}
-
-export interface UserUpdateInput {
-  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login?: String;
-  email?: String;
-  password?: String;
-  name?: String;
-  videosAdded?: VideoUpdateManyWithoutAdderInput;
-  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
-}
-
-export interface AccountActivationCodeCreateOneWithoutUserInput {
-  connect?: AccountActivationCodeWhereUniqueInput;
+export interface UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutVideosBookmarkedDataInput;
 }
 
 export interface UserCreateInput {
@@ -873,97 +1325,8 @@ export interface UserCreateInput {
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
 }
 
-export interface VideoCreateManyWithoutBookmarkersInput {
-  create?:
-    | VideoCreateWithoutBookmarkersInput[]
-    | VideoCreateWithoutBookmarkersInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-}
-
-export interface VideoUpdateWithoutTopicsDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  tags?: TagUpdateManyWithoutParentInput;
-  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
-  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
-}
-
-export interface VideoCreateWithoutBookmarkersInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  tags?: TagCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-}
-
-export interface VideoUpdateManyWithoutTopicsInput {
-  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
-  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  update?:
-    | VideoUpdateWithWhereUniqueWithoutTopicsInput[]
-    | VideoUpdateWithWhereUniqueWithoutTopicsInput;
-  upsert?:
-    | VideoUpsertWithWhereUniqueWithoutTopicsInput[]
-    | VideoUpsertWithWhereUniqueWithoutTopicsInput;
-}
-
-export interface UserCreateOneWithoutVideosAddedInput {
-  create?: UserCreateWithoutVideosAddedInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface TopicUpdateInput {
-  value?: String;
-  text?: String;
-  parent?: VideoUpdateManyWithoutTopicsInput;
-}
-
-export interface UserCreateWithoutVideosAddedInput {
-  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
-}
-
-export interface VideoCreateManyWithoutTopicsInput {
-  create?: VideoCreateWithoutTopicsInput[] | VideoCreateWithoutTopicsInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-}
-
-export interface AccountActivationCodeUpdateInput {
-  user?: UserUpdateOneWithoutActivationCodeInput;
-}
-
-export interface VideoUpsertWithWhereUniqueWithoutTagsInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutTagsDataInput;
-  create: VideoCreateWithoutTagsInput;
-}
-
-export interface UserUpdateOneWithoutActivationCodeInput {
-  create?: UserCreateWithoutActivationCodeInput;
-  update?: UserUpdateWithoutActivationCodeDataInput;
-  upsert?: UserUpsertWithoutActivationCodeInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface VideoUpdateWithoutTagsDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  topics?: TopicUpdateManyWithoutParentInput;
-  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
-  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
-}
-
-export interface UserUpdateWithoutActivationCodeDataInput {
+export interface UserUpdateWithoutVideosBookmarkedDataInput {
+  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
   passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
   isActivated?: Boolean;
   login?: String;
@@ -971,32 +1334,105 @@ export interface UserUpdateWithoutActivationCodeDataInput {
   password?: String;
   name?: String;
   videosAdded?: VideoUpdateManyWithoutAdderInput;
-  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
-export interface VideoUpdateManyWithoutTagsInput {
-  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
-  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-  update?:
-    | VideoUpdateWithWhereUniqueWithoutTagsInput[]
-    | VideoUpdateWithWhereUniqueWithoutTagsInput;
-  upsert?:
-    | VideoUpsertWithWhereUniqueWithoutTagsInput[]
-    | VideoUpsertWithWhereUniqueWithoutTagsInput;
+export interface VideoUpdateWithWhereUniqueWithoutTopicsInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutTopicsDataInput;
 }
 
-export interface PasswordResetCodeUpdateOneWithoutUserInput {
+export interface AccountActivationCodeUpdateOneWithoutUserInput {
   delete?: Boolean;
   disconnect?: Boolean;
-  connect?: PasswordResetCodeWhereUniqueInput;
+  connect?: AccountActivationCodeWhereUniqueInput;
+}
+
+export interface RatingWhereInput {
+  votes?: Int;
+  votes_not?: Int;
+  votes_in?: Int[] | Int;
+  votes_not_in?: Int[] | Int;
+  votes_lt?: Int;
+  votes_lte?: Int;
+  votes_gt?: Int;
+  votes_gte?: Int;
+  total?: Int;
+  total_not?: Int;
+  total_in?: Int[] | Int;
+  total_not_in?: Int[] | Int;
+  total_lt?: Int;
+  total_lte?: Int;
+  total_gt?: Int;
+  total_gte?: Int;
+  AND?: RatingWhereInput[] | RatingWhereInput;
+  OR?: RatingWhereInput[] | RatingWhereInput;
+  NOT?: RatingWhereInput[] | RatingWhereInput;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutVideosBookmarkedDataInput;
+  create: UserCreateWithoutVideosBookmarkedInput;
+}
+
+export interface VideoUpdateWithoutTagsDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
+  topics?: TopicUpdateManyWithoutParentInput;
+  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
+}
+
+export interface VideoUpsertWithWhereUniqueWithoutAdderInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutAdderDataInput;
+  create: VideoCreateWithoutAdderInput;
 }
 
 export interface TagUpdateInput {
   value?: String;
   text?: String;
   parent?: VideoUpdateManyWithoutTagsInput;
+}
+
+export interface VideoUpdateManyWithoutBookmarkersInput {
+  create?:
+    | VideoCreateWithoutBookmarkersInput[]
+    | VideoCreateWithoutBookmarkersInput;
+  delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
+  update?:
+    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput[]
+    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput;
+  upsert?:
+    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput[]
+    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput;
+}
+
+export interface TagCreateInput {
+  value: String;
+  text: String;
+  parent?: VideoCreateManyWithoutTagsInput;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutBookmarkersDataInput;
+}
+
+export interface PayloadUpdateInput {
+  message?: String;
+}
+
+export interface VideoUpdateWithoutBookmarkersDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
+  topics?: TopicUpdateManyWithoutParentInput;
+  tags?: TagUpdateManyWithoutParentInput;
+  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
 }
 
 export interface UserUpdateWithoutPasswordResetCodeDataInput {
@@ -1010,121 +1446,27 @@ export interface UserUpdateWithoutPasswordResetCodeDataInput {
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
-export interface VideoCreateManyWithoutTagsInput {
-  create?: VideoCreateWithoutTagsInput[] | VideoCreateWithoutTagsInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-}
-
-export interface VideoUpdateWithWhereUniqueWithoutAdderInput {
-  where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutAdderDataInput;
-}
-
-export interface TagCreateInput {
-  value: String;
-  text: String;
-  parent?: VideoCreateManyWithoutTagsInput;
-}
-
-export interface VideoUpdateWithoutAdderDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  topics?: TopicUpdateManyWithoutParentInput;
-  tags?: TagUpdateManyWithoutParentInput;
-  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
-}
-
-export interface RatingCreateInput {
-  votes: Int;
-  total: Int;
-}
-
-export interface TopicUpdateManyWithoutParentInput {
-  create?: TopicCreateWithoutParentInput[] | TopicCreateWithoutParentInput;
-  delete?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
-  connect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
-  disconnect?: TopicWhereUniqueInput[] | TopicWhereUniqueInput;
-  update?:
-    | TopicUpdateWithWhereUniqueWithoutParentInput[]
-    | TopicUpdateWithWhereUniqueWithoutParentInput;
-  upsert?:
-    | TopicUpsertWithWhereUniqueWithoutParentInput[]
-    | TopicUpsertWithWhereUniqueWithoutParentInput;
-}
-
-export interface PayloadUpdateInput {
-  message?: String;
-}
-
-export interface TopicUpdateWithWhereUniqueWithoutParentInput {
-  where: TopicWhereUniqueInput;
-  data: TopicUpdateWithoutParentDataInput;
-}
-
-export interface UserUpsertWithoutPasswordResetCodeInput {
-  update: UserUpdateWithoutPasswordResetCodeDataInput;
-  create: UserCreateWithoutPasswordResetCodeInput;
-}
-
-export interface TopicUpdateWithoutParentDataInput {
-  value?: String;
-  text?: String;
-}
-
-export interface AccountActivationCodeCreateInput {
-  user?: UserCreateOneWithoutActivationCodeInput;
-}
-
-export interface PasswordResetCodeWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  user?: UserWhereInput;
-  AND?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
-  OR?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
-  NOT?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
-}
-
-export interface UserCreateWithoutActivationCodeInput {
-  passwordResetCode?: PasswordResetCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosAdded?: VideoCreateManyWithoutAdderInput;
-  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
-}
-
-export interface UserUpdateOneWithoutPasswordResetCodeInput {
-  create?: UserCreateWithoutPasswordResetCodeInput;
-  update?: UserUpdateWithoutPasswordResetCodeDataInput;
-  upsert?: UserUpsertWithoutPasswordResetCodeInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
+export interface UserUpdateOneRequiredWithoutVideosAddedInput {
+  create?: UserCreateWithoutVideosAddedInput;
+  update?: UserUpdateWithoutVideosAddedDataInput;
+  upsert?: UserUpsertWithoutVideosAddedInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface UserCreateOneWithoutActivationCodeInput {
+  create?: UserCreateWithoutActivationCodeInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateWithoutVideosAddedDataInput {
+  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
+  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
+  isActivated?: Boolean;
+  login?: String;
+  email?: String;
+  password?: String;
+  name?: String;
+  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
 }
 
 export interface TagWhereInput {
@@ -1178,6 +1520,11 @@ export interface TagWhereInput {
   NOT?: TagWhereInput[] | TagWhereInput;
 }
 
+export interface UserUpsertWithoutVideosAddedInput {
+  update: UserUpdateWithoutVideosAddedDataInput;
+  create: UserCreateWithoutVideosAddedInput;
+}
+
 export interface RatingSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -1189,32 +1536,115 @@ export interface RatingSubscriptionWhereInput {
   NOT?: RatingSubscriptionWhereInput[] | RatingSubscriptionWhereInput;
 }
 
-export interface TagUpdateWithoutParentDataInput {
+export interface VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutBookmarkersDataInput;
+  create: VideoCreateWithoutBookmarkersInput;
+}
+
+export interface VideoCreateInput {
+  ytId: String;
+  complexity: Complexity;
+  language: LanguageCreateOneWithoutParentInput;
+  topics?: TopicCreateManyWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
+}
+
+export interface UserUpsertWithoutActivationCodeInput {
+  update: UserUpdateWithoutActivationCodeDataInput;
+  create: UserCreateWithoutActivationCodeInput;
+}
+
+export interface TopicUpdateInput {
   value?: String;
   text?: String;
+  parent?: VideoUpdateManyWithoutTopicsInput;
 }
 
-export interface AccountActivationCodeSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: AccountActivationCodeWhereInput;
-  AND?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
-  OR?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
-  NOT?:
-    | AccountActivationCodeSubscriptionWhereInput[]
-    | AccountActivationCodeSubscriptionWhereInput;
+export interface PasswordResetCodeCreateInput {
+  user?: UserCreateOneWithoutPasswordResetCodeInput;
 }
 
-export interface TagUpsertWithWhereUniqueWithoutParentInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateWithoutParentDataInput;
-  create: TagCreateWithoutParentInput;
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  value?: String;
+  text?: String;
+}>;
+
+export interface VideoUpsertWithWhereUniqueWithoutLanguageInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutLanguageDataInput;
+  create: VideoCreateWithoutLanguageInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  login?: String;
+  email?: String;
+}>;
+
+export interface LanguageCreateInput {
+  value: String;
+  text: String;
+  parent?: VideoCreateManyWithoutLanguageInput;
+}
+
+export interface LanguageWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  value?: String;
+  value_not?: String;
+  value_in?: String[] | String;
+  value_not_in?: String[] | String;
+  value_lt?: String;
+  value_lte?: String;
+  value_gt?: String;
+  value_gte?: String;
+  value_contains?: String;
+  value_not_contains?: String;
+  value_starts_with?: String;
+  value_not_starts_with?: String;
+  value_ends_with?: String;
+  value_not_ends_with?: String;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  parent_every?: VideoWhereInput;
+  parent_some?: VideoWhereInput;
+  parent_none?: VideoWhereInput;
+  AND?: LanguageWhereInput[] | LanguageWhereInput;
+  OR?: LanguageWhereInput[] | LanguageWhereInput;
+  NOT?: LanguageWhereInput[] | LanguageWhereInput;
+}
+
+export interface VideoCreateManyWithoutLanguageInput {
+  create?: VideoCreateWithoutLanguageInput[] | VideoCreateWithoutLanguageInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
 export interface PayloadWhereInput {
@@ -1237,158 +1667,37 @@ export interface PayloadWhereInput {
   NOT?: PayloadWhereInput[] | PayloadWhereInput;
 }
 
-export interface UserUpdateManyWithoutVideosBookmarkedInput {
-  create?:
-    | UserCreateWithoutVideosBookmarkedInput[]
-    | UserCreateWithoutVideosBookmarkedInput;
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  update?:
-    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput[]
-    | UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput;
-  upsert?:
-    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput[]
-    | UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput;
-}
-
-export interface VideoUpdateWithWhereUniqueWithoutTopicsInput {
+export interface VideoUpdateWithWhereUniqueWithoutLanguageInput {
   where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutTopicsDataInput;
+  data: VideoUpdateWithoutLanguageDataInput;
 }
 
-export interface UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutVideosBookmarkedDataInput;
-}
-
-export interface VideoCreateWithoutTopicsInput {
-  ytId: String;
-  complexity: Complexity;
-  tags?: TagCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
-}
-
-export interface UserUpdateWithoutVideosBookmarkedDataInput {
-  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login?: String;
-  email?: String;
-  password?: String;
-  name?: String;
-  videosAdded?: VideoUpdateManyWithoutAdderInput;
-}
-
-export type TagWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  value?: String;
-  text?: String;
-}>;
-
-export interface AccountActivationCodeUpdateOneWithoutUserInput {
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: AccountActivationCodeWhereUniqueInput;
-}
-
-export type TopicWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  value?: String;
-  text?: String;
-}>;
-
-export interface UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutVideosBookmarkedDataInput;
-  create: UserCreateWithoutVideosBookmarkedInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  login?: String;
-  email?: String;
-}>;
-
-export interface VideoUpsertWithWhereUniqueWithoutAdderInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutAdderDataInput;
-  create: VideoCreateWithoutAdderInput;
-}
-
-export type VideoWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  ytId?: String;
-}>;
-
-export interface VideoUpdateManyWithoutBookmarkersInput {
-  create?:
-    | VideoCreateWithoutBookmarkersInput[]
-    | VideoCreateWithoutBookmarkersInput;
+export interface VideoUpdateManyWithoutLanguageInput {
+  create?: VideoCreateWithoutLanguageInput[] | VideoCreateWithoutLanguageInput;
   delete?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   disconnect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
   update?:
-    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput[]
-    | VideoUpdateWithWhereUniqueWithoutBookmarkersInput;
+    | VideoUpdateWithWhereUniqueWithoutLanguageInput[]
+    | VideoUpdateWithWhereUniqueWithoutLanguageInput;
   upsert?:
-    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput[]
-    | VideoUpsertWithWhereUniqueWithoutBookmarkersInput;
+    | VideoUpsertWithWhereUniqueWithoutLanguageInput[]
+    | VideoUpsertWithWhereUniqueWithoutLanguageInput;
 }
 
-export interface VideoSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoWhereInput;
-  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+export interface LanguageUpdateInput {
+  value?: String;
+  text?: String;
+  parent?: VideoUpdateManyWithoutLanguageInput;
 }
 
-export interface VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
-  where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutBookmarkersDataInput;
-}
-
-export interface PasswordResetCodeSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PasswordResetCodeWhereInput;
-  AND?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-  OR?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-  NOT?:
-    | PasswordResetCodeSubscriptionWhereInput[]
-    | PasswordResetCodeSubscriptionWhereInput;
-}
-
-export interface VideoUpdateWithoutBookmarkersDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  topics?: TopicUpdateManyWithoutParentInput;
-  tags?: TagUpdateManyWithoutParentInput;
-  adder?: UserUpdateOneRequiredWithoutVideosAddedInput;
-}
-
-export interface VideoUpsertWithWhereUniqueWithoutTopicsInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutTopicsDataInput;
-  create: VideoCreateWithoutTopicsInput;
-}
-
-export interface UserUpdateOneRequiredWithoutVideosAddedInput {
-  create?: UserCreateWithoutVideosAddedInput;
-  update?: UserUpdateWithoutVideosAddedDataInput;
-  upsert?: UserUpsertWithoutVideosAddedInput;
-  connect?: UserWhereUniqueInput;
+export interface VideoCreateWithoutLanguageInput {
+  ytId: String;
+  complexity: Complexity;
+  topics?: TopicCreateManyWithoutParentInput;
+  tags?: TagCreateManyWithoutParentInput;
+  adder: UserCreateOneWithoutVideosAddedInput;
+  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
 }
 
 export interface TopicCreateInput {
@@ -1397,120 +1706,31 @@ export interface TopicCreateInput {
   parent?: VideoCreateManyWithoutTopicsInput;
 }
 
-export interface UserUpdateWithoutVideosAddedDataInput {
-  activationCode?: AccountActivationCodeUpdateOneWithoutUserInput;
-  passwordResetCode?: PasswordResetCodeUpdateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login?: String;
-  email?: String;
-  password?: String;
-  name?: String;
-  videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
-}
-
-export interface VideoCreateWithoutTagsInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
-}
-
-export interface UserUpsertWithoutVideosAddedInput {
-  update: UserUpdateWithoutVideosAddedDataInput;
-  create: UserCreateWithoutVideosAddedInput;
-}
-
-export interface PayloadCreateInput {
-  message: String;
-}
-
-export interface VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutBookmarkersDataInput;
-  create: VideoCreateWithoutBookmarkersInput;
-}
-
-export interface TopicSubscriptionWhereInput {
+export interface LanguageSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: TopicWhereInput;
-  AND?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
-  OR?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
-  NOT?: TopicSubscriptionWhereInput[] | TopicSubscriptionWhereInput;
+  node?: LanguageWhereInput;
+  AND?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
+  OR?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
+  NOT?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
 }
 
-export interface PasswordResetCodeCreateInput {
-  user?: UserCreateOneWithoutPasswordResetCodeInput;
+export interface PasswordResetCodeCreateOneWithoutUserInput {
+  connect?: PasswordResetCodeWhereUniqueInput;
 }
 
-export interface UserCreateWithoutPasswordResetCodeInput {
-  activationCode?: AccountActivationCodeCreateOneWithoutUserInput;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-  videosAdded?: VideoCreateManyWithoutAdderInput;
-  videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
-}
+export type VideoWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  ytId?: String;
+}>;
 
-export interface PasswordResetCodeUpdateInput {
-  user?: UserUpdateOneWithoutPasswordResetCodeInput;
-}
-
-export interface UserUpsertWithoutActivationCodeInput {
-  update: UserUpdateWithoutActivationCodeDataInput;
-  create: UserCreateWithoutActivationCodeInput;
-}
-
-export interface VideoCreateInput {
-  ytId: String;
-  complexity: Complexity;
-  topics?: TopicCreateManyWithoutParentInput;
-  tags?: TagCreateManyWithoutParentInput;
-  adder: UserCreateOneWithoutVideosAddedInput;
-  bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
-}
-
-export interface UserCreateOneWithoutActivationCodeInput {
-  create?: UserCreateWithoutActivationCodeInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface RatingUpdateInput {
-  votes?: Int;
-  total?: Int;
-}
-
-export interface VideoUpdateWithWhereUniqueWithoutTagsInput {
-  where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutTagsDataInput;
-}
-
-export interface RatingWhereInput {
-  votes?: Int;
-  votes_not?: Int;
-  votes_in?: Int[] | Int;
-  votes_not_in?: Int[] | Int;
-  votes_lt?: Int;
-  votes_lte?: Int;
-  votes_gt?: Int;
-  votes_gte?: Int;
-  total?: Int;
-  total_not?: Int;
-  total_in?: Int[] | Int;
-  total_not_in?: Int[] | Int;
-  total_lt?: Int;
-  total_lte?: Int;
-  total_gt?: Int;
-  total_gte?: Int;
-  AND?: RatingWhereInput[] | RatingWhereInput;
-  OR?: RatingWhereInput[] | RatingWhereInput;
-  NOT?: RatingWhereInput[] | RatingWhereInput;
-}
+export type TopicWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  value?: String;
+  text?: String;
+}>;
 
 export interface Node {
   id: ID_Output;
@@ -1556,6 +1776,47 @@ export interface PasswordResetCodeEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = User>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValues>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface PasswordResetCodeConnection {}
+
+export interface PasswordResetCodeConnectionPromise
+  extends Promise<PasswordResetCodeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<PasswordResetCodeEdge>>() => T;
+  aggregate: <T = AggregatePasswordResetCode>() => T;
+}
+
+export interface PasswordResetCodeConnectionSubscription
+  extends Promise<AsyncIterator<PasswordResetCodeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PasswordResetCodeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePasswordResetCodeSubscription>() => T;
+}
+
 export interface Video {
   id: ID_Output;
   ytId: String;
@@ -1566,6 +1827,7 @@ export interface VideoPromise extends Promise<Video>, Fragmentable {
   id: () => Promise<ID_Output>;
   ytId: () => Promise<String>;
   complexity: () => Promise<Complexity>;
+  language: <T = Language>() => T;
   topics: <T = FragmentableArray<Topic>>(
     args?: {
       where?: TopicWhereInput;
@@ -1608,6 +1870,7 @@ export interface VideoSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   ytId: () => Promise<AsyncIterator<String>>;
   complexity: () => Promise<AsyncIterator<Complexity>>;
+  language: <T = LanguageSubscription>() => T;
   topics: <T = Promise<AsyncIterator<TopicSubscription>>>(
     args?: {
       where?: TopicWhereInput;
@@ -1644,45 +1907,6 @@ export interface VideoSubscription
   ) => T;
 }
 
-export interface AggregatePasswordResetCode {
-  count: Int;
-}
-
-export interface AggregatePasswordResetCodePromise
-  extends Promise<AggregatePasswordResetCode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePasswordResetCodeSubscription
-  extends Promise<AsyncIterator<AggregatePasswordResetCode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = User>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValues>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
 export interface BatchPayload {
   count: Long;
 }
@@ -1697,24 +1921,6 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface PasswordResetCodeConnection {}
-
-export interface PasswordResetCodeConnectionPromise
-  extends Promise<PasswordResetCodeConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<PasswordResetCodeEdge>>() => T;
-  aggregate: <T = AggregatePasswordResetCode>() => T;
-}
-
-export interface PasswordResetCodeConnectionSubscription
-  extends Promise<AsyncIterator<PasswordResetCodeConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PasswordResetCodeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePasswordResetCodeSubscription>() => T;
 }
 
 export interface VideoSubscriptionPayload {
@@ -1740,20 +1946,524 @@ export interface VideoSubscriptionPayloadSubscription
   previousValues: <T = VideoPreviousValuesSubscription>() => T;
 }
 
-export interface VideoEdge {
+export interface AggregateLanguage {
+  count: Int;
+}
+
+export interface AggregateLanguagePromise
+  extends Promise<AggregateLanguage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLanguageSubscription
+  extends Promise<AsyncIterator<AggregateLanguage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateVideo {
+  count: Int;
+}
+
+export interface AggregateVideoPromise
+  extends Promise<AggregateVideo>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoSubscription
+  extends Promise<AsyncIterator<AggregateVideo>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LanguageEdge {
   cursor: String;
 }
 
-export interface VideoEdgePromise extends Promise<VideoEdge>, Fragmentable {
-  node: <T = Video>() => T;
+export interface LanguageEdgePromise
+  extends Promise<LanguageEdge>,
+    Fragmentable {
+  node: <T = Language>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface VideoEdgeSubscription
-  extends Promise<AsyncIterator<VideoEdge>>,
+export interface LanguageEdgeSubscription
+  extends Promise<AsyncIterator<LanguageEdge>>,
     Fragmentable {
-  node: <T = VideoSubscription>() => T;
+  node: <T = LanguageSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoConnection {}
+
+export interface VideoConnectionPromise
+  extends Promise<VideoConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<VideoEdge>>() => T;
+  aggregate: <T = AggregateVideo>() => T;
+}
+
+export interface VideoConnectionSubscription
+  extends Promise<AsyncIterator<VideoConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoSubscription>() => T;
+}
+
+export interface AccountActivationCode {
+  id: ID_Output;
+}
+
+export interface AccountActivationCodePromise
+  extends Promise<AccountActivationCode>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = User>() => T;
+}
+
+export interface AccountActivationCodeSubscription
+  extends Promise<AsyncIterator<AccountActivationCode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+}
+
+export interface UserEdge {
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = User>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AccountActivationCodeSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface AccountActivationCodeSubscriptionPayloadPromise
+  extends Promise<AccountActivationCodeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AccountActivationCode>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AccountActivationCodePreviousValues>() => T;
+}
+
+export interface AccountActivationCodeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AccountActivationCodeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AccountActivationCodeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AccountActivationCodePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateTopic {
+  count: Int;
+}
+
+export interface AggregateTopicPromise
+  extends Promise<AggregateTopic>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTopicSubscription
+  extends Promise<AsyncIterator<AggregateTopic>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AccountActivationCodePreviousValues {
+  id: ID_Output;
+}
+
+export interface AccountActivationCodePreviousValuesPromise
+  extends Promise<AccountActivationCodePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface AccountActivationCodePreviousValuesSubscription
+  extends Promise<AsyncIterator<AccountActivationCodePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface TopicConnection {}
+
+export interface TopicConnectionPromise
+  extends Promise<TopicConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<TopicEdge>>() => T;
+  aggregate: <T = AggregateTopic>() => T;
+}
+
+export interface TopicConnectionSubscription
+  extends Promise<AsyncIterator<TopicConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TopicEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTopicSubscription>() => T;
+}
+
+export interface LanguageConnection {}
+
+export interface LanguageConnectionPromise
+  extends Promise<LanguageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<LanguageEdge>>() => T;
+  aggregate: <T = AggregateLanguage>() => T;
+}
+
+export interface LanguageConnectionSubscription
+  extends Promise<AsyncIterator<LanguageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLanguageSubscription>() => T;
+}
+
+export interface TagEdge {
+  cursor: String;
+}
+
+export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
+  node: <T = Tag>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
+  node: <T = TagSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LanguageSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface LanguageSubscriptionPayloadPromise
+  extends Promise<LanguageSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = Language>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LanguagePreviousValues>() => T;
+}
+
+export interface LanguageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LanguageSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LanguageSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LanguagePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateRating {
+  count: Int;
+}
+
+export interface AggregateRatingPromise
+  extends Promise<AggregateRating>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRatingSubscription
+  extends Promise<AsyncIterator<AggregateRating>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LanguagePreviousValues {
+  id: ID_Output;
+  value: String;
+  text: String;
+}
+
+export interface LanguagePreviousValuesPromise
+  extends Promise<LanguagePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  value: () => Promise<String>;
+  text: () => Promise<String>;
+}
+
+export interface LanguagePreviousValuesSubscription
+  extends Promise<AsyncIterator<LanguagePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  value: () => Promise<AsyncIterator<String>>;
+  text: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RatingConnection {}
+
+export interface RatingConnectionPromise
+  extends Promise<RatingConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<RatingEdge>>() => T;
+  aggregate: <T = AggregateRating>() => T;
+}
+
+export interface RatingConnectionSubscription
+  extends Promise<AsyncIterator<RatingConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RatingEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRatingSubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  isActivated: () => Promise<Boolean>;
+  login: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  isActivated: () => Promise<AsyncIterator<Boolean>>;
+  login: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface User {
+  id: ID_Output;
+  isActivated?: Boolean;
+  login: String;
+  email: String;
+  password: String;
+  name: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  activationCode: <T = AccountActivationCode>() => T;
+  passwordResetCode: <T = PasswordResetCode>() => T;
+  isActivated: () => Promise<Boolean>;
+  login: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+  videosAdded: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  videosBookmarked: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  activationCode: <T = AccountActivationCodeSubscription>() => T;
+  passwordResetCode: <T = PasswordResetCodeSubscription>() => T;
+  isActivated: () => Promise<AsyncIterator<Boolean>>;
+  login: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  videosAdded: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  videosBookmarked: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface PasswordResetCodeSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PasswordResetCodeSubscriptionPayloadPromise
+  extends Promise<PasswordResetCodeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PasswordResetCode>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PasswordResetCodePreviousValues>() => T;
+}
+
+export interface PasswordResetCodeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PasswordResetCodeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PasswordResetCodeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PasswordResetCodePreviousValuesSubscription>() => T;
+}
+
+export interface PayloadEdge {
+  cursor: String;
+}
+
+export interface PayloadEdgePromise extends Promise<PayloadEdge>, Fragmentable {
+  node: <T = Payload>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PayloadEdgeSubscription
+  extends Promise<AsyncIterator<PayloadEdge>>,
+    Fragmentable {
+  node: <T = PayloadSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PasswordResetCodePreviousValues {
+  id: ID_Output;
+}
+
+export interface PasswordResetCodePreviousValuesPromise
+  extends Promise<PasswordResetCodePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface PasswordResetCodePreviousValuesSubscription
+  extends Promise<AsyncIterator<PasswordResetCodePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface Payload {
+  message: String;
+}
+
+export interface PayloadPromise extends Promise<Payload>, Fragmentable {
+  message: () => Promise<String>;
+}
+
+export interface PayloadSubscription
+  extends Promise<AsyncIterator<Payload>>,
+    Fragmentable {
+  message: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateAccountActivationCode {
+  count: Int;
+}
+
+export interface AggregateAccountActivationCodePromise
+  extends Promise<AggregateAccountActivationCode>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAccountActivationCodeSubscription
+  extends Promise<AsyncIterator<AggregateAccountActivationCode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregatePasswordResetCode {
+  count: Int;
+}
+
+export interface AggregatePasswordResetCodePromise
+  extends Promise<AggregatePasswordResetCode>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePasswordResetCodeSubscription
+  extends Promise<AsyncIterator<AggregatePasswordResetCode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PayloadSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PayloadSubscriptionPayloadPromise
+  extends Promise<PayloadSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = Payload>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PayloadPreviousValues>() => T;
+}
+
+export interface PayloadSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PayloadSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PayloadSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PayloadPreviousValuesSubscription>() => T;
 }
 
 export interface Topic {
@@ -1798,6 +2508,22 @@ export interface TopicSubscription
   ) => T;
 }
 
+export interface PayloadPreviousValues {
+  message: String;
+}
+
+export interface PayloadPreviousValuesPromise
+  extends Promise<PayloadPreviousValues>,
+    Fragmentable {
+  message: () => Promise<String>;
+}
+
+export interface PayloadPreviousValuesSubscription
+  extends Promise<AsyncIterator<PayloadPreviousValues>>,
+    Fragmentable {
+  message: () => Promise<AsyncIterator<String>>;
+}
+
 export interface AggregateUser {
   count: Int;
 }
@@ -1812,219 +2538,6 @@ export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AccountActivationCode {
-  id: ID_Output;
-}
-
-export interface AccountActivationCodePromise
-  extends Promise<AccountActivationCode>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = User>() => T;
-}
-
-export interface AccountActivationCodeSubscription
-  extends Promise<AsyncIterator<AccountActivationCode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-}
-
-export interface UserConnection {}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUser>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface AccountActivationCodeSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface AccountActivationCodeSubscriptionPayloadPromise
-  extends Promise<AccountActivationCodeSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = AccountActivationCode>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = AccountActivationCodePreviousValues>() => T;
-}
-
-export interface AccountActivationCodeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AccountActivationCodeSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AccountActivationCodeSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AccountActivationCodePreviousValuesSubscription>() => T;
-}
-
-export interface TopicEdge {
-  cursor: String;
-}
-
-export interface TopicEdgePromise extends Promise<TopicEdge>, Fragmentable {
-  node: <T = Topic>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TopicEdgeSubscription
-  extends Promise<AsyncIterator<TopicEdge>>,
-    Fragmentable {
-  node: <T = TopicSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AccountActivationCodePreviousValues {
-  id: ID_Output;
-}
-
-export interface AccountActivationCodePreviousValuesPromise
-  extends Promise<AccountActivationCodePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-}
-
-export interface AccountActivationCodePreviousValuesSubscription
-  extends Promise<AsyncIterator<AccountActivationCodePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface AggregateTag {
-  count: Int;
-}
-
-export interface AggregateTagPromise
-  extends Promise<AggregateTag>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTagSubscription
-  extends Promise<AsyncIterator<AggregateTag>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateAccountActivationCode {
-  count: Int;
-}
-
-export interface AggregateAccountActivationCodePromise
-  extends Promise<AggregateAccountActivationCode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateAccountActivationCodeSubscription
-  extends Promise<AsyncIterator<AggregateAccountActivationCode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TagConnection {}
-
-export interface TagConnectionPromise
-  extends Promise<TagConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<TagEdge>>() => T;
-  aggregate: <T = AggregateTag>() => T;
-}
-
-export interface TagConnectionSubscription
-  extends Promise<AsyncIterator<TagConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTagSubscription>() => T;
-}
-
-export interface PasswordResetCodeSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface PasswordResetCodeSubscriptionPayloadPromise
-  extends Promise<PasswordResetCodeSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PasswordResetCode>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PasswordResetCodePreviousValues>() => T;
-}
-
-export interface PasswordResetCodeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PasswordResetCodeSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PasswordResetCodeSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PasswordResetCodePreviousValuesSubscription>() => T;
-}
-
-export interface RatingEdge {
-  cursor: String;
-}
-
-export interface RatingEdgePromise extends Promise<RatingEdge>, Fragmentable {
-  node: <T = Rating>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RatingEdgeSubscription
-  extends Promise<AsyncIterator<RatingEdge>>,
-    Fragmentable {
-  node: <T = RatingSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PasswordResetCodePreviousValues {
-  id: ID_Output;
-}
-
-export interface PasswordResetCodePreviousValuesPromise
-  extends Promise<PasswordResetCodePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-}
-
-export interface PasswordResetCodePreviousValuesSubscription
-  extends Promise<AsyncIterator<PasswordResetCodePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface Rating {
-  votes: Int;
-  total: Int;
-}
-
-export interface RatingPromise extends Promise<Rating>, Fragmentable {
-  votes: () => Promise<Int>;
-  total: () => Promise<Int>;
-}
-
-export interface RatingSubscription
-  extends Promise<AsyncIterator<Rating>>,
-    Fragmentable {
-  votes: () => Promise<AsyncIterator<Int>>;
-  total: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface AccountActivationCodeEdge {
@@ -2045,136 +2558,20 @@ export interface AccountActivationCodeEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregatePayload {
-  count: Int;
+export interface TopicEdge {
+  cursor: String;
 }
 
-export interface AggregatePayloadPromise
-  extends Promise<AggregatePayload>,
+export interface TopicEdgePromise extends Promise<TopicEdge>, Fragmentable {
+  node: <T = Topic>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TopicEdgeSubscription
+  extends Promise<AsyncIterator<TopicEdge>>,
     Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePayloadSubscription
-  extends Promise<AsyncIterator<AggregatePayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PayloadSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface PayloadSubscriptionPayloadPromise
-  extends Promise<PayloadSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = Payload>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PayloadPreviousValues>() => T;
-}
-
-export interface PayloadSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PayloadSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PayloadSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PayloadPreviousValuesSubscription>() => T;
-}
-
-export interface PayloadConnection {}
-
-export interface PayloadConnectionPromise
-  extends Promise<PayloadConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<PayloadEdge>>() => T;
-  aggregate: <T = AggregatePayload>() => T;
-}
-
-export interface PayloadConnectionSubscription
-  extends Promise<AsyncIterator<PayloadConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PayloadEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePayloadSubscription>() => T;
-}
-
-export interface PayloadPreviousValues {
-  message: String;
-}
-
-export interface PayloadPreviousValuesPromise
-  extends Promise<PayloadPreviousValues>,
-    Fragmentable {
-  message: () => Promise<String>;
-}
-
-export interface PayloadPreviousValuesSubscription
-  extends Promise<AsyncIterator<PayloadPreviousValues>>,
-    Fragmentable {
-  message: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PasswordResetCode {
-  id: ID_Output;
-}
-
-export interface PasswordResetCodePromise
-  extends Promise<PasswordResetCode>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = User>() => T;
-}
-
-export interface PasswordResetCodeSubscription
-  extends Promise<AsyncIterator<PasswordResetCode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoConnection {}
-
-export interface VideoConnectionPromise
-  extends Promise<VideoConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<VideoEdge>>() => T;
-  aggregate: <T = AggregateVideo>() => T;
-}
-
-export interface VideoConnectionSubscription
-  extends Promise<AsyncIterator<VideoConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoSubscription>() => T;
+  node: <T = TopicSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface RatingSubscriptionPayload {
@@ -2200,20 +2597,22 @@ export interface RatingSubscriptionPayloadSubscription
   previousValues: <T = RatingPreviousValuesSubscription>() => T;
 }
 
-export interface AggregateTopic {
-  count: Int;
+export interface TagConnection {}
+
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTag>() => T;
 }
 
-export interface AggregateTopicPromise
-  extends Promise<AggregateTopic>,
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
     Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTopicSubscription
-  extends Promise<AsyncIterator<AggregateTopic>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
 }
 
 export interface RatingPreviousValues {
@@ -2235,58 +2634,62 @@ export interface RatingPreviousValuesSubscription
   total: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface TagEdge {
-  cursor: String;
+export interface Rating {
+  votes: Int;
+  total: Int;
 }
 
-export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
-  node: <T = Tag>() => T;
-  cursor: () => Promise<String>;
+export interface RatingPromise extends Promise<Rating>, Fragmentable {
+  votes: () => Promise<Int>;
+  total: () => Promise<Int>;
 }
 
-export interface TagEdgeSubscription
-  extends Promise<AsyncIterator<TagEdge>>,
+export interface RatingSubscription
+  extends Promise<AsyncIterator<Rating>>,
     Fragmentable {
-  node: <T = TagSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  votes: () => Promise<AsyncIterator<Int>>;
+  total: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface AccountActivationCodeConnection {}
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
 
-export interface AccountActivationCodeConnectionPromise
-  extends Promise<AccountActivationCodeConnection>,
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PayloadConnection {}
+
+export interface PayloadConnectionPromise
+  extends Promise<PayloadConnection>,
     Fragmentable {
   pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<AccountActivationCodeEdge>>() => T;
-  aggregate: <T = AggregateAccountActivationCode>() => T;
+  edges: <T = FragmentableArray<PayloadEdge>>() => T;
+  aggregate: <T = AggregatePayload>() => T;
 }
 
-export interface AccountActivationCodeConnectionSubscription
-  extends Promise<AsyncIterator<AccountActivationCodeConnection>>,
+export interface PayloadConnectionSubscription
+  extends Promise<AsyncIterator<PayloadConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<AccountActivationCodeEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateAccountActivationCodeSubscription>() => T;
-}
-
-export interface RatingConnection {}
-
-export interface RatingConnectionPromise
-  extends Promise<RatingConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<RatingEdge>>() => T;
-  aggregate: <T = AggregateRating>() => T;
-}
-
-export interface RatingConnectionSubscription
-  extends Promise<AsyncIterator<RatingConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RatingEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRatingSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PayloadEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePayloadSubscription>() => T;
 }
 
 export interface TagSubscriptionPayload {
@@ -2312,20 +2715,46 @@ export interface TagSubscriptionPayloadSubscription
   previousValues: <T = TagPreviousValuesSubscription>() => T;
 }
 
-export interface PayloadEdge {
-  cursor: String;
+export interface Language {
+  id: ID_Output;
+  value: String;
+  text: String;
 }
 
-export interface PayloadEdgePromise extends Promise<PayloadEdge>, Fragmentable {
-  node: <T = Payload>() => T;
-  cursor: () => Promise<String>;
+export interface LanguagePromise extends Promise<Language>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  value: () => Promise<String>;
+  text: () => Promise<String>;
+  parent: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
-export interface PayloadEdgeSubscription
-  extends Promise<AsyncIterator<PayloadEdge>>,
+export interface LanguageSubscription
+  extends Promise<AsyncIterator<Language>>,
     Fragmentable {
-  node: <T = PayloadSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  value: () => Promise<AsyncIterator<String>>;
+  text: () => Promise<AsyncIterator<String>>;
+  parent: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface TagPreviousValues {
@@ -2350,38 +2779,38 @@ export interface TagPreviousValuesSubscription
   text: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateVideo {
-  count: Int;
-}
+export interface UserConnection {}
 
-export interface AggregateVideoPromise
-  extends Promise<AggregateVideo>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoSubscription
-  extends Promise<AsyncIterator<AggregateVideo>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TopicConnection {}
-
-export interface TopicConnectionPromise
-  extends Promise<TopicConnection>,
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
     Fragmentable {
   pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<TopicEdge>>() => T;
-  aggregate: <T = AggregateTopic>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUser>() => T;
 }
 
-export interface TopicConnectionSubscription
-  extends Promise<AsyncIterator<TopicConnection>>,
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TopicEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTopicSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface RatingEdge {
+  cursor: String;
+}
+
+export interface RatingEdgePromise extends Promise<RatingEdge>, Fragmentable {
+  node: <T = Rating>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface RatingEdgeSubscription
+  extends Promise<AsyncIterator<RatingEdge>>,
+    Fragmentable {
+  node: <T = RatingSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Tag {
@@ -2471,159 +2900,96 @@ export interface TopicSubscriptionPayloadSubscription
   previousValues: <T = TopicPreviousValuesSubscription>() => T;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
-}
+export interface AccountActivationCodeConnection {}
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface AccountActivationCodeConnectionPromise
+  extends Promise<AccountActivationCodeConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  isActivated: () => Promise<Boolean>;
-  login: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  name: () => Promise<String>;
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<AccountActivationCodeEdge>>() => T;
+  aggregate: <T = AggregateAccountActivationCode>() => T;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface AccountActivationCodeConnectionSubscription
+  extends Promise<AsyncIterator<AccountActivationCodeConnection>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  isActivated: () => Promise<AsyncIterator<Boolean>>;
-  login: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<AccountActivationCodeEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateAccountActivationCodeSubscription>() => T;
 }
 
-export interface AggregateRating {
+export interface AggregatePayload {
   count: Int;
 }
 
-export interface AggregateRatingPromise
-  extends Promise<AggregateRating>,
+export interface AggregatePayloadPromise
+  extends Promise<AggregatePayload>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateRatingSubscription
-  extends Promise<AsyncIterator<AggregateRating>>,
+export interface AggregatePayloadSubscription
+  extends Promise<AsyncIterator<AggregatePayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface UserEdge {
+export interface AggregateTag {
+  count: Int;
+}
+
+export interface AggregateTagPromise
+  extends Promise<AggregateTag>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTagSubscription
+  extends Promise<AsyncIterator<AggregateTag>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoEdge {
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = User>() => T;
+export interface VideoEdgePromise extends Promise<VideoEdge>, Fragmentable {
+  node: <T = Video>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface VideoEdgeSubscription
+  extends Promise<AsyncIterator<VideoEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = VideoSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Payload {
-  message: String;
-}
-
-export interface PayloadPromise extends Promise<Payload>, Fragmentable {
-  message: () => Promise<String>;
-}
-
-export interface PayloadSubscription
-  extends Promise<AsyncIterator<Payload>>,
-    Fragmentable {
-  message: () => Promise<AsyncIterator<String>>;
-}
-
-export interface User {
+export interface PasswordResetCode {
   id: ID_Output;
-  isActivated?: Boolean;
-  login: String;
-  email: String;
-  password: String;
-  name: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface PasswordResetCodePromise
+  extends Promise<PasswordResetCode>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  activationCode: <T = AccountActivationCode>() => T;
-  passwordResetCode: <T = PasswordResetCode>() => T;
-  isActivated: () => Promise<Boolean>;
-  login: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  name: () => Promise<String>;
-  videosAdded: <T = FragmentableArray<Video>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  videosBookmarked: <T = FragmentableArray<Video>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
+  user: <T = User>() => T;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface PasswordResetCodeSubscription
+  extends Promise<AsyncIterator<PasswordResetCode>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  activationCode: <T = AccountActivationCodeSubscription>() => T;
-  passwordResetCode: <T = PasswordResetCodeSubscription>() => T;
-  isActivated: () => Promise<AsyncIterator<Boolean>>;
-  login: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  videosAdded: <T = Promise<AsyncIterator<VideoSubscription>>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  videosBookmarked: <T = Promise<AsyncIterator<VideoSubscription>>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
+  user: <T = UserSubscription>() => T;
 }
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 
@@ -2637,11 +3003,6 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.

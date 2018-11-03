@@ -29,6 +29,10 @@ const VIDEO_QUERY = gql`
     videos(where: $where) {
       ytId
       complexity
+      language {
+        text
+        value
+      }
       tags {
         text
         value

@@ -1,21 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import Link from 'next/link'
 import { Card, Icon, Image } from 'semantic-ui-react'
+import get from 'lodash/get'
+
+type Option = {
+  text: string
+  value: string
+}
 
 export interface IVideo {
   ytId: string
-  tags: [
-    {
-      text: string
-      value: string
-    }
-  ]
-  topics: [
-    {
-      text: string
-      value: string
-    }
-  ]
+  tags: [Option]
+  topics: [Option]
+  language: Option
   complexity: string
   snippet: {
     title: string
@@ -26,13 +23,15 @@ export interface IVideo {
     }
   }
 }
-interface Props {
+
+interface IProps {
   video: IVideo
 }
 
-export default class Video extends Component<Props> {
-  public render() {
+export default class Video extends Component<IProps> {
+  render() {
     const { video } = this.props
+    const language = get(video, ['language', 'text'])
     return (
       <Fragment>
         <Card
@@ -52,10 +51,10 @@ export default class Video extends Component<Props> {
           </div>
 
           <Card.Content>
-            <Card.Meta className="mb-2">
-              <span className="date capitalize">
-                {video.complexity.toLowerCase()}
-              </span>
+            <Card.Meta className="date mb-2 capitalize">
+              {video.complexity.toLowerCase()}
+              {' | '}
+              <em className="text-sm">{language && language.toLowerCase()}</em>
             </Card.Meta>
             <Card.Header className="leading-none">
               <Link href={`/video/${video.ytId}`}>

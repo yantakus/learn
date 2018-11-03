@@ -92,6 +92,10 @@ type AggregateAccountActivationCode {
   count: Int!
 }
 
+type AggregateLanguage {
+  count: Int!
+}
+
 type AggregatePasswordResetCode {
   count: Int!
 }
@@ -131,6 +135,157 @@ enum Complexity {
   EXPERT
 }
 
+type Language {
+  id: ID!
+  value: String!
+  text: String!
+  parent(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+}
+
+type LanguageConnection {
+  pageInfo: PageInfo!
+  edges: [LanguageEdge]!
+  aggregate: AggregateLanguage!
+}
+
+input LanguageCreateInput {
+  value: String!
+  text: String!
+  parent: VideoCreateManyWithoutLanguageInput
+}
+
+input LanguageCreateOneWithoutParentInput {
+  create: LanguageCreateWithoutParentInput
+  connect: LanguageWhereUniqueInput
+}
+
+input LanguageCreateWithoutParentInput {
+  value: String!
+  text: String!
+}
+
+type LanguageEdge {
+  node: Language!
+  cursor: String!
+}
+
+enum LanguageOrderByInput {
+  id_ASC
+  id_DESC
+  value_ASC
+  value_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type LanguagePreviousValues {
+  id: ID!
+  value: String!
+  text: String!
+}
+
+type LanguageSubscriptionPayload {
+  mutation: MutationType!
+  node: Language
+  updatedFields: [String!]
+  previousValues: LanguagePreviousValues
+}
+
+input LanguageSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LanguageWhereInput
+  AND: [LanguageSubscriptionWhereInput!]
+  OR: [LanguageSubscriptionWhereInput!]
+  NOT: [LanguageSubscriptionWhereInput!]
+}
+
+input LanguageUpdateInput {
+  value: String
+  text: String
+  parent: VideoUpdateManyWithoutLanguageInput
+}
+
+input LanguageUpdateOneRequiredWithoutParentInput {
+  create: LanguageCreateWithoutParentInput
+  update: LanguageUpdateWithoutParentDataInput
+  upsert: LanguageUpsertWithoutParentInput
+  connect: LanguageWhereUniqueInput
+}
+
+input LanguageUpdateWithoutParentDataInput {
+  value: String
+  text: String
+}
+
+input LanguageUpsertWithoutParentInput {
+  update: LanguageUpdateWithoutParentDataInput!
+  create: LanguageCreateWithoutParentInput!
+}
+
+input LanguageWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  parent_every: VideoWhereInput
+  parent_some: VideoWhereInput
+  parent_none: VideoWhereInput
+  AND: [LanguageWhereInput!]
+  OR: [LanguageWhereInput!]
+  NOT: [LanguageWhereInput!]
+}
+
+input LanguageWhereUniqueInput {
+  id: ID
+  value: String
+  text: String
+}
+
 scalar Long
 
 type Mutation {
@@ -140,6 +295,12 @@ type Mutation {
   upsertAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!, create: AccountActivationCodeCreateInput!, update: AccountActivationCodeUpdateInput!): AccountActivationCode!
   deleteAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   deleteManyAccountActivationCodes(where: AccountActivationCodeWhereInput): BatchPayload!
+  createLanguage(data: LanguageCreateInput!): Language!
+  updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
+  updateManyLanguages(data: LanguageUpdateInput!, where: LanguageWhereInput): BatchPayload!
+  upsertLanguage(where: LanguageWhereUniqueInput!, create: LanguageCreateInput!, update: LanguageUpdateInput!): Language!
+  deleteLanguage(where: LanguageWhereUniqueInput!): Language
+  deleteManyLanguages(where: LanguageWhereInput): BatchPayload!
   createPasswordResetCode(data: PasswordResetCodeCreateInput!): PasswordResetCode!
   updatePasswordResetCode(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   updateManyPasswordResetCodes(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereInput): BatchPayload!
@@ -365,6 +526,9 @@ type Query {
   accountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   accountActivationCodes(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AccountActivationCode]!
   accountActivationCodesConnection(where: AccountActivationCodeWhereInput, orderBy: AccountActivationCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountActivationCodeConnection!
+  language(where: LanguageWhereUniqueInput!): Language
+  languages(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Language]!
+  languagesConnection(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LanguageConnection!
   passwordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   passwordResetCodes(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PasswordResetCode]!
   passwordResetCodesConnection(where: PasswordResetCodeWhereInput, orderBy: PasswordResetCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PasswordResetCodeConnection!
@@ -473,6 +637,7 @@ input RatingWhereInput {
 
 type Subscription {
   accountActivationCode(where: AccountActivationCodeSubscriptionWhereInput): AccountActivationCodeSubscriptionPayload
+  language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
   passwordResetCode(where: PasswordResetCodeSubscriptionWhereInput): PasswordResetCodeSubscriptionPayload
   payload(where: PayloadSubscriptionWhereInput): PayloadSubscriptionPayload
   rating(where: RatingSubscriptionWhereInput): RatingSubscriptionPayload
@@ -1158,6 +1323,7 @@ type Video {
   id: ID!
   ytId: String!
   complexity: Complexity!
+  language: Language!
   topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   adder: User!
@@ -1173,6 +1339,7 @@ type VideoConnection {
 input VideoCreateInput {
   ytId: String!
   complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
   topics: TopicCreateManyWithoutParentInput
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
@@ -1189,6 +1356,11 @@ input VideoCreateManyWithoutBookmarkersInput {
   connect: [VideoWhereUniqueInput!]
 }
 
+input VideoCreateManyWithoutLanguageInput {
+  create: [VideoCreateWithoutLanguageInput!]
+  connect: [VideoWhereUniqueInput!]
+}
+
 input VideoCreateManyWithoutTagsInput {
   create: [VideoCreateWithoutTagsInput!]
   connect: [VideoWhereUniqueInput!]
@@ -1202,6 +1374,7 @@ input VideoCreateManyWithoutTopicsInput {
 input VideoCreateWithoutAdderInput {
   ytId: String!
   complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
   topics: TopicCreateManyWithoutParentInput
   tags: TagCreateManyWithoutParentInput
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
@@ -1210,14 +1383,25 @@ input VideoCreateWithoutAdderInput {
 input VideoCreateWithoutBookmarkersInput {
   ytId: String!
   complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
   topics: TopicCreateManyWithoutParentInput
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
 }
 
+input VideoCreateWithoutLanguageInput {
+  ytId: String!
+  complexity: Complexity!
+  topics: TopicCreateManyWithoutParentInput
+  tags: TagCreateManyWithoutParentInput
+  adder: UserCreateOneWithoutVideosAddedInput!
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+}
+
 input VideoCreateWithoutTagsInput {
   ytId: String!
   complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
   topics: TopicCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
@@ -1226,6 +1410,7 @@ input VideoCreateWithoutTagsInput {
 input VideoCreateWithoutTopicsInput {
   ytId: String!
   complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
@@ -1276,6 +1461,7 @@ input VideoSubscriptionWhereInput {
 input VideoUpdateInput {
   ytId: String
   complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
   topics: TopicUpdateManyWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
@@ -1300,6 +1486,15 @@ input VideoUpdateManyWithoutBookmarkersInput {
   upsert: [VideoUpsertWithWhereUniqueWithoutBookmarkersInput!]
 }
 
+input VideoUpdateManyWithoutLanguageInput {
+  create: [VideoCreateWithoutLanguageInput!]
+  delete: [VideoWhereUniqueInput!]
+  connect: [VideoWhereUniqueInput!]
+  disconnect: [VideoWhereUniqueInput!]
+  update: [VideoUpdateWithWhereUniqueWithoutLanguageInput!]
+  upsert: [VideoUpsertWithWhereUniqueWithoutLanguageInput!]
+}
+
 input VideoUpdateManyWithoutTagsInput {
   create: [VideoCreateWithoutTagsInput!]
   delete: [VideoWhereUniqueInput!]
@@ -1321,6 +1516,7 @@ input VideoUpdateManyWithoutTopicsInput {
 input VideoUpdateWithoutAdderDataInput {
   ytId: String
   complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
   topics: TopicUpdateManyWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
@@ -1329,14 +1525,25 @@ input VideoUpdateWithoutAdderDataInput {
 input VideoUpdateWithoutBookmarkersDataInput {
   ytId: String
   complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
   topics: TopicUpdateManyWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
 }
 
+input VideoUpdateWithoutLanguageDataInput {
+  ytId: String
+  complexity: Complexity
+  topics: TopicUpdateManyWithoutParentInput
+  tags: TagUpdateManyWithoutParentInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+}
+
 input VideoUpdateWithoutTagsDataInput {
   ytId: String
   complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
   topics: TopicUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
@@ -1345,6 +1552,7 @@ input VideoUpdateWithoutTagsDataInput {
 input VideoUpdateWithoutTopicsDataInput {
   ytId: String
   complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
@@ -1358,6 +1566,11 @@ input VideoUpdateWithWhereUniqueWithoutAdderInput {
 input VideoUpdateWithWhereUniqueWithoutBookmarkersInput {
   where: VideoWhereUniqueInput!
   data: VideoUpdateWithoutBookmarkersDataInput!
+}
+
+input VideoUpdateWithWhereUniqueWithoutLanguageInput {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateWithoutLanguageDataInput!
 }
 
 input VideoUpdateWithWhereUniqueWithoutTagsInput {
@@ -1380,6 +1593,12 @@ input VideoUpsertWithWhereUniqueWithoutBookmarkersInput {
   where: VideoWhereUniqueInput!
   update: VideoUpdateWithoutBookmarkersDataInput!
   create: VideoCreateWithoutBookmarkersInput!
+}
+
+input VideoUpsertWithWhereUniqueWithoutLanguageInput {
+  where: VideoWhereUniqueInput!
+  update: VideoUpdateWithoutLanguageDataInput!
+  create: VideoCreateWithoutLanguageInput!
 }
 
 input VideoUpsertWithWhereUniqueWithoutTagsInput {
@@ -1427,6 +1646,7 @@ input VideoWhereInput {
   complexity_not: Complexity
   complexity_in: [Complexity!]
   complexity_not_in: [Complexity!]
+  language: LanguageWhereInput
   topics_every: TopicWhereInput
   topics_some: TopicWhereInput
   topics_none: TopicWhereInput

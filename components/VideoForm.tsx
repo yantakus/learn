@@ -4,16 +4,19 @@ import { gql } from 'apollo-boost'
 import { graphql } from 'react-apollo'
 import { Message } from 'semantic-ui-react'
 import { Form, Input, Dropdown } from 'formsy-semantic-ui-react'
-import redirect from '../lib/redirect'
 import { paramCase } from 'change-case'
-import printError from '../lib/printError'
-import isEmpty from 'lodash/isEmpty'
-import find from 'lodash/find'
 import cx from 'classnames'
 import fetch from 'isomorphic-unfetch'
+import qs from 'qs'
+
+import isEmpty from 'lodash/isEmpty'
+import find from 'lodash/find'
+import get from 'lodash/get'
+
 import { VIDEOS_QUERY } from '../pages/index'
 import transformOptions from '../lib/transformOptions'
-import get from 'lodash/get'
+import printError from '../lib/printError'
+import redirect from '../lib/redirect'
 
 import Youtube from '../components/Youtube'
 import Private from '../components/Private'
@@ -43,6 +46,7 @@ interface IProps {
   currentData?: {
     ytId: string
     complexity: string
+    language: string
     topics: Options
     tags: Options
   }
@@ -53,6 +57,8 @@ interface IState {
   ytId: string
   ytIdError: string
   ytValue: string
+  language: Options
+  languageOptions: Options
   tags: Options
   tagsOptions: Options
   tagsValue: Array<string>
@@ -64,6 +70,10 @@ interface IState {
 }
 
 const errorLabel = <label />
+
+const createInput = ({ __typename, ...rest }) => {
+  return __typename ? { connect: rest } : { create: rest }
+}
 
 const createManyInput = data => {
   const result: { connect?: []; create?: [] } = {}
@@ -84,6 +94,7 @@ class AddVideo extends Component<IProps, IState> {
   static getDerivedStateFromProps(newProps, oldState) {
     if (!oldState.tagsOptions && newProps.data.tags) {
       return {
+        languageOptions: newProps.data.languages,
         tagsOptions: newProps.data.tags,
         topicsOptions: newProps.data.topics,
       }
@@ -99,11 +110,14 @@ class AddVideo extends Component<IProps, IState> {
     const ytId = get(currentData, 'ytId')
     const tags = get(currentData, 'tags')
     const topics = get(currentData, 'topics')
+    const language = get(currentData, ['language', 'value'])
 
     this.state = {
       ytId: ytId || '',
       ytValue: ytId || '',
       ytIdError: '',
+      language: language || '',
+      languageOptions: null,
       tags: tags || [],
       tagsOptions: null,
       tagsValue: transformOptions(tags) || [],
@@ -115,19 +129,16 @@ class AddVideo extends Component<IProps, IState> {
     }
   }
 
-  handleChange = (_e, { name, value }) => {
-    this.setState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }
-
   validate = (_e, { name, value: initialValue }) => {
     const validLength = 11
     const trimmedValue = initialValue.trim()
     let value = trimmedValue
     if (value.startsWith('http')) {
-      value = value.substr(value.length - validLength)
+      const queryString = value.substring(value.indexOf('?') + 1)
+      const ytId = qs.parse(queryString).v
+      if (ytId.length === 11) {
+        value = ytId
+      }
     }
     this.handleChange(null, { name, value: trimmedValue })
     if (value.length === validLength) {
@@ -154,6 +165,13 @@ class AddVideo extends Component<IProps, IState> {
         ytId: '',
       })
     }
+  }
+
+  handleChange = (_e, { name, value }) => {
+    this.setState(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
   }
 
   handleMultipleChange = (_e, { name, options, value }) => {
@@ -183,6 +201,8 @@ class AddVideo extends Component<IProps, IState> {
       ytId,
       ytValue,
       complexity,
+      language,
+      languageOptions,
       tags,
       tagsValue,
       tagsOptions,
@@ -196,7 +216,7 @@ class AddVideo extends Component<IProps, IState> {
     return (
       <Private>
         <Mutation
-          mutation={MUTATE_VIDEO_MUTATION}
+          mutation={UPSERT_VIDEO_MUTATION}
           onCompleted={() => {
             redirect({}, '/')
           }}
@@ -219,6 +239,9 @@ class AddVideo extends Component<IProps, IState> {
                               update: updateMode,
                               ytId,
                               complexity,
+                              language: createInput(
+                                find(languageOptions, o => o.value === language)
+                              ),
                               tags: createManyInput(tags),
                               topics: createManyInput(topics),
                             },
@@ -246,6 +269,7 @@ class AddVideo extends Component<IProps, IState> {
                           </div>
                         )}
                       </Form.Field>
+
                       <Form.Field>
                         <label>Complexity</label>
                         <Dropdown
@@ -262,6 +286,27 @@ class AddVideo extends Component<IProps, IState> {
                           errorLabel={errorLabel}
                         />
                       </Form.Field>
+
+                      <Form.Field>
+                        <label>Language</label>
+                        <Dropdown
+                          name="language"
+                          options={languageOptions}
+                          search
+                          selection
+                          fluid
+                          allowAdditions
+                          value={language}
+                          onAddItem={this.handleAddition}
+                          onChange={this.handleChange}
+                          required
+                          validationErrors={{
+                            isDefaultRequiredValue: 'This field is required',
+                          }}
+                          errorLabel={errorLabel}
+                        />
+                      </Form.Field>
+
                       <Form.Field>
                         <label>Topics</label>
                         <Dropdown
@@ -283,6 +328,7 @@ class AddVideo extends Component<IProps, IState> {
                           errorLabel={errorLabel}
                         />
                       </Form.Field>
+
                       <Form.Field>
                         <label>Tags</label>
                         <Dropdown
@@ -304,6 +350,7 @@ class AddVideo extends Component<IProps, IState> {
                           errorLabel={errorLabel}
                         />
                       </Form.Field>
+
                       <Form.Button
                         loading={loading}
                         primary
@@ -332,14 +379,19 @@ const VIDEO_META_QUERY = gql`
       text
       value
     }
+    languages {
+      text
+      value
+    }
   }
 `
 
-const MUTATE_VIDEO_MUTATION = gql`
+const UPSERT_VIDEO_MUTATION = gql`
   mutation(
     $update: Boolean
     $ytId: String!
     $complexity: Complexity!
+    $language: LanguageCreateOneWithoutParentInput!
     $topics: TopicCreateManyWithoutParentInput!
     $tags: TagCreateManyWithoutParentInput!
   ) {
@@ -347,6 +399,7 @@ const MUTATE_VIDEO_MUTATION = gql`
       update: $update
       ytId: $ytId
       complexity: $complexity
+      language: $language
       topics: $topics
       tags: $tags
     ) {

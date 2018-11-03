@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 
-import Video, { IVideo } from './item'
+import Video, { IVideo } from './Item'
 import Preloader from '../Preloader'
 
 interface Props {

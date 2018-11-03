@@ -22,4 +22,7 @@ export const Query: QueryResolvers.Type = {
   tags: parent => {
     throw new Error('Resolver not implemented')
   },
+  languages: parent => {
+    throw new Error('Resolver not implemented')
+  },
 }

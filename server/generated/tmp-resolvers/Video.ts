@@ -18,6 +18,9 @@ export const Video: VideoResolvers.Type = {
   bookmarkers: parent => {
     throw new Error('Resolver not implemented')
   },
+  language: parent => {
+    throw new Error('Resolver not implemented')
+  },
   snippet: parent => {
     throw new Error('Resolver not implemented')
   },

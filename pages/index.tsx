@@ -51,6 +51,10 @@ export const VIDEOS_QUERY = gql`
     videos(skip: 0, first: 20, orderBy: "createdAt_DESC") {
       ytId
       complexity
+      language {
+        text
+        value
+      }
       tags {
         text
         value

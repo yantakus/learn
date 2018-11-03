@@ -6,6 +6,10 @@ import { get } from 'lodash'
 export const Video: VideoResolvers.Type = {
   ...VideoResolvers.defaultResolvers,
 
+  language: async ({ id }, args) => {
+    const language = await prisma.languages({ where: { parent_some: { id } } })
+    return language[0]
+  },
   topics: ({ id }, args) => {
     return prisma.topics({ where: { parent_some: { id } } })
   },

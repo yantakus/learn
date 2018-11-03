@@ -6,6 +6,7 @@ import { User } from './prisma'
 import { Video } from './prisma'
 import { Topic } from './prisma'
 import { Tag } from './prisma'
+import { Language } from './prisma'
 import { Payload } from './prisma'
 import { Complexity } from './prisma'
 import { VideoOrderByInput } from './prisma'
@@ -46,6 +47,7 @@ export namespace QueryResolvers {
     complexity_not: string
     complexity_in: string
     complexity_not_in: string
+    language: string
     topics_every: string
     topics_some: string
     topics_none: string
@@ -125,6 +127,13 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo
   ) => Tag[] | Promise<Tag[]>
 
+  export type LanguagesResolver = (
+    parent: {},
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Language[] | Promise<Language[]>
+
   export interface Type {
     videos: (
       parent: {},
@@ -174,12 +183,23 @@ export namespace QueryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Tag[] | Promise<Tag[]>
+
+    languages: (
+      parent: {},
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Language[] | Promise<Language[]>
   }
 }
 
 export namespace MutationResolvers {
   export const defaultResolvers = {}
 
+  export interface LanguageCreateOneWithoutParentInput {
+    create: string
+    connect: string
+  }
   export interface TopicCreateManyWithoutParentInput {
     create: string
     connect: string
@@ -223,6 +243,7 @@ export namespace MutationResolvers {
     update: boolean | null
     ytId: string
     complexity: Complexity
+    language: LanguageCreateOneWithoutParentInput
     topics: TopicCreateManyWithoutParentInput
     tags: TagCreateManyWithoutParentInput
   }
@@ -528,6 +549,13 @@ export namespace VideoResolvers {
     info: GraphQLResolveInfo
   ) => User[] | Promise<User[]>
 
+  export type LanguageResolver = (
+    parent: Video,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Language | Promise<Language>
+
   export type SnippetResolver = (
     parent: Video,
     args: {},
@@ -585,6 +613,13 @@ export namespace VideoResolvers {
       info: GraphQLResolveInfo
     ) => User[] | Promise<User[]>
 
+    language: (
+      parent: Video,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Language | Promise<Language>
+
     snippet: (
       parent: Video,
       args: {},
@@ -634,6 +669,7 @@ export namespace TopicResolvers {
     complexity_not: string
     complexity_in: string
     complexity_not_in: string
+    language: string
     topics_every: string
     topics_some: string
     topics_none: string
@@ -758,6 +794,7 @@ export namespace TagResolvers {
     complexity_not: string
     complexity_in: string
     complexity_not_in: string
+    language: string
     topics_every: string
     topics_some: string
     topics_none: string
@@ -842,6 +879,131 @@ export namespace TagResolvers {
   }
 }
 
+export namespace LanguageResolvers {
+  export const defaultResolvers = {
+    id: (parent: Language) => parent.id,
+    value: (parent: Language) => parent.value,
+    text: (parent: Language) => parent.text,
+  }
+
+  export interface VideoWhereInput {
+    id: string
+    id_not: string
+    id_in: string
+    id_not_in: string
+    id_lt: string
+    id_lte: string
+    id_gt: string
+    id_gte: string
+    id_contains: string
+    id_not_contains: string
+    id_starts_with: string
+    id_not_starts_with: string
+    id_ends_with: string
+    id_not_ends_with: string
+    ytId: string
+    ytId_not: string
+    ytId_in: string
+    ytId_not_in: string
+    ytId_lt: string
+    ytId_lte: string
+    ytId_gt: string
+    ytId_gte: string
+    ytId_contains: string
+    ytId_not_contains: string
+    ytId_starts_with: string
+    ytId_not_starts_with: string
+    ytId_ends_with: string
+    ytId_not_ends_with: string
+    complexity: string
+    complexity_not: string
+    complexity_in: string
+    complexity_not_in: string
+    language: string
+    topics_every: string
+    topics_some: string
+    topics_none: string
+    tags_every: string
+    tags_some: string
+    tags_none: string
+    adder: string
+    bookmarkers_every: string
+    bookmarkers_some: string
+    bookmarkers_none: string
+    AND: string
+    OR: string
+    NOT: string
+  }
+
+  export interface ArgsParent {
+    where: VideoWhereInput | null
+    orderBy: VideoOrderByInput | null
+    skip: number | null
+    after: string | null
+    before: string | null
+    first: number | null
+    last: number | null
+  }
+
+  export type IdResolver = (
+    parent: Language,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>
+
+  export type ValueResolver = (
+    parent: Language,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>
+
+  export type TextResolver = (
+    parent: Language,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>
+
+  export type ParentResolver = (
+    parent: Language,
+    args: ArgsParent,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Video[] | Promise<Video[]>
+
+  export interface Type {
+    id: (
+      parent: Language,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>
+
+    value: (
+      parent: Language,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>
+
+    text: (
+      parent: Language,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>
+
+    parent: (
+      parent: Language,
+      args: ArgsParent,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Video[] | Promise<Video[]>
+  }
+}
+
 export namespace PayloadResolvers {
   export const defaultResolvers = {
     message: (parent: Payload) => parent.message,
@@ -871,5 +1033,6 @@ export interface Resolvers {
   Video: VideoResolvers.Type
   Topic: TopicResolvers.Type
   Tag: TagResolvers.Type
+  Language: LanguageResolvers.Type
   Payload: PayloadResolvers.Type
 }

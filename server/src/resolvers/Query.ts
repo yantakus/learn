@@ -18,7 +18,7 @@ export const Query: QueryResolvers.Type = {
     return null
   },
   videos(_parent, args) {
-    return prisma.videos(args)
+    return (<any>prisma).videos(args)
   },
   video(_parent, args) {
     return prisma.video(args)
@@ -28,5 +28,8 @@ export const Query: QueryResolvers.Type = {
   },
   tags(_parent, args) {
     return prisma.tags(args)
+  },
+  languages(_parent, args) {
+    return prisma.languages(args)
   },
 }

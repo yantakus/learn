@@ -10,6 +10,7 @@ type Query {
   me: User
   topics: [Topic!]!
   tags: [Tag!]!
+  languages: [Language!]!
 }
 
 type Mutation {
@@ -45,6 +46,7 @@ type Mutation {
     update: Boolean
     ytId: String!
     complexity: Complexity!
+    language: LanguageCreateOneWithoutParentInput!
     topics: TopicCreateManyWithoutParentInput!
     tags: TagCreateManyWithoutParentInput!
   ): Video!
@@ -73,5 +75,6 @@ type Video {
   tags: [Tag!]!
   adder: User!
   bookmarkers: [User!]!
+  language: Language!
   snippet: JSON
 }

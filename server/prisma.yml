@@ -7,6 +7,9 @@ generate:
   - generator: graphql-schema
     output: ./generated/prisma
 
+seed:
+  import: migrations.graphql
+
 hooks:
   post-deploy:
     - npm run prisma generate

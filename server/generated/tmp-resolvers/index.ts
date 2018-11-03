@@ -9,6 +9,7 @@ import { User } from './User'
 import { Video } from './Video'
 import { Topic } from './Topic'
 import { Tag } from './Tag'
+import { Language } from './Language'
 import { Payload } from './Payload'
 
 export const resolvers: Resolvers = {
@@ -18,5 +19,6 @@ export const resolvers: Resolvers = {
   Video,
   Topic,
   Tag,
+  Language,
   Payload,
 }
