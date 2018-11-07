@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Mutation } from 'react-apollo'
+import { Mutation, graphql } from 'react-apollo'
+import { getOperationName } from 'apollo-utilities'
 import { gql } from 'apollo-boost'
-import { graphql } from 'react-apollo'
 import { Message } from 'semantic-ui-react'
 import { Form, Input, Dropdown } from 'formsy-semantic-ui-react'
 import { paramCase } from 'change-case'
@@ -21,7 +21,7 @@ import redirect from '../lib/redirect'
 import Youtube from '../components/Youtube'
 import Private from '../components/Private'
 
-const complexities = [
+export const complexities = [
   {
     text: 'Elementary',
     value: 'ELEMENTARY',
@@ -220,7 +220,7 @@ class AddVideo extends Component<IProps, IState> {
           onCompleted={() => {
             redirect({}, '/')
           }}
-          refetchQueries={[{ query: VIDEOS_QUERY }]}
+          refetchQueries={[getOperationName(VIDEOS_QUERY)]}
         >
           {(upsertVideo, { loading, error }) => {
             return (

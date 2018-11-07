@@ -3,7 +3,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-boost'
 import Link from 'next/link'
-import { Grid, Segment } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 
@@ -60,7 +60,7 @@ class MyApp extends App<Props> {
           <Main>
             <div className="ui stackable relaxed container">
               <div className="header item">
-                <h1>
+                <h1 className="mb-8">
                   <Link href="/">
                     <a className="navbar-item">Learn</a>
                   </Link>
@@ -68,9 +68,7 @@ class MyApp extends App<Props> {
               </div>
               <Grid>
                 <Grid.Column stretched width={12}>
-                  <Segment stacked>
-                    <Component router={router} />
-                  </Segment>
+                  <Component router={router} />
                 </Grid.Column>
                 <Grid.Column width={4}>
                   <Menu router={router} />

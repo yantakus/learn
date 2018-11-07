@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Icon } from 'semantic-ui-react'
 import Link from 'next/link'
 
 import { CURRENT_USER_QUERY } from '../components/User'
@@ -22,7 +22,7 @@ interface Props {
   }
 }
 
-const defaultMenuItems = [{ name: 'All Videos', url: '/' }]
+const defaultMenuItems = [{ name: 'All Videos', url: '/', icon: 'home' }]
 let menuItems
 
 export default class MenuComponent extends Component<Props> {
@@ -40,18 +40,22 @@ export default class MenuComponent extends Component<Props> {
               {
                 name: 'My Profile',
                 url: '/me',
+                icon: 'user',
               },
               {
                 name: 'My Videos',
                 url: '/my-videos',
+                icon: 'caret square right',
               },
               {
                 name: 'Bookmarked Videos',
                 url: '/bookmarked-videos',
+                icon: 'bookmark',
               },
               {
                 name: 'Add Video',
                 url: '/add',
+                icon: 'plus square',
               },
             ]
           } else {
@@ -83,7 +87,10 @@ export default class MenuComponent extends Component<Props> {
                       }
                     >
                       <Link prefetch href={i.url}>
-                        <a>{i.name}</a>
+                        <a>
+                          <Icon className="text-grey-darker" name={i.icon} />{' '}
+                          {i.name}
+                        </a>
                       </Link>
                     </Menu.Item>
                   ))}
@@ -93,6 +100,7 @@ export default class MenuComponent extends Component<Props> {
                         onClick={() => signout()}
                         style={{ cursor: 'pointer' }}
                       >
+                        <Icon className="text-grey-darker" name="sign out" />{' '}
                         Sign Out
                       </a>
                     </Menu.Item>
