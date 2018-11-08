@@ -143,10 +143,9 @@ export const VIDEOS_QUERY = gql`
   query VIDEOS_QUERY(
     $skip: Int = 0
     $first: Int = 20
-    $orderBy: String = "createdAt_DESC"
     $where: VideoWhereInput = {}
   ) {
-    videos(skip: $skip, first: $first, orderBy: $orderBy, where: $where) {
+    videos(skip: $skip, first: $first, where: $where) {
       ytId
       complexity
       language {

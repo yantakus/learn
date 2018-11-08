@@ -1,86 +1,92 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Mutation, Query } from 'react-apollo'
+import { getOperationName } from 'apollo-utilities'
 import { gql } from 'apollo-boost'
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Popup } from 'semantic-ui-react'
 import get from 'lodash/get'
 
 import Preloader from '../components/Preloader'
 import User from '../components/User'
+import Youtube from '../components/Youtube'
 
-interface Props {
+interface IProps {
   addVideo: Function
-  query: {
-    id: String
+  router: {
+    query: {
+      ytId: string
+    }
   }
 }
 
-export default class CreateVideo extends Component<Props> {
+export default class VideoPage extends Component<IProps> {
   render() {
     const {
-      query: { id },
+      router: {
+        query: { ytId },
+      },
     } = this.props
     return (
       <User>
-        {({ me }) => (
-          <Query query={VIDEO_QUERY} variables={{ id }} errorPolicy="all">
+        {({ data: { me } }) => (
+          <Query query={VIDEO_QUERY} variables={{ ytId }} errorPolicy="all">
             {({ data, loading }) => {
               if (loading) {
                 return <Preloader />
               }
-              const { video } = data
-              const attending = video.attendees.some(item => {
+              const {
+                video: { id, adder, snippet, bookmarkers },
+              } = data
+              const bookmarked = bookmarkers.some(item => {
                 return get(me, ['id']) === item.id
               })
               return (
                 <Mutation
                   mutation={BOOKMARK_VIDEO_MUTATION}
-                  variables={{ id, attending: !attending }}
+                  refetchQueries={[getOperationName(VIDEO_QUERY)]}
                 >
-                  {(attendVideo: Function, { loading }) => (
+                  {(bookmarkVideo: Function, { loading }) => (
                     <div>
-                      <h1 className="ui dividing header">
-                        {video.title}
-                        <div className="sub header">
-                          Organized by {video.organizer.name}
+                      <Youtube className="mb-5" id={ytId} />
+                      <div className="border-b mb-5">
+                        <div className="flex items-center -mx-2">
+                          <h4 className="flex-1 px-2">Added by {adder.name}</h4>
+                          {me && (
+                            <div className="flex-initial p-2">
+                              <Popup
+                                trigger={
+                                  <Button
+                                    className="small"
+                                    primary={bookmarked}
+                                    icon
+                                    onClick={() =>
+                                      bookmarkVideo({
+                                        variables: { id, adding: !bookmarked },
+                                      })
+                                    }
+                                    loading={loading}
+                                  >
+                                    <Icon
+                                      name={
+                                        bookmarked
+                                          ? 'bookmark'
+                                          : 'bookmark outline'
+                                      }
+                                    />
+                                  </Button>
+                                }
+                                content={
+                                  bookmarked
+                                    ? 'Remove from bookmarks'
+                                    : 'Bookmark'
+                                }
+                              />
+                            </div>
+                          )}
                         </div>
-                      </h1>
+                      </div>
                       <div className="description">
                         <h3 className="ui header">Details</h3>
-                        <p>{video.description}</p>
-                        <p>
-                          <i className="map marker alternate icon" />{' '}
-                          {video.location}
-                        </p>
-                      </div>
-                      {me && (
-                        <Fragment>
-                          <h3 className="ui header">Are you going?</h3>
-                          <Button
-                            primary={attending}
-                            icon
-                            onClick={() =>
-                              attendVideo({ id, attending: !attending })
-                            }
-                            title={attending ? "I'm not going" : "I'm going"}
-                            loading={loading}
-                          >
-                            <Icon
-                              name={attending ? 'thumbs down' : 'thumbs up'}
-                            />
-                          </Button>
-                        </Fragment>
-                      )}
-                      <h3 className="ui header">
-                        Attendees: {video.attendees.length}
-                      </h3>
-                      <div className="ui bulleted list">
-                        {video.attendees.length
-                          ? video.attendees.map(attendee => (
-                              <div key={attendee.id} className="item">
-                                {attendee.name}
-                              </div>
-                            ))
-                          : null}
+                        <p>{snippet.description}</p>
                       </div>
                     </div>
                   )}
@@ -98,16 +104,33 @@ const VIDEO_QUERY = gql`
   query VIDEO_QUERY($ytId: String!) {
     video(ytId: $ytId) {
       id
+      ytId
+      complexity
+      tags {
+        value
+        text
+      }
+      topics {
+        value
+        text
+      }
+      language {
+        text
+      }
+      snippet
       adder {
         name
+      }
+      bookmarkers {
+        id
       }
     }
   }
 `
 
 const BOOKMARK_VIDEO_MUTATION = gql`
-  mutation BOOKMARK_VIDEO_MUTATION($ytId: String!, $adding: Boolean!) {
-    bookmarkVideo(ytId: $ytId, adding: $adding) {
+  mutation BOOKMARK_VIDEO_MUTATION($id: ID!, $adding: Boolean!) {
+    bookmarkVideo(id: $id, adding: $adding) {
       ytId
     }
   }

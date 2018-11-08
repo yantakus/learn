@@ -18,7 +18,7 @@ export const Query: QueryResolvers.Type = {
     return null
   },
   videos(_parent, args) {
-    return (<any>prisma).videos(args)
+    return (<any>prisma).videos({ orderBy: 'createdAt_DESC', ...args })
   },
   video(_parent, args) {
     return prisma.video(args)

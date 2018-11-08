@@ -32,6 +32,7 @@ export default class Video extends Component<IProps> {
   render() {
     const { video } = this.props
     const language = get(video, ['language', 'text'])
+    const complexity = video.complexity.toLowerCase()
     return (
       <Fragment>
         <Card
@@ -52,9 +53,15 @@ export default class Video extends Component<IProps> {
 
           <Card.Content>
             <Card.Meta className="date mb-2 capitalize">
-              {video.complexity.toLowerCase()}
+              <Link href={`/complexity/${complexity}`}>
+                <a className="m-0">{complexity}</a>
+              </Link>
               {' | '}
-              <em className="text-sm">{language && language.toLowerCase()}</em>
+              <Link href={`/language/${language.toLowerCase()}`}>
+                <a>
+                  <em className="text-sm">{language}</em>
+                </a>
+              </Link>
             </Card.Meta>
             <Card.Header className="leading-none">
               <Link href={`/video/${video.ytId}`}>
@@ -82,7 +89,7 @@ export default class Video extends Component<IProps> {
               <Icon name="tag" alt={`Tag${video.tags.length > 1 && 's'}`} />
               {video.tags.map((item, i) => (
                 <span key={item.value}>
-                  <Link href={`/topic/${item.value}`}>
+                  <Link href={`/tag/${item.value}`}>
                     <a>{item.text}</a>
                   </Link>
                   {i < video.tags.length - 1 && ', '}

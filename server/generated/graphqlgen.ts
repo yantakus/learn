@@ -71,7 +71,7 @@ export namespace QueryResolvers {
   }
 
   export interface ArgsVideo {
-    id: string
+    ytId: string
   }
 
   export interface ArgsUser {

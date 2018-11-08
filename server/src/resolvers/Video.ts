@@ -16,11 +16,12 @@ export const Video: VideoResolvers.Type = {
   tags: ({ id }, args) => {
     return prisma.tags({ where: { parent_some: { id } } })
   },
-  adder: parent => {
-    throw new Error('Resolver not implemented')
+  adder: async ({ id }) => {
+    const users = await prisma.users({ where: { videosAdded_some: { id } } })
+    return users[0]
   },
-  bookmarkers: (parent, args) => {
-    throw new Error('Resolver not implemented')
+  bookmarkers: ({ id }, args) => {
+    return prisma.users({ where: { videosBookmarked_some: { id } } })
   },
   snippet: async (parent, args) => {
     const response = await fetch(

@@ -7,7 +7,7 @@ const Youtube = ({
   ...rest
 }: {
   id: string
-  className: string
+  className?: string
 }) => (
   <Embed
     className={className}

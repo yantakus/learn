@@ -1,8 +1,12 @@
 const routes = require('next-routes')
 
 module.exports = routes()
-  .add('video', '/video/:id')
+  .add('video', '/video/:ytId')
   .add('user', '/user/:login')
   .add('activate', '/activate/:id')
   .add('reset-password/confirm', '/reset-password/confirm/:id')
   .add('edit', '/video/:ytId/edit')
+  .add('topic', '/topic/:topic')
+  .add('tag', '/tag/:tag')
+  .add('complexity', '/complexity/:complexity')
+  .add('language', '/language/:language')
