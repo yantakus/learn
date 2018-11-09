@@ -26,7 +26,7 @@ class Activate extends Component<IProps> {
     return (
       <Fragment>
         {loading ? (
-          <Preloader height={66} />
+          <Preloader />
         ) : error ? (
           <Message error content={printError(error)} />
         ) : (
@@ -41,15 +41,19 @@ class Activate extends Component<IProps> {
 }
 
 interface IPageProps {
-  query: {
-    id: String
+  router: {
+    query: {
+      id: String
+    }
   }
 }
 
 export default class ActivatePage extends Component<IPageProps> {
   render() {
     const {
-      query: { id },
+      router: {
+        query: { id },
+      },
     } = this.props
     return (
       <Mutation mutation={mutation}>

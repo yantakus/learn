@@ -458,6 +458,22 @@ export type AccountActivationCodeOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type Role = "USER" | "EDITOR" | "ADMIN";
+
+export type Complexity = "ELEMENTARY" | "BASIC" | "ADVANCED" | "EXPERT";
+
+export type RatingOrderByInput =
+  | "votes_ASC"
+  | "votes_DESC"
+  | "total_ASC"
+  | "total_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type VideoOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -507,12 +523,22 @@ export type UserOrderByInput =
   | "password_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "role_ASC"
+  | "role_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Complexity = "ELEMENTARY" | "BASIC" | "ADVANCED" | "EXPERT";
+export type PayloadOrderByInput =
+  | "message_ASC"
+  | "message_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -536,33 +562,13 @@ export type PasswordResetCodeOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type PayloadOrderByInput =
-  | "message_ASC"
-  | "message_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type RatingOrderByInput =
-  | "votes_ASC"
-  | "votes_DESC"
-  | "total_ASC"
-  | "total_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export interface LanguageUpdateOneRequiredWithoutParentInput {
-  create?: LanguageCreateWithoutParentInput;
-  update?: LanguageUpdateWithoutParentDataInput;
-  upsert?: LanguageUpsertWithoutParentInput;
-  connect?: LanguageWhereUniqueInput;
+export interface VideoUpdateWithoutAdderDataInput {
+  ytId?: String;
+  complexity?: Complexity;
+  language?: LanguageUpdateOneRequiredWithoutParentInput;
+  topics?: TopicUpdateManyWithoutParentInput;
+  tags?: TagUpdateManyWithoutParentInput;
+  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
 }
 
 export type AccountActivationCodeWhereUniqueInput = AtLeastOne<{
@@ -575,7 +581,7 @@ export interface TopicUpsertWithWhereUniqueWithoutParentInput {
   create: TopicCreateWithoutParentInput;
 }
 
-export interface AccountActivationCodeWhereInput {
+export interface PasswordResetCodeWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -591,9 +597,9 @@ export interface AccountActivationCodeWhereInput {
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
   user?: UserWhereInput;
-  AND?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
-  OR?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
-  NOT?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
+  AND?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+  OR?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+  NOT?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
 }
 
 export interface TagUpdateManyWithoutParentInput {
@@ -690,6 +696,10 @@ export interface UserWhereInput {
   videosBookmarked_every?: VideoWhereInput;
   videosBookmarked_some?: VideoWhereInput;
   videosBookmarked_none?: VideoWhereInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -874,6 +884,7 @@ export interface UserCreateWithoutVideosBookmarkedInput {
   password: String;
   name: String;
   videosAdded?: VideoCreateManyWithoutAdderInput;
+  role?: Role;
 }
 
 export interface AccountActivationCodeSubscriptionWhereInput {
@@ -918,6 +929,7 @@ export interface UserUpdateInput {
   name?: String;
   videosAdded?: VideoUpdateManyWithoutAdderInput;
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface VideoCreateWithoutBookmarkersInput {
@@ -958,6 +970,7 @@ export interface UserCreateWithoutVideosAddedInput {
   password: String;
   name: String;
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface VideoUpdateManyWithoutTopicsInput {
@@ -1009,6 +1022,7 @@ export interface UserUpdateWithoutActivationCodeDataInput {
   name?: String;
   videosAdded?: VideoUpdateManyWithoutAdderInput;
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface VideoUpsertWithWhereUniqueWithoutTagsInput {
@@ -1068,13 +1082,8 @@ export interface VideoCreateWithoutTagsInput {
   bookmarkers?: UserCreateManyWithoutVideosBookmarkedInput;
 }
 
-export interface VideoUpdateWithoutAdderDataInput {
-  ytId?: String;
-  complexity?: Complexity;
-  language?: LanguageUpdateOneRequiredWithoutParentInput;
-  topics?: TopicUpdateManyWithoutParentInput;
-  tags?: TagUpdateManyWithoutParentInput;
-  bookmarkers?: UserUpdateManyWithoutVideosBookmarkedInput;
+export interface PasswordResetCodeUpdateInput {
+  user?: UserUpdateOneWithoutPasswordResetCodeInput;
 }
 
 export interface VideoCreateManyWithoutTagsInput {
@@ -1082,8 +1091,11 @@ export interface VideoCreateManyWithoutTagsInput {
   connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
-export interface PasswordResetCodeUpdateInput {
-  user?: UserUpdateOneWithoutPasswordResetCodeInput;
+export interface LanguageUpdateOneRequiredWithoutParentInput {
+  create?: LanguageCreateWithoutParentInput;
+  update?: LanguageUpdateWithoutParentDataInput;
+  upsert?: LanguageUpsertWithoutParentInput;
+  connect?: LanguageWhereUniqueInput;
 }
 
 export interface RatingUpdateInput {
@@ -1151,7 +1163,7 @@ export interface AccountActivationCodeCreateInput {
   user?: UserCreateOneWithoutActivationCodeInput;
 }
 
-export interface PasswordResetCodeWhereInput {
+export interface AccountActivationCodeWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1167,9 +1179,9 @@ export interface PasswordResetCodeWhereInput {
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
   user?: UserWhereInput;
-  AND?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
-  OR?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
-  NOT?: PasswordResetCodeWhereInput[] | PasswordResetCodeWhereInput;
+  AND?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
+  OR?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
+  NOT?: AccountActivationCodeWhereInput[] | AccountActivationCodeWhereInput;
 }
 
 export interface UserCreateWithoutActivationCodeInput {
@@ -1181,6 +1193,7 @@ export interface UserCreateWithoutActivationCodeInput {
   name: String;
   videosAdded?: VideoCreateManyWithoutAdderInput;
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface UserCreateWithoutPasswordResetCodeInput {
@@ -1192,6 +1205,7 @@ export interface UserCreateWithoutPasswordResetCodeInput {
   name: String;
   videosAdded?: VideoCreateManyWithoutAdderInput;
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface VideoCreateManyWithoutAdderInput {
@@ -1323,6 +1337,7 @@ export interface UserCreateInput {
   name: String;
   videosAdded?: VideoCreateManyWithoutAdderInput;
   videosBookmarked?: VideoCreateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface UserUpdateWithoutVideosBookmarkedDataInput {
@@ -1334,6 +1349,7 @@ export interface UserUpdateWithoutVideosBookmarkedDataInput {
   password?: String;
   name?: String;
   videosAdded?: VideoUpdateManyWithoutAdderInput;
+  role?: Role;
 }
 
 export interface VideoUpdateWithWhereUniqueWithoutTopicsInput {
@@ -1444,6 +1460,7 @@ export interface UserUpdateWithoutPasswordResetCodeDataInput {
   name?: String;
   videosAdded?: VideoUpdateManyWithoutAdderInput;
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface UserUpdateOneRequiredWithoutVideosAddedInput {
@@ -1467,6 +1484,7 @@ export interface UserUpdateWithoutVideosAddedDataInput {
   password?: String;
   name?: String;
   videosBookmarked?: VideoUpdateManyWithoutBookmarkersInput;
+  role?: Role;
 }
 
 export interface TagWhereInput {
@@ -2241,6 +2259,7 @@ export interface UserPreviousValues {
   email: String;
   password: String;
   name: String;
+  role: Role;
 }
 
 export interface UserPreviousValuesPromise
@@ -2252,6 +2271,7 @@ export interface UserPreviousValuesPromise
   email: () => Promise<String>;
   password: () => Promise<String>;
   name: () => Promise<String>;
+  role: () => Promise<Role>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -2263,6 +2283,7 @@ export interface UserPreviousValuesSubscription
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
 export interface User {
@@ -2272,6 +2293,7 @@ export interface User {
   email: String;
   password: String;
   name: String;
+  role: Role;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -2305,6 +2327,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
       last?: Int;
     }
   ) => T;
+  role: () => Promise<Role>;
 }
 
 export interface UserSubscription
@@ -2340,6 +2363,7 @@ export interface UserSubscription
       last?: Int;
     }
   ) => T;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
 export interface PasswordResetCodeSubscriptionPayload {

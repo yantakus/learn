@@ -32,8 +32,7 @@ export default class MenuComponent extends Component<Props> {
     } = this.props
     return (
       <User>
-        {({ data }) => {
-          const user = data && data.me
+        {user => {
           if (user) {
             menuItems = [
               ...defaultMenuItems,

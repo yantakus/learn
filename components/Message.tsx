@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Message } from 'semantic-ui-react'
 
 interface IProps {
-  content: String
-  error: Boolean
+  content: string
+  error?: boolean
+  success?: boolean
 }
 
 class User extends Component<IProps> {

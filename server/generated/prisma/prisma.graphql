@@ -635,6 +635,12 @@ input RatingWhereInput {
   NOT: [RatingWhereInput!]
 }
 
+enum Role {
+  USER
+  EDITOR
+  ADMIN
+}
+
 type Subscription {
   accountActivationCode(where: AccountActivationCodeSubscriptionWhereInput): AccountActivationCodeSubscriptionPayload
   language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
@@ -976,6 +982,7 @@ type User {
   name: String!
   videosAdded(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   videosBookmarked(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  role: Role!
 }
 
 type UserConnection {
@@ -994,6 +1001,7 @@ input UserCreateInput {
   name: String!
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserCreateManyWithoutVideosBookmarkedInput {
@@ -1025,6 +1033,7 @@ input UserCreateWithoutActivationCodeInput {
   name: String!
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserCreateWithoutPasswordResetCodeInput {
@@ -1036,6 +1045,7 @@ input UserCreateWithoutPasswordResetCodeInput {
   name: String!
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserCreateWithoutVideosAddedInput {
@@ -1047,6 +1057,7 @@ input UserCreateWithoutVideosAddedInput {
   password: String!
   name: String!
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserCreateWithoutVideosBookmarkedInput {
@@ -1058,6 +1069,7 @@ input UserCreateWithoutVideosBookmarkedInput {
   password: String!
   name: String!
   videosAdded: VideoCreateManyWithoutAdderInput
+  role: Role
 }
 
 type UserEdge {
@@ -1078,6 +1090,8 @@ enum UserOrderByInput {
   password_DESC
   name_ASC
   name_DESC
+  role_ASC
+  role_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1091,6 +1105,7 @@ type UserPreviousValues {
   email: String!
   password: String!
   name: String!
+  role: Role!
 }
 
 type UserSubscriptionPayload {
@@ -1121,6 +1136,7 @@ input UserUpdateInput {
   name: String
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserUpdateManyWithoutVideosBookmarkedInput {
@@ -1166,6 +1182,7 @@ input UserUpdateWithoutActivationCodeDataInput {
   name: String
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserUpdateWithoutPasswordResetCodeDataInput {
@@ -1177,6 +1194,7 @@ input UserUpdateWithoutPasswordResetCodeDataInput {
   name: String
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserUpdateWithoutVideosAddedDataInput {
@@ -1188,6 +1206,7 @@ input UserUpdateWithoutVideosAddedDataInput {
   password: String
   name: String
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  role: Role
 }
 
 input UserUpdateWithoutVideosBookmarkedDataInput {
@@ -1199,6 +1218,7 @@ input UserUpdateWithoutVideosBookmarkedDataInput {
   password: String
   name: String
   videosAdded: VideoUpdateManyWithoutAdderInput
+  role: Role
 }
 
 input UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
@@ -1308,6 +1328,10 @@ input UserWhereInput {
   videosBookmarked_every: VideoWhereInput
   videosBookmarked_some: VideoWhereInput
   videosBookmarked_none: VideoWhereInput
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

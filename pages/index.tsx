@@ -148,6 +148,9 @@ export const VIDEOS_QUERY = gql`
     videos(skip: $skip, first: $first, where: $where) {
       ytId
       complexity
+      adder {
+        id
+      }
       language {
         text
         value

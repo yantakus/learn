@@ -9,6 +9,7 @@ import { Tag } from './prisma'
 import { Language } from './prisma'
 import { Payload } from './prisma'
 import { Complexity } from './prisma'
+import { Role } from './prisma'
 import { VideoOrderByInput } from './prisma'
 
 export namespace QueryResolvers {
@@ -66,7 +67,6 @@ export namespace QueryResolvers {
   export interface ArgsVideos {
     skip: number | null
     first: number | null
-    orderBy: string | null
     where: VideoWhereInput | null
   }
 
@@ -390,6 +390,7 @@ export namespace UserResolvers {
     login: (parent: User) => parent.login,
     email: (parent: User) => parent.email,
     name: (parent: User) => parent.name,
+    role: (parent: User) => parent.role,
   }
 
   export type IdResolver = (
@@ -441,6 +442,13 @@ export namespace UserResolvers {
     info: GraphQLResolveInfo
   ) => Video[] | Promise<Video[]>
 
+  export type RoleResolver = (
+    parent: User,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Role | Promise<Role>
+
   export interface Type {
     id: (
       parent: User,
@@ -490,6 +498,13 @@ export namespace UserResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Video[] | Promise<Video[]>
+
+    role: (
+      parent: User,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Role | Promise<Role>
   }
 }
 

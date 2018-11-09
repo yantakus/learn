@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Link from 'next/link'
 import { Card, Icon, Image } from 'semantic-ui-react'
 import get from 'lodash/get'
+import User from '../User'
 
 type Option = {
   text: string
@@ -14,6 +15,9 @@ export interface IVideo {
   topics: [Option]
   language: Option
   complexity: string
+  adder: {
+    id: string
+  }
   snippet: {
     title: string
     thumbnails: {
@@ -41,14 +45,28 @@ export default class Video extends Component<IProps> {
         >
           <div className="position-relative">
             <Image src={video.snippet.thumbnails.medium.url} />
-            <Link href={`/video/${video.ytId}/edit`}>
-              <a className="edit">
-                <Icon
-                  style={{ color: 'white', margin: 0 }}
-                  name="edit outline"
-                />
-              </a>
-            </Link>
+            <User nullable>
+              {({ id, role }) => {
+                if (
+                  role === 'ADMIN' ||
+                  role === 'EDITOR' ||
+                  video.adder.id === id
+                ) {
+                  return (
+                    <Link href={`/video/${video.ytId}/edit`}>
+                      <a className="edit">
+                        <Icon
+                          style={{ color: 'white', margin: 0 }}
+                          name="edit outline"
+                        />
+                      </a>
+                    </Link>
+                  )
+                } else {
+                  return null
+                }
+              }}
+            </User>
           </div>
 
           <Card.Content>

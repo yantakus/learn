@@ -65,6 +65,7 @@ type User {
   login: String
   videosAdded: [Video!]!
   videosBookmarked: [Video!]!
+  role: Role!
 }
 
 type Video {

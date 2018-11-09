@@ -244,20 +244,47 @@ export const Mutation: MutationResolvers.Type = {
       if (args.ytId.length !== 11) {
         throw new Error('Incorrect youtube video id.')
       }
-
-      const video = await prisma.video({
-        ytId: args.ytId,
-      })
-      if (update) {
-        // https://github.com/prisma/graphqlgen/issues/67
-        return (<any>prisma).updateVideo({
-          where: {
-            id: video.id,
-          },
-          data: {
-            ...args,
-          },
+      const fragment = `
+        fragment UserWithAdder on User {
+          id
+          adder {
+            id
+          }
+        }
+        `
+      const videos = await prisma
+        .videos({
+          where: { ytId: args.ytId },
         })
+        .$fragment(fragment)
+
+      const video = videos[0]
+
+      if (update) {
+        if (video) {
+          const user = await prisma.user({ id: userId })
+          if (
+            user.role === 'ADMIN' ||
+            user.role === 'EDITOR' ||
+            userId === video.adder.id
+          ) {
+            // https://github.com/prisma/graphqlgen/issues/67
+            return (<any>prisma).updateVideo({
+              where: {
+                id: video.id,
+              },
+              data: {
+                ...args,
+              },
+            })
+          } else {
+            throw new Error(
+              "You are trying to edit another user's video and you have insufficient permissions to do this."
+            )
+          }
+        } else {
+          throw new Error('You are trying to update inexisting video.')
+        }
       } else {
         if (video) {
           throw new Error(
