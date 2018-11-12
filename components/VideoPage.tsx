@@ -3,9 +3,8 @@ import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import { Header, Breadcrumb } from 'semantic-ui-react'
 import Link from 'next/link'
-import Head from 'next/head'
-import { TITLE_POSTFIX } from '../constants'
 
+import PageTitle from '../components/PageTitle'
 import Videos from '../components/Videos'
 
 interface IProps {
@@ -30,11 +29,6 @@ class VideoPage extends Component<IProps> {
           const title = `Videos with "${value}" ${type}`
           return (
             <Fragment>
-              <Head>
-                <title>
-                  {title} {TITLE_POSTFIX}
-                </title>
-              </Head>
               <Breadcrumb>
                 <Link href="/">
                   <a>Home</a>
@@ -46,7 +40,8 @@ class VideoPage extends Component<IProps> {
                 <Breadcrumb.Divider />
                 <Breadcrumb.Section active>{value}</Breadcrumb.Section>
               </Breadcrumb>
-              <Header as="h2" dividing>
+              <PageTitle>{title}</PageTitle>
+              <Header >
                 {title}
               </Header>
               <Videos data={data.videos} loading={loading} />

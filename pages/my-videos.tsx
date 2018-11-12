@@ -1,19 +1,15 @@
 import React from 'react'
-import get from 'lodash/get'
 
-import User from '../components/User'
+import Private from '../components/Private'
 import Videos from '../components/Videos'
 
 export default () => (
-  <User>
-    {props => {
-      const { data, loading } = props
-      if (!get(data, ['me']) && !loading) {
+  <Private returnUser>
+    {(user, loading) => {
+      if (!user && !loading) {
         return 'You are not logged in'
       }
-      return (
-        <Videos data={get(data, ['me', 'videosAdded'])} loading={loading} />
-      )
+      return <Videos data={user.videosAdded} loading={loading} />
     }}
-  </User>
+  </Private>
 )

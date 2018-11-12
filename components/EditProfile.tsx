@@ -42,30 +42,36 @@ export default class Signin extends Component<Types> {
                 error={Boolean(error)}
                 success={Boolean(called && !error)}
               >
-                <Form.Field inline>
-                  <label>Login:</label>
-                  <Input
-                    type="text"
-                    name="login"
-                    value={login}
-                    required
-                    onChange={this.handleChange}
-                  />
-                </Form.Field>
-                <Form.Field inline>
-                  <label>Name:</label>
-                  <Input
-                    type="text"
-                    name="name"
-                    value={name}
-                    required
-                    onChange={this.handleChange}
-                  />
-                </Form.Field>
-                <Form.Field inline>
-                  <label>Email:</label>
-                  <strong>{email}</strong>
-                </Form.Field>
+                <div className="mb-4">
+                  <Form.Field inline>
+                    <label>Login:</label>
+                    <Input
+                      type="text"
+                      name="login"
+                      value={login}
+                      required
+                      onChange={this.handleChange}
+                    />
+                  </Form.Field>
+                </div>
+                <div className="mb-4">
+                  <Form.Field inline>
+                    <label>Name:</label>
+                    <Input
+                      type="text"
+                      name="name"
+                      value={name}
+                      required
+                      onChange={this.handleChange}
+                    />
+                  </Form.Field>
+                </div>
+                <div className="mb-4">
+                  <Form.Field inline>
+                    <label>Email:</label>
+                    <strong>{email}</strong>
+                  </Form.Field>
+                </div>
                 <Form.Button loading={loading} primary content="Edit Profile" />
                 <Message error content={String(error)} />
                 <Message

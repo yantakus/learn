@@ -43,6 +43,7 @@ export const complexities = [
 type Options = Array<{ text: string; value: string }>
 
 interface IProps {
+  ytId?: string
   currentData?: {
     ytId: string
     complexity: string
@@ -107,7 +108,7 @@ class AddVideo extends Component<IProps, IState> {
 
     const { currentData } = props
 
-    const ytId = get(currentData, 'ytId')
+    const ytId = get(currentData, 'ytId') || this.props.ytId
     const tags = get(currentData, 'tags')
     const topics = get(currentData, 'topics')
     const language = get(currentData, ['language', 'value'])

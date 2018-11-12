@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 import { mailjet, cryptPassword } from '../utils'
 import { MutationResolvers } from '../../generated/graphqlgen'
 import { AuthError } from '../utils'
+import { BONUSES } from '../constants'
 
 export const Mutation: MutationResolvers.Type = {
   ...MutationResolvers.defaultResolvers,
@@ -100,8 +101,16 @@ export const Mutation: MutationResolvers.Type = {
     })
 
     if (user) {
+      await prisma.updateUser({
+        where: {
+          id: user.id,
+        },
+        data: { rank: user.rank + BONUSES.SIGN_UP },
+      })
       return {
-        message: 'Your account is successfully activated. Now you can sign in.',
+        message: `Your account is successfully activated. You've been granted ${
+          BONUSES.SIGN_UP
+        } rank points. Now you can sign in.`,
       }
     } else {
       throw new Error('Unexpected error during account activation.')
@@ -291,6 +300,15 @@ export const Mutation: MutationResolvers.Type = {
             'Youtube video with this id already exists in our database.'
           )
         }
+
+        // grant user points for adding video
+        const user = await prisma.user({ id: userId })
+        await prisma.updateUser({
+          where: {
+            id: user.id,
+          },
+          data: { rank: user.rank + BONUSES.ADD_VIDEO },
+        })
         // https://github.com/prisma/graphqlgen/issues/67
         return (<any>prisma).createVideo({
           adder: {

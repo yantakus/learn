@@ -5,7 +5,7 @@ scalar JSON
 type Query {
   videos(skip: Int, first: Int, where: VideoWhereInput): [Video!]!
   video(ytId: String!): Video!
-  users: [User!]!
+  users(orderBy: String): [User!]!
   user(login: String!): User
   me: User
   topics: [Topic!]!
@@ -66,6 +66,7 @@ type User {
   videosAdded: [Video!]!
   videosBookmarked: [Video!]!
   role: Role!
+  rank: Int!
 }
 
 type Video {

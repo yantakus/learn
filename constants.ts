@@ -1,1 +1,1 @@
-export const TITLE_POSTFIX = '| Learn'
+export const PROJECT_NAME = 'Learn'

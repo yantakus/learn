@@ -22,7 +22,10 @@ interface Props {
   }
 }
 
-const defaultMenuItems = [{ name: 'All Videos', url: '/', icon: 'home' }]
+const defaultMenuItems = [
+  { name: 'All Videos', url: '/', icon: 'home' },
+  { name: 'Top users', url: '/top-users', icon: 'users' },
+]
 let menuItems
 
 export default class MenuComponent extends Component<Props> {

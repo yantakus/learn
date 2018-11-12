@@ -1,7 +1,26 @@
 import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 
-const CURRENT_USER_QUERY = gql`
+const video = `{
+  id
+  ytId
+  complexity
+  tags {
+    text
+    value
+  }
+  topics {
+    text
+    value
+  }
+  language {
+    text
+    value
+  }
+  snippet
+}`
+
+export const CURRENT_USER_QUERY = gql`
   query {
     me {
       id
@@ -9,9 +28,9 @@ const CURRENT_USER_QUERY = gql`
       login
       email
       role
-      videosAdded {
-        ytId
-      }
+      rank
+      videosAdded ${video}
+      videosBookmarked ${video}
     }
   }
 `
@@ -38,4 +57,3 @@ const User = ({ children, nullable, ...rest }: IProps) => (
 )
 
 export default User
-export { CURRENT_USER_QUERY }

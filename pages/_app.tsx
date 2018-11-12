@@ -3,7 +3,6 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-boost'
 import Link from 'next/link'
-import { Grid } from 'semantic-ui-react'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 
@@ -66,14 +65,14 @@ class MyApp extends App<Props> {
                   </Link>
                 </h1>
               </div>
-              <Grid>
-                <Grid.Column stretched width={12}>
+              <div className="flex -mx-4">
+                <div className="flex-1 px-4">
                   <Component router={router} />
-                </Grid.Column>
-                <Grid.Column width={4}>
+                </div>
+                <div className="flex-initial px-4">
                   <Menu router={router} />
-                </Grid.Column>
-              </Grid>
+                </div>
+              </div>
             </div>
           </Main>
         </ApolloProvider>

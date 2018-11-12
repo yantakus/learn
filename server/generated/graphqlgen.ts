@@ -391,6 +391,7 @@ export namespace UserResolvers {
     email: (parent: User) => parent.email,
     name: (parent: User) => parent.name,
     role: (parent: User) => parent.role,
+    rank: (parent: User) => parent.rank,
   }
 
   export type IdResolver = (
@@ -449,6 +450,13 @@ export namespace UserResolvers {
     info: GraphQLResolveInfo
   ) => Role | Promise<Role>
 
+  export type RankResolver = (
+    parent: User,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>
+
   export interface Type {
     id: (
       parent: User,
@@ -505,6 +513,13 @@ export namespace UserResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Role | Promise<Role>
+
+    rank: (
+      parent: User,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>
   }
 }
 

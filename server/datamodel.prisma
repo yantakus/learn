@@ -21,6 +21,7 @@ type User {
   videosAdded: [Video!]! @relation(name: "UserVideos")
   videosBookmarked: [Video!]! @relation(name: "UserBookmarks")
   role: Role! @default(value: USER)
+  rank: Int! @default(value: 0)
 }
 
 type Topic {

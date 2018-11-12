@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react'
 import Link from 'next/link'
 import { Divider } from 'semantic-ui-react'
 
-import User from '../../components/User'
+import Private from '../../components/Private'
 import UserProfile from '../../components/UserProfile'
 
 class UserPage extends Component {
   render() {
     return (
-      <User>
+      <Private returnUser>
         {(user, loading) => {
           return (
             <Fragment>
@@ -24,7 +24,7 @@ class UserPage extends Component {
             </Fragment>
           )
         }}
-      </User>
+      </Private>
     )
   }
 }

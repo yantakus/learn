@@ -983,6 +983,7 @@ type User {
   videosAdded(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   videosBookmarked(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   role: Role!
+  rank: Int!
 }
 
 type UserConnection {
@@ -1002,6 +1003,7 @@ input UserCreateInput {
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserCreateManyWithoutVideosBookmarkedInput {
@@ -1034,6 +1036,7 @@ input UserCreateWithoutActivationCodeInput {
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserCreateWithoutPasswordResetCodeInput {
@@ -1046,6 +1049,7 @@ input UserCreateWithoutPasswordResetCodeInput {
   videosAdded: VideoCreateManyWithoutAdderInput
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserCreateWithoutVideosAddedInput {
@@ -1058,6 +1062,7 @@ input UserCreateWithoutVideosAddedInput {
   name: String!
   videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserCreateWithoutVideosBookmarkedInput {
@@ -1070,6 +1075,7 @@ input UserCreateWithoutVideosBookmarkedInput {
   name: String!
   videosAdded: VideoCreateManyWithoutAdderInput
   role: Role
+  rank: Int
 }
 
 type UserEdge {
@@ -1092,6 +1098,8 @@ enum UserOrderByInput {
   name_DESC
   role_ASC
   role_DESC
+  rank_ASC
+  rank_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1106,6 +1114,7 @@ type UserPreviousValues {
   password: String!
   name: String!
   role: Role!
+  rank: Int!
 }
 
 type UserSubscriptionPayload {
@@ -1137,6 +1146,7 @@ input UserUpdateInput {
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserUpdateManyWithoutVideosBookmarkedInput {
@@ -1183,6 +1193,7 @@ input UserUpdateWithoutActivationCodeDataInput {
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserUpdateWithoutPasswordResetCodeDataInput {
@@ -1195,6 +1206,7 @@ input UserUpdateWithoutPasswordResetCodeDataInput {
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserUpdateWithoutVideosAddedDataInput {
@@ -1207,6 +1219,7 @@ input UserUpdateWithoutVideosAddedDataInput {
   name: String
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
+  rank: Int
 }
 
 input UserUpdateWithoutVideosBookmarkedDataInput {
@@ -1219,6 +1232,7 @@ input UserUpdateWithoutVideosBookmarkedDataInput {
   name: String
   videosAdded: VideoUpdateManyWithoutAdderInput
   role: Role
+  rank: Int
 }
 
 input UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
@@ -1332,6 +1346,14 @@ input UserWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  rank: Int
+  rank_not: Int
+  rank_in: [Int!]
+  rank_not_in: [Int!]
+  rank_lt: Int
+  rank_lte: Int
+  rank_gt: Int
+  rank_gte: Int
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

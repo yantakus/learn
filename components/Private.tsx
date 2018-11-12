@@ -1,12 +1,18 @@
-import { Query } from 'react-apollo'
-import { CURRENT_USER_QUERY } from './User'
+import React from 'react'
+
+import User from './User'
 import Signin from './Signin'
 
-const Private = props => (
-  <Query query={CURRENT_USER_QUERY}>
-    {({ data, loading }) => {
+interface IProps {
+  returnUser?: boolean // return function and pass user as parameter
+  children: any
+}
+
+const Private = ({ returnUser, children }: IProps) => (
+  <User>
+    {(user, loading) => {
       if (loading) return <p>Loading...</p>
-      if (!data.me) {
+      if (!user) {
         return (
           <div>
             <h3 className="text-center mb-10">
@@ -16,9 +22,13 @@ const Private = props => (
           </div>
         )
       }
-      return props.children
+      if (returnUser) {
+        return children(user, loading)
+      } else {
+        return children
+      }
     }}
-  </Query>
+  </User>
 )
 
 export default Private
