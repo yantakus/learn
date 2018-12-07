@@ -142,12 +142,13 @@ class HomePage extends Component<{}, IState> {
 export const VIDEOS_QUERY = gql`
   query VIDEOS_QUERY(
     $skip: Int = 0
-    $first: Int = 20
+    $first: Int = 9999
     $where: VideoWhereInput = {}
   ) {
     videos(skip: $skip, first: $first, where: $where) {
       ytId
       complexity
+      voteScore
       adder {
         id
       }

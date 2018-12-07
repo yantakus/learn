@@ -6,7 +6,7 @@ import { LanguageResolvers } from '../graphqlgen'
 export const Language: LanguageResolvers.Type = {
   ...LanguageResolvers.defaultResolvers,
 
-  parent: (parent, args) => {
+  parent: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
 }

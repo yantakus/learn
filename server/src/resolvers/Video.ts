@@ -39,4 +39,7 @@ export const Video: VideoResolvers.Type = {
     }
     return snippet
   },
+  votes: ({ id }) => {
+    return prisma.votes({ where: { parent: { id } } })
+  },
 }

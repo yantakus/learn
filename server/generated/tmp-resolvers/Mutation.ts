@@ -5,31 +5,34 @@ import { MutationResolvers } from '../graphqlgen'
 
 export const Mutation: MutationResolvers.Type = {
   ...MutationResolvers.defaultResolvers,
-  signup: (parent, args) => {
+  signup: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  activate: (parent, args) => {
+  activate: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  sendResetPasswordEmail: (parent, args) => {
+  sendResetPasswordEmail: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  resetPassword: (parent, args) => {
+  resetPassword: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  signin: (parent, args) => {
+  signin: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  signout: parent => {
+  signout: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  editProfile: (parent, args) => {
+  editProfile: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  upsertVideo: (parent, args) => {
+  upsertVideo: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  bookmarkVideo: (parent, args) => {
+  bookmarkVideo: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  voteVideo: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
 }

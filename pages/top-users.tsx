@@ -47,7 +47,7 @@ class UserPage extends Component {
 
 const USERS_QUERY = gql`
   query USERS_QUERY {
-    users(orderBy: "rank_DESC") {
+    users(orderBy: rank_DESC) {
       id
       login
       name

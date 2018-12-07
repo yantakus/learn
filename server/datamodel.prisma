@@ -7,6 +7,15 @@ type Video {
   tags: [Tag!]! @relation(name: "VideoTags")
   adder: User! @relation(name: "UserVideos")
   bookmarkers: [User!]! @relation(name: "UserBookmarks")
+  votes: [Vote!]! @relation(name: "VideoVotes")
+  voteScore: Int! @default(value: 0)
+}
+
+type Vote {
+  id: ID! @unique
+  parent: Video! @relation(name: "VideoVotes")
+  user: User! @relation(name: "UserVotes")
+  type: VoteType!
 }
 
 type User {
@@ -18,10 +27,11 @@ type User {
   email: String! @unique
   password: String!
   name: String!
-  videosAdded: [Video!]! @relation(name: "UserVideos")
-  videosBookmarked: [Video!]! @relation(name: "UserBookmarks")
   role: Role! @default(value: USER)
   rank: Int! @default(value: 0)
+  videosAdded: [Video!]! @relation(name: "UserVideos")
+  videosBookmarked: [Video!]! @relation(name: "UserBookmarks")
+  votes: [Vote!]! @relation(name: "UserVotes")
 }
 
 type Topic {
@@ -71,6 +81,11 @@ enum Role {
   USER
   EDITOR
   ADMIN
+}
+
+enum VoteType {
+  UP
+  DOWN
 }
 
 type Payload {

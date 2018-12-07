@@ -25,6 +25,7 @@ interface Props {
 const defaultMenuItems = [
   { name: 'All Videos', url: '/', icon: 'home' },
   { name: 'Top users', url: '/top-users', icon: 'users' },
+  { name: 'Privileges', url: '/privileges', icon: 'trophy' },
 ]
 let menuItems
 
@@ -66,10 +67,12 @@ export default class MenuComponent extends Component<Props> {
               {
                 name: 'Sign In',
                 url: `/signin`,
+                icon: 'sign-in',
               },
               {
                 name: 'Sign Up',
                 url: '/signup',
+                icon: 'signup',
               },
             ]
           }

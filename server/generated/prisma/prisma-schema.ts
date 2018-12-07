@@ -124,6 +124,10 @@ type AggregateVideo {
   count: Int!
 }
 
+type AggregateVote {
+  count: Int!
+}
+
 type BatchPayload {
   count: Long!
 }
@@ -212,6 +216,11 @@ input LanguageUpdateInput {
   parent: VideoUpdateManyWithoutLanguageInput
 }
 
+input LanguageUpdateManyMutationInput {
+  value: String
+  text: String
+}
+
 input LanguageUpdateOneRequiredWithoutParentInput {
   create: LanguageCreateWithoutParentInput
   update: LanguageUpdateWithoutParentDataInput
@@ -291,52 +300,56 @@ scalar Long
 type Mutation {
   createAccountActivationCode(data: AccountActivationCodeCreateInput!): AccountActivationCode!
   updateAccountActivationCode(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
-  updateManyAccountActivationCodes(data: AccountActivationCodeUpdateInput!, where: AccountActivationCodeWhereInput): BatchPayload!
   upsertAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!, create: AccountActivationCodeCreateInput!, update: AccountActivationCodeUpdateInput!): AccountActivationCode!
   deleteAccountActivationCode(where: AccountActivationCodeWhereUniqueInput!): AccountActivationCode
   deleteManyAccountActivationCodes(where: AccountActivationCodeWhereInput): BatchPayload!
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
-  updateManyLanguages(data: LanguageUpdateInput!, where: LanguageWhereInput): BatchPayload!
+  updateManyLanguages(data: LanguageUpdateManyMutationInput!, where: LanguageWhereInput): BatchPayload!
   upsertLanguage(where: LanguageWhereUniqueInput!, create: LanguageCreateInput!, update: LanguageUpdateInput!): Language!
   deleteLanguage(where: LanguageWhereUniqueInput!): Language
   deleteManyLanguages(where: LanguageWhereInput): BatchPayload!
   createPasswordResetCode(data: PasswordResetCodeCreateInput!): PasswordResetCode!
   updatePasswordResetCode(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
-  updateManyPasswordResetCodes(data: PasswordResetCodeUpdateInput!, where: PasswordResetCodeWhereInput): BatchPayload!
   upsertPasswordResetCode(where: PasswordResetCodeWhereUniqueInput!, create: PasswordResetCodeCreateInput!, update: PasswordResetCodeUpdateInput!): PasswordResetCode!
   deletePasswordResetCode(where: PasswordResetCodeWhereUniqueInput!): PasswordResetCode
   deleteManyPasswordResetCodes(where: PasswordResetCodeWhereInput): BatchPayload!
   createPayload(data: PayloadCreateInput!): Payload!
-  updateManyPayloads(data: PayloadUpdateInput!, where: PayloadWhereInput): BatchPayload!
+  updateManyPayloads(data: PayloadUpdateManyMutationInput!, where: PayloadWhereInput): BatchPayload!
   deleteManyPayloads(where: PayloadWhereInput): BatchPayload!
   createRating(data: RatingCreateInput!): Rating!
-  updateManyRatings(data: RatingUpdateInput!, where: RatingWhereInput): BatchPayload!
+  updateManyRatings(data: RatingUpdateManyMutationInput!, where: RatingWhereInput): BatchPayload!
   deleteManyRatings(where: RatingWhereInput): BatchPayload!
   createTag(data: TagCreateInput!): Tag!
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
-  updateManyTags(data: TagUpdateInput!, where: TagWhereInput): BatchPayload!
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
   createTopic(data: TopicCreateInput!): Topic!
   updateTopic(data: TopicUpdateInput!, where: TopicWhereUniqueInput!): Topic
-  updateManyTopics(data: TopicUpdateInput!, where: TopicWhereInput): BatchPayload!
+  updateManyTopics(data: TopicUpdateManyMutationInput!, where: TopicWhereInput): BatchPayload!
   upsertTopic(where: TopicWhereUniqueInput!, create: TopicCreateInput!, update: TopicUpdateInput!): Topic!
   deleteTopic(where: TopicWhereUniqueInput!): Topic
   deleteManyTopics(where: TopicWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   createVideo(data: VideoCreateInput!): Video!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
-  updateManyVideos(data: VideoUpdateInput!, where: VideoWhereInput): BatchPayload!
+  updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
+  createVote(data: VoteCreateInput!): Vote!
+  updateVote(data: VoteUpdateInput!, where: VoteWhereUniqueInput!): Vote
+  updateManyVotes(data: VoteUpdateManyMutationInput!, where: VoteWhereInput): BatchPayload!
+  upsertVote(where: VoteWhereUniqueInput!, create: VoteCreateInput!, update: VoteUpdateInput!): Vote!
+  deleteVote(where: VoteWhereUniqueInput!): Vote
+  deleteManyVotes(where: VoteWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -498,7 +511,7 @@ input PayloadSubscriptionWhereInput {
   NOT: [PayloadSubscriptionWhereInput!]
 }
 
-input PayloadUpdateInput {
+input PayloadUpdateManyMutationInput {
   message: String
 }
 
@@ -548,6 +561,9 @@ type Query {
   video(where: VideoWhereUniqueInput!): Video
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
+  vote(where: VoteWhereUniqueInput!): Vote
+  votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote]!
+  votesConnection(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VoteConnection!
   node(id: ID!): Node
 }
 
@@ -608,7 +624,7 @@ input RatingSubscriptionWhereInput {
   NOT: [RatingSubscriptionWhereInput!]
 }
 
-input RatingUpdateInput {
+input RatingUpdateManyMutationInput {
   votes: Int
   total: Int
 }
@@ -651,6 +667,7 @@ type Subscription {
   topic(where: TopicSubscriptionWhereInput): TopicSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
+  vote(where: VoteSubscriptionWhereInput): VoteSubscriptionPayload
 }
 
 type Tag {
@@ -706,6 +723,54 @@ type TagPreviousValues {
   text: String!
 }
 
+input TagScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [TagScalarWhereInput!]
+  OR: [TagScalarWhereInput!]
+  NOT: [TagScalarWhereInput!]
+}
+
 type TagSubscriptionPayload {
   mutation: MutationType!
   node: Tag
@@ -730,6 +795,16 @@ input TagUpdateInput {
   parent: VideoUpdateManyWithoutTagsInput
 }
 
+input TagUpdateManyDataInput {
+  value: String
+  text: String
+}
+
+input TagUpdateManyMutationInput {
+  value: String
+  text: String
+}
+
 input TagUpdateManyWithoutParentInput {
   create: [TagCreateWithoutParentInput!]
   delete: [TagWhereUniqueInput!]
@@ -737,6 +812,13 @@ input TagUpdateManyWithoutParentInput {
   disconnect: [TagWhereUniqueInput!]
   update: [TagUpdateWithWhereUniqueWithoutParentInput!]
   upsert: [TagUpsertWithWhereUniqueWithoutParentInput!]
+  deleteMany: [TagScalarWhereInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+}
+
+input TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyDataInput!
 }
 
 input TagUpdateWithoutParentDataInput {
@@ -865,6 +947,54 @@ type TopicPreviousValues {
   text: String!
 }
 
+input TopicScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [TopicScalarWhereInput!]
+  OR: [TopicScalarWhereInput!]
+  NOT: [TopicScalarWhereInput!]
+}
+
 type TopicSubscriptionPayload {
   mutation: MutationType!
   node: Topic
@@ -889,6 +1019,16 @@ input TopicUpdateInput {
   parent: VideoUpdateManyWithoutTopicsInput
 }
 
+input TopicUpdateManyDataInput {
+  value: String
+  text: String
+}
+
+input TopicUpdateManyMutationInput {
+  value: String
+  text: String
+}
+
 input TopicUpdateManyWithoutParentInput {
   create: [TopicCreateWithoutParentInput!]
   delete: [TopicWhereUniqueInput!]
@@ -896,6 +1036,13 @@ input TopicUpdateManyWithoutParentInput {
   disconnect: [TopicWhereUniqueInput!]
   update: [TopicUpdateWithWhereUniqueWithoutParentInput!]
   upsert: [TopicUpsertWithWhereUniqueWithoutParentInput!]
+  deleteMany: [TopicScalarWhereInput!]
+  updateMany: [TopicUpdateManyWithWhereNestedInput!]
+}
+
+input TopicUpdateManyWithWhereNestedInput {
+  where: TopicScalarWhereInput!
+  data: TopicUpdateManyDataInput!
 }
 
 input TopicUpdateWithoutParentDataInput {
@@ -980,10 +1127,11 @@ type User {
   email: String!
   password: String!
   name: String!
-  videosAdded(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
-  videosBookmarked(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   role: Role!
   rank: Int!
+  videosAdded(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  videosBookmarked(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
 }
 
 type UserConnection {
@@ -1000,10 +1148,11 @@ input UserCreateInput {
   email: String!
   password: String!
   name: String!
-  videosAdded: VideoCreateManyWithoutAdderInput
-  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  votes: VoteCreateManyWithoutUserInput
 }
 
 input UserCreateManyWithoutVideosBookmarkedInput {
@@ -1026,6 +1175,11 @@ input UserCreateOneWithoutVideosAddedInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutVotesInput {
+  create: UserCreateWithoutVotesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutActivationCodeInput {
   passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
   isActivated: Boolean
@@ -1033,10 +1187,11 @@ input UserCreateWithoutActivationCodeInput {
   email: String!
   password: String!
   name: String!
-  videosAdded: VideoCreateManyWithoutAdderInput
-  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  votes: VoteCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutPasswordResetCodeInput {
@@ -1046,10 +1201,11 @@ input UserCreateWithoutPasswordResetCodeInput {
   email: String!
   password: String!
   name: String!
-  videosAdded: VideoCreateManyWithoutAdderInput
-  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  votes: VoteCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutVideosAddedInput {
@@ -1060,9 +1216,10 @@ input UserCreateWithoutVideosAddedInput {
   email: String!
   password: String!
   name: String!
-  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
+  votes: VoteCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutVideosBookmarkedInput {
@@ -1073,9 +1230,24 @@ input UserCreateWithoutVideosBookmarkedInput {
   email: String!
   password: String!
   name: String!
-  videosAdded: VideoCreateManyWithoutAdderInput
   role: Role
   rank: Int
+  videosAdded: VideoCreateManyWithoutAdderInput
+  votes: VoteCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutVotesInput {
+  activationCode: AccountActivationCodeCreateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeCreateOneWithoutUserInput
+  isActivated: Boolean
+  login: String!
+  email: String!
+  password: String!
+  name: String!
+  role: Role
+  rank: Int
+  videosAdded: VideoCreateManyWithoutAdderInput
+  videosBookmarked: VideoCreateManyWithoutBookmarkersInput
 }
 
 type UserEdge {
@@ -1117,6 +1289,96 @@ type UserPreviousValues {
   rank: Int!
 }
 
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  isActivated: Boolean
+  isActivated_not: Boolean
+  login: String
+  login_not: String
+  login_in: [String!]
+  login_not_in: [String!]
+  login_lt: String
+  login_lte: String
+  login_gt: String
+  login_gte: String
+  login_contains: String
+  login_not_contains: String
+  login_starts_with: String
+  login_not_starts_with: String
+  login_ends_with: String
+  login_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
+  rank: Int
+  rank_not: Int
+  rank_in: [Int!]
+  rank_not_in: [Int!]
+  rank_lt: Int
+  rank_lte: Int
+  rank_gt: Int
+  rank_gte: Int
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
 type UserSubscriptionPayload {
   mutation: MutationType!
   node: User
@@ -1143,8 +1405,29 @@ input UserUpdateInput {
   email: String
   password: String
   name: String
+  role: Role
+  rank: Int
   videosAdded: VideoUpdateManyWithoutAdderInput
   videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  votes: VoteUpdateManyWithoutUserInput
+}
+
+input UserUpdateManyDataInput {
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  role: Role
+  rank: Int
+}
+
+input UserUpdateManyMutationInput {
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
   role: Role
   rank: Int
 }
@@ -1156,12 +1439,26 @@ input UserUpdateManyWithoutVideosBookmarkedInput {
   disconnect: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
 }
 
 input UserUpdateOneRequiredWithoutVideosAddedInput {
   create: UserCreateWithoutVideosAddedInput
   update: UserUpdateWithoutVideosAddedDataInput
   upsert: UserUpsertWithoutVideosAddedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredWithoutVotesInput {
+  create: UserCreateWithoutVotesInput
+  update: UserUpdateWithoutVotesDataInput
+  upsert: UserUpsertWithoutVotesInput
   connect: UserWhereUniqueInput
 }
 
@@ -1190,10 +1487,11 @@ input UserUpdateWithoutActivationCodeDataInput {
   email: String
   password: String
   name: String
-  videosAdded: VideoUpdateManyWithoutAdderInput
-  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  votes: VoteUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutPasswordResetCodeDataInput {
@@ -1203,10 +1501,11 @@ input UserUpdateWithoutPasswordResetCodeDataInput {
   email: String
   password: String
   name: String
-  videosAdded: VideoUpdateManyWithoutAdderInput
-  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  votes: VoteUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutVideosAddedDataInput {
@@ -1217,9 +1516,10 @@ input UserUpdateWithoutVideosAddedDataInput {
   email: String
   password: String
   name: String
-  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
   role: Role
   rank: Int
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
+  votes: VoteUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutVideosBookmarkedDataInput {
@@ -1230,9 +1530,24 @@ input UserUpdateWithoutVideosBookmarkedDataInput {
   email: String
   password: String
   name: String
-  videosAdded: VideoUpdateManyWithoutAdderInput
   role: Role
   rank: Int
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  votes: VoteUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutVotesDataInput {
+  activationCode: AccountActivationCodeUpdateOneWithoutUserInput
+  passwordResetCode: PasswordResetCodeUpdateOneWithoutUserInput
+  isActivated: Boolean
+  login: String
+  email: String
+  password: String
+  name: String
+  role: Role
+  rank: Int
+  videosAdded: VideoUpdateManyWithoutAdderInput
+  videosBookmarked: VideoUpdateManyWithoutBookmarkersInput
 }
 
 input UserUpdateWithWhereUniqueWithoutVideosBookmarkedInput {
@@ -1253,6 +1568,11 @@ input UserUpsertWithoutPasswordResetCodeInput {
 input UserUpsertWithoutVideosAddedInput {
   update: UserUpdateWithoutVideosAddedDataInput!
   create: UserCreateWithoutVideosAddedInput!
+}
+
+input UserUpsertWithoutVotesInput {
+  update: UserUpdateWithoutVotesDataInput!
+  create: UserCreateWithoutVotesInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutVideosBookmarkedInput {
@@ -1336,12 +1656,6 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  videosAdded_every: VideoWhereInput
-  videosAdded_some: VideoWhereInput
-  videosAdded_none: VideoWhereInput
-  videosBookmarked_every: VideoWhereInput
-  videosBookmarked_some: VideoWhereInput
-  videosBookmarked_none: VideoWhereInput
   role: Role
   role_not: Role
   role_in: [Role!]
@@ -1354,6 +1668,15 @@ input UserWhereInput {
   rank_lte: Int
   rank_gt: Int
   rank_gte: Int
+  videosAdded_every: VideoWhereInput
+  videosAdded_some: VideoWhereInput
+  videosAdded_none: VideoWhereInput
+  videosBookmarked_every: VideoWhereInput
+  videosBookmarked_some: VideoWhereInput
+  videosBookmarked_none: VideoWhereInput
+  votes_every: VoteWhereInput
+  votes_some: VoteWhereInput
+  votes_none: VoteWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -1374,6 +1697,8 @@ type Video {
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   adder: User!
   bookmarkers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
+  voteScore: Int!
 }
 
 type VideoConnection {
@@ -1390,6 +1715,8 @@ input VideoCreateInput {
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoCreateManyWithoutAdderInput {
@@ -1417,6 +1744,11 @@ input VideoCreateManyWithoutTopicsInput {
   connect: [VideoWhereUniqueInput!]
 }
 
+input VideoCreateOneWithoutVotesInput {
+  create: VideoCreateWithoutVotesInput
+  connect: VideoWhereUniqueInput
+}
+
 input VideoCreateWithoutAdderInput {
   ytId: String!
   complexity: Complexity!
@@ -1424,6 +1756,8 @@ input VideoCreateWithoutAdderInput {
   topics: TopicCreateManyWithoutParentInput
   tags: TagCreateManyWithoutParentInput
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoCreateWithoutBookmarkersInput {
@@ -1433,6 +1767,8 @@ input VideoCreateWithoutBookmarkersInput {
   topics: TopicCreateManyWithoutParentInput
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoCreateWithoutLanguageInput {
@@ -1442,6 +1778,8 @@ input VideoCreateWithoutLanguageInput {
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoCreateWithoutTagsInput {
@@ -1451,6 +1789,8 @@ input VideoCreateWithoutTagsInput {
   topics: TopicCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoCreateWithoutTopicsInput {
@@ -1460,6 +1800,19 @@ input VideoCreateWithoutTopicsInput {
   tags: TagCreateManyWithoutParentInput
   adder: UserCreateOneWithoutVideosAddedInput!
   bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  votes: VoteCreateManyWithoutParentInput
+  voteScore: Int
+}
+
+input VideoCreateWithoutVotesInput {
+  ytId: String!
+  complexity: Complexity!
+  language: LanguageCreateOneWithoutParentInput!
+  topics: TopicCreateManyWithoutParentInput
+  tags: TagCreateManyWithoutParentInput
+  adder: UserCreateOneWithoutVideosAddedInput!
+  bookmarkers: UserCreateManyWithoutVideosBookmarkedInput
+  voteScore: Int
 }
 
 type VideoEdge {
@@ -1474,6 +1827,8 @@ enum VideoOrderByInput {
   ytId_DESC
   complexity_ASC
   complexity_DESC
+  voteScore_ASC
+  voteScore_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1484,6 +1839,53 @@ type VideoPreviousValues {
   id: ID!
   ytId: String!
   complexity: Complexity!
+  voteScore: Int!
+}
+
+input VideoScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  ytId: String
+  ytId_not: String
+  ytId_in: [String!]
+  ytId_not_in: [String!]
+  ytId_lt: String
+  ytId_lte: String
+  ytId_gt: String
+  ytId_gte: String
+  ytId_contains: String
+  ytId_not_contains: String
+  ytId_starts_with: String
+  ytId_not_starts_with: String
+  ytId_ends_with: String
+  ytId_not_ends_with: String
+  complexity: Complexity
+  complexity_not: Complexity
+  complexity_in: [Complexity!]
+  complexity_not_in: [Complexity!]
+  voteScore: Int
+  voteScore_not: Int
+  voteScore_in: [Int!]
+  voteScore_not_in: [Int!]
+  voteScore_lt: Int
+  voteScore_lte: Int
+  voteScore_gt: Int
+  voteScore_gte: Int
+  AND: [VideoScalarWhereInput!]
+  OR: [VideoScalarWhereInput!]
+  NOT: [VideoScalarWhereInput!]
 }
 
 type VideoSubscriptionPayload {
@@ -1512,6 +1914,20 @@ input VideoUpdateInput {
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
+}
+
+input VideoUpdateManyDataInput {
+  ytId: String
+  complexity: Complexity
+  voteScore: Int
+}
+
+input VideoUpdateManyMutationInput {
+  ytId: String
+  complexity: Complexity
+  voteScore: Int
 }
 
 input VideoUpdateManyWithoutAdderInput {
@@ -1521,6 +1937,8 @@ input VideoUpdateManyWithoutAdderInput {
   disconnect: [VideoWhereUniqueInput!]
   update: [VideoUpdateWithWhereUniqueWithoutAdderInput!]
   upsert: [VideoUpsertWithWhereUniqueWithoutAdderInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
 }
 
 input VideoUpdateManyWithoutBookmarkersInput {
@@ -1530,6 +1948,8 @@ input VideoUpdateManyWithoutBookmarkersInput {
   disconnect: [VideoWhereUniqueInput!]
   update: [VideoUpdateWithWhereUniqueWithoutBookmarkersInput!]
   upsert: [VideoUpsertWithWhereUniqueWithoutBookmarkersInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
 }
 
 input VideoUpdateManyWithoutLanguageInput {
@@ -1539,6 +1959,8 @@ input VideoUpdateManyWithoutLanguageInput {
   disconnect: [VideoWhereUniqueInput!]
   update: [VideoUpdateWithWhereUniqueWithoutLanguageInput!]
   upsert: [VideoUpsertWithWhereUniqueWithoutLanguageInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
 }
 
 input VideoUpdateManyWithoutTagsInput {
@@ -1548,6 +1970,8 @@ input VideoUpdateManyWithoutTagsInput {
   disconnect: [VideoWhereUniqueInput!]
   update: [VideoUpdateWithWhereUniqueWithoutTagsInput!]
   upsert: [VideoUpsertWithWhereUniqueWithoutTagsInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
 }
 
 input VideoUpdateManyWithoutTopicsInput {
@@ -1557,6 +1981,20 @@ input VideoUpdateManyWithoutTopicsInput {
   disconnect: [VideoWhereUniqueInput!]
   update: [VideoUpdateWithWhereUniqueWithoutTopicsInput!]
   upsert: [VideoUpsertWithWhereUniqueWithoutTopicsInput!]
+  deleteMany: [VideoScalarWhereInput!]
+  updateMany: [VideoUpdateManyWithWhereNestedInput!]
+}
+
+input VideoUpdateManyWithWhereNestedInput {
+  where: VideoScalarWhereInput!
+  data: VideoUpdateManyDataInput!
+}
+
+input VideoUpdateOneRequiredWithoutVotesInput {
+  create: VideoCreateWithoutVotesInput
+  update: VideoUpdateWithoutVotesDataInput
+  upsert: VideoUpsertWithoutVotesInput
+  connect: VideoWhereUniqueInput
 }
 
 input VideoUpdateWithoutAdderDataInput {
@@ -1566,6 +2004,8 @@ input VideoUpdateWithoutAdderDataInput {
   topics: TopicUpdateManyWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoUpdateWithoutBookmarkersDataInput {
@@ -1575,6 +2015,8 @@ input VideoUpdateWithoutBookmarkersDataInput {
   topics: TopicUpdateManyWithoutParentInput
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoUpdateWithoutLanguageDataInput {
@@ -1584,6 +2026,8 @@ input VideoUpdateWithoutLanguageDataInput {
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoUpdateWithoutTagsDataInput {
@@ -1593,6 +2037,8 @@ input VideoUpdateWithoutTagsDataInput {
   topics: TopicUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
 }
 
 input VideoUpdateWithoutTopicsDataInput {
@@ -1602,6 +2048,19 @@ input VideoUpdateWithoutTopicsDataInput {
   tags: TagUpdateManyWithoutParentInput
   adder: UserUpdateOneRequiredWithoutVideosAddedInput
   bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  votes: VoteUpdateManyWithoutParentInput
+  voteScore: Int
+}
+
+input VideoUpdateWithoutVotesDataInput {
+  ytId: String
+  complexity: Complexity
+  language: LanguageUpdateOneRequiredWithoutParentInput
+  topics: TopicUpdateManyWithoutParentInput
+  tags: TagUpdateManyWithoutParentInput
+  adder: UserUpdateOneRequiredWithoutVideosAddedInput
+  bookmarkers: UserUpdateManyWithoutVideosBookmarkedInput
+  voteScore: Int
 }
 
 input VideoUpdateWithWhereUniqueWithoutAdderInput {
@@ -1627,6 +2086,11 @@ input VideoUpdateWithWhereUniqueWithoutTagsInput {
 input VideoUpdateWithWhereUniqueWithoutTopicsInput {
   where: VideoWhereUniqueInput!
   data: VideoUpdateWithoutTopicsDataInput!
+}
+
+input VideoUpsertWithoutVotesInput {
+  update: VideoUpdateWithoutVotesDataInput!
+  create: VideoCreateWithoutVotesInput!
 }
 
 input VideoUpsertWithWhereUniqueWithoutAdderInput {
@@ -1703,6 +2167,17 @@ input VideoWhereInput {
   bookmarkers_every: UserWhereInput
   bookmarkers_some: UserWhereInput
   bookmarkers_none: UserWhereInput
+  votes_every: VoteWhereInput
+  votes_some: VoteWhereInput
+  votes_none: VoteWhereInput
+  voteScore: Int
+  voteScore_not: Int
+  voteScore_in: [Int!]
+  voteScore_not_in: [Int!]
+  voteScore_lt: Int
+  voteScore_lte: Int
+  voteScore_gt: Int
+  voteScore_gte: Int
   AND: [VideoWhereInput!]
   OR: [VideoWhereInput!]
   NOT: [VideoWhereInput!]
@@ -1711,5 +2186,215 @@ input VideoWhereInput {
 input VideoWhereUniqueInput {
   id: ID
   ytId: String
+}
+
+type Vote {
+  id: ID!
+  parent: Video!
+  user: User!
+  type: VoteType!
+}
+
+type VoteConnection {
+  pageInfo: PageInfo!
+  edges: [VoteEdge]!
+  aggregate: AggregateVote!
+}
+
+input VoteCreateInput {
+  parent: VideoCreateOneWithoutVotesInput!
+  user: UserCreateOneWithoutVotesInput!
+  type: VoteType!
+}
+
+input VoteCreateManyWithoutParentInput {
+  create: [VoteCreateWithoutParentInput!]
+  connect: [VoteWhereUniqueInput!]
+}
+
+input VoteCreateManyWithoutUserInput {
+  create: [VoteCreateWithoutUserInput!]
+  connect: [VoteWhereUniqueInput!]
+}
+
+input VoteCreateWithoutParentInput {
+  user: UserCreateOneWithoutVotesInput!
+  type: VoteType!
+}
+
+input VoteCreateWithoutUserInput {
+  parent: VideoCreateOneWithoutVotesInput!
+  type: VoteType!
+}
+
+type VoteEdge {
+  node: Vote!
+  cursor: String!
+}
+
+enum VoteOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type VotePreviousValues {
+  id: ID!
+  type: VoteType!
+}
+
+input VoteScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: VoteType
+  type_not: VoteType
+  type_in: [VoteType!]
+  type_not_in: [VoteType!]
+  AND: [VoteScalarWhereInput!]
+  OR: [VoteScalarWhereInput!]
+  NOT: [VoteScalarWhereInput!]
+}
+
+type VoteSubscriptionPayload {
+  mutation: MutationType!
+  node: Vote
+  updatedFields: [String!]
+  previousValues: VotePreviousValues
+}
+
+input VoteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: VoteWhereInput
+  AND: [VoteSubscriptionWhereInput!]
+  OR: [VoteSubscriptionWhereInput!]
+  NOT: [VoteSubscriptionWhereInput!]
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+input VoteUpdateInput {
+  parent: VideoUpdateOneRequiredWithoutVotesInput
+  user: UserUpdateOneRequiredWithoutVotesInput
+  type: VoteType
+}
+
+input VoteUpdateManyDataInput {
+  type: VoteType
+}
+
+input VoteUpdateManyMutationInput {
+  type: VoteType
+}
+
+input VoteUpdateManyWithoutParentInput {
+  create: [VoteCreateWithoutParentInput!]
+  delete: [VoteWhereUniqueInput!]
+  connect: [VoteWhereUniqueInput!]
+  disconnect: [VoteWhereUniqueInput!]
+  update: [VoteUpdateWithWhereUniqueWithoutParentInput!]
+  upsert: [VoteUpsertWithWhereUniqueWithoutParentInput!]
+  deleteMany: [VoteScalarWhereInput!]
+  updateMany: [VoteUpdateManyWithWhereNestedInput!]
+}
+
+input VoteUpdateManyWithoutUserInput {
+  create: [VoteCreateWithoutUserInput!]
+  delete: [VoteWhereUniqueInput!]
+  connect: [VoteWhereUniqueInput!]
+  disconnect: [VoteWhereUniqueInput!]
+  update: [VoteUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [VoteUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [VoteScalarWhereInput!]
+  updateMany: [VoteUpdateManyWithWhereNestedInput!]
+}
+
+input VoteUpdateManyWithWhereNestedInput {
+  where: VoteScalarWhereInput!
+  data: VoteUpdateManyDataInput!
+}
+
+input VoteUpdateWithoutParentDataInput {
+  user: UserUpdateOneRequiredWithoutVotesInput
+  type: VoteType
+}
+
+input VoteUpdateWithoutUserDataInput {
+  parent: VideoUpdateOneRequiredWithoutVotesInput
+  type: VoteType
+}
+
+input VoteUpdateWithWhereUniqueWithoutParentInput {
+  where: VoteWhereUniqueInput!
+  data: VoteUpdateWithoutParentDataInput!
+}
+
+input VoteUpdateWithWhereUniqueWithoutUserInput {
+  where: VoteWhereUniqueInput!
+  data: VoteUpdateWithoutUserDataInput!
+}
+
+input VoteUpsertWithWhereUniqueWithoutParentInput {
+  where: VoteWhereUniqueInput!
+  update: VoteUpdateWithoutParentDataInput!
+  create: VoteCreateWithoutParentInput!
+}
+
+input VoteUpsertWithWhereUniqueWithoutUserInput {
+  where: VoteWhereUniqueInput!
+  update: VoteUpdateWithoutUserDataInput!
+  create: VoteCreateWithoutUserInput!
+}
+
+input VoteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  parent: VideoWhereInput
+  user: UserWhereInput
+  type: VoteType
+  type_not: VoteType
+  type_in: [VoteType!]
+  type_not_in: [VoteType!]
+  AND: [VoteWhereInput!]
+  OR: [VoteWhereInput!]
+  NOT: [VoteWhereInput!]
+}
+
+input VoteWhereUniqueInput {
+  id: ID
 }
 `

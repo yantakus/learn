@@ -4,6 +4,7 @@ import { User } from './User'
 import { Video } from './Video'
 import { Topic } from './Topic'
 import { Tag } from './Tag'
+import { Vote } from './Vote'
 
 export const resolvers = {
   Query,
@@ -12,4 +13,5 @@ export const resolvers = {
   Video,
   Topic,
   Tag,
+  Vote,
 }

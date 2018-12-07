@@ -1,24 +1,7 @@
 import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 
-const video = `{
-  id
-  ytId
-  complexity
-  tags {
-    text
-    value
-  }
-  topics {
-    text
-    value
-  }
-  language {
-    text
-    value
-  }
-  snippet
-}`
+import { VIDEO } from './Videos/Item'
 
 export const CURRENT_USER_QUERY = gql`
   query {
@@ -29,14 +12,14 @@ export const CURRENT_USER_QUERY = gql`
       email
       role
       rank
-      videosAdded ${video}
-      videosBookmarked ${video}
+      videosAdded ${VIDEO}
+      videosBookmarked ${VIDEO}
     }
   }
 `
 
 interface IProps {
-  children: Function
+  children?: Function
   nullable?: boolean // return null if there's no user
 }
 

@@ -277,8 +277,7 @@ export const Mutation: MutationResolvers.Type = {
             user.role === 'EDITOR' ||
             userId === video.adder.id
           ) {
-            // https://github.com/prisma/graphqlgen/issues/67
-            return (<any>prisma).updateVideo({
+            return prisma.updateVideo({
               where: {
                 id: video.id,
               },
@@ -309,8 +308,7 @@ export const Mutation: MutationResolvers.Type = {
           },
           data: { rank: user.rank + BONUSES.ADD_VIDEO },
         })
-        // https://github.com/prisma/graphqlgen/issues/67
-        return (<any>prisma).createVideo({
+        return prisma.createVideo({
           adder: {
             connect: {
               id: userId,
@@ -344,5 +342,97 @@ export const Mutation: MutationResolvers.Type = {
         },
       },
     })
+  },
+
+  async voteVideo(_parent, { id, type, adding }, ctx) {
+    console.log(1, { id, type, adding })
+    const userId = ctx.request.userId
+    if (!userId) {
+      throw new AuthError()
+    }
+
+    let existingVideo = await prisma.video({ id })
+    if (!existingVideo) {
+      throw new Error(`Video with id: ${id} doesn't exist.`)
+    }
+
+    const existingVotes = await prisma.votes({
+      where: { user: { id: userId }, parent: { id } },
+    })
+    const existingVote = existingVotes[0]
+
+    console.log(2, existingVote)
+
+    if (adding && existingVote) {
+      if (existingVote.type === type) {
+        throw new Error(`You already have ${type} vote for this video`)
+      } else {
+        await prisma.deleteManyVotes({
+          parent: {
+            id,
+          },
+          user: {
+            id: userId,
+          },
+        })
+        await prisma.updateVideo({
+          where: { id: existingVideo.id },
+          data: {
+            voteScore:
+              existingVote.type === 'UP'
+                ? existingVideo.voteScore - 1
+                : existingVideo.voteScore + 1,
+          },
+        })
+        existingVideo = await prisma.video({ id })
+      }
+    }
+
+    console.log(3, existingVideo)
+
+    const mutation = {
+      where: {
+        id,
+      },
+      data: {},
+    }
+
+    if (adding) {
+      mutation.data = {
+        votes: {
+          create: {
+            type,
+            user: {
+              connect: { id: userId },
+            },
+          },
+        },
+        voteScore:
+          type === 'UP'
+            ? existingVideo.voteScore + 1
+            : existingVideo.voteScore - 1,
+      }
+    } else {
+      if (!existingVote) {
+        throw new Error(`You you are trying to delete inexisting vote`)
+      }
+      mutation.data = {
+        votes: {
+          delete: {
+            id: existingVote.id,
+          },
+        },
+        voteScore:
+          type === 'UP'
+            ? existingVideo.voteScore - 1
+            : existingVideo.voteScore + 1,
+      }
+    }
+
+    const result = await prisma.updateVideo(mutation)
+
+    console.log(3, result)
+
+    return result
   },
 }

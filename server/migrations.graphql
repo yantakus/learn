@@ -1,11 +1,7 @@
 mutation {
   migration_01: updateManyVideos(
     data: {
-      language: {
-        connect: {
-          id: "cjnvfoymb5uiv0a51x468gpkd"
-        }
-      }
+      voteScore: 0
     }
   ) {
     __typename

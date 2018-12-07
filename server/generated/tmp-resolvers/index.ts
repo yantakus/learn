@@ -4,21 +4,23 @@
 import { Resolvers } from '../graphqlgen'
 
 import { Query } from './Query'
-import { Mutation } from './Mutation'
-import { User } from './User'
 import { Video } from './Video'
+import { User } from './User'
+import { Vote } from './Vote'
+import { Language } from './Language'
 import { Topic } from './Topic'
 import { Tag } from './Tag'
-import { Language } from './Language'
+import { Mutation } from './Mutation'
 import { Payload } from './Payload'
 
 export const resolvers: Resolvers = {
   Query,
-  Mutation,
-  User,
   Video,
+  User,
+  Vote,
+  Language,
   Topic,
   Tag,
-  Language,
+  Mutation,
   Payload,
 }

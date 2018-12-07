@@ -1,7 +1,7 @@
 import { UserResolvers } from '../../generated/graphqlgen'
 import { prisma } from '../../generated/prisma'
 
-export const User: UserResolvers.Type = {
+export const User /*: UserResolvers.Type*/ = {
   ...UserResolvers.defaultResolvers,
 
   videosAdded: ({ id }) => {
@@ -15,5 +15,8 @@ export const User: UserResolvers.Type = {
       orderBy: 'createdAt_DESC',
       where: { bookmarkers_some: { id } },
     })
+  },
+  votes: ({ id }) => {
+    return prisma.votes({ where: { user: { id } } })
   },
 }

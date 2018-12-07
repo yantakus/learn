@@ -6,10 +6,16 @@ import { UserResolvers } from '../graphqlgen'
 export const User: UserResolvers.Type = {
   ...UserResolvers.defaultResolvers,
 
-  videosAdded: parent => {
+  isActivated: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  videosBookmarked: parent => {
+  videosAdded: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  videosBookmarked: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  votes: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
 }

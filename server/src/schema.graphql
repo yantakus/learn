@@ -5,7 +5,7 @@ scalar JSON
 type Query {
   videos(skip: Int, first: Int, where: VideoWhereInput): [Video!]!
   video(ytId: String!): Video!
-  users(orderBy: String): [User!]!
+  users(orderBy: UserOrderByInput): [User!]!
   user(login: String!): User
   me: User
   topics: [Topic!]!
@@ -55,6 +55,12 @@ type Mutation {
     id: ID!
     adding: Boolean!
   ): Video!
+
+  voteVideo(
+    id: ID!
+    type: VoteType!
+    adding: Boolean!
+  ): Video!
 }
 
 type User {
@@ -63,20 +69,23 @@ type User {
   email: String!
   name: String!
   login: String
-  videosAdded: [Video!]!
-  videosBookmarked: [Video!]!
   role: Role!
   rank: Int!
+  videosAdded: [Video!]!
+  videosBookmarked: [Video!]!
+  votes: [Vote!]!
 }
 
 type Video {
   id: ID!
   ytId: String!
   complexity: Complexity!
-  topics: [Topic!]!
-  tags: [Tag!]!
   adder: User!
-  bookmarkers: [User!]!
   language: Language!
   snippet: JSON
+  voteScore: Int!
+  votes: [Vote!]!
+  topics: [Topic!]!
+  tags: [Tag!]!
+  bookmarkers: [User!]!
 }

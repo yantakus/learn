@@ -9,6 +9,28 @@ type Option = {
   value: string
 }
 
+export const VIDEO = `{
+  id
+  ytId
+  complexity
+  tags {
+    text
+    value
+  }
+  topics {
+    text
+    value
+  }
+  language {
+    text
+    value
+  }
+  adder {
+    id
+  }
+  snippet
+}`
+
 export interface IVideo {
   ytId: string
   tags: [Option]
@@ -18,6 +40,7 @@ export interface IVideo {
   adder: {
     id: string
   }
+  voteScore: number
   snippet: {
     title: string
     thumbnails: {
@@ -70,16 +93,19 @@ export default class Video extends Component<IProps> {
           </div>
 
           <Card.Content>
-            <Card.Meta className="date mb-2 capitalize">
-              <Link href={`/complexity/${complexity}`}>
-                <a className="m-0">{complexity}</a>
-              </Link>
-              {' | '}
-              <Link href={`/language/${language.toLowerCase()}`}>
-                <a>
-                  <em className="text-sm">{language}</em>
-                </a>
-              </Link>
+            <Card.Meta className="date mb-2 capitalize flex">
+              <div className="flex-1">
+                <Link href={`/complexity/${complexity}`}>
+                  <a className="m-0">{complexity}</a>
+                </Link>
+                {' | '}
+                <Link href={`/language/${language.toLowerCase()}`}>
+                  <a>
+                    <em className="text-sm">{language}</em>
+                  </a>
+                </Link>
+              </div>
+              <div className="flex-initial">{video.voteScore}</div>
             </Card.Meta>
             <Card.Header className="leading-none">
               <Link href={`/video/${video.ytId}`}>

@@ -5,24 +5,28 @@ import { QueryResolvers } from '../graphqlgen'
 
 export const Query: QueryResolvers.Type = {
   ...QueryResolvers.defaultResolvers,
-  videos: (parent, args) => {
+  videos: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  video: (parent, args) => {
+  video: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  users: parent => {
+  users: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  user: (parent, args) => null,
-  me: parent => null,
-  topics: parent => {
+  user: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  tags: parent => {
+  me: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
-  languages: parent => {
+  topics: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  tags: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
+  languages: (parent, args, ctx) => {
     throw new Error('Resolver not implemented')
   },
 }
