@@ -361,8 +361,6 @@ export const Mutation: MutationResolvers.Type = {
     })
     const existingVote = existingVotes[0]
 
-    console.log(2, existingVote)
-
     if (adding && existingVote) {
       if (existingVote.type === type) {
         throw new Error(`You already have ${type} vote for this video`)
@@ -387,8 +385,6 @@ export const Mutation: MutationResolvers.Type = {
         existingVideo = await prisma.video({ id })
       }
     }
-
-    console.log(3, existingVideo)
 
     const mutation = {
       where: {
@@ -429,10 +425,6 @@ export const Mutation: MutationResolvers.Type = {
       }
     }
 
-    const result = await prisma.updateVideo(mutation)
-
-    console.log(3, result)
-
-    return result
+    return prisma.updateVideo(mutation)
   },
 }

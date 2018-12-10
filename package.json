@@ -15,7 +15,7 @@
     "apollo-link-rest": "^0.6.0",
     "change-case": "^3.0.2",
     "date-fns": "^1.29.0",
-    "epitath": "^1.0.0-beta.1",
+    "epitath": "^1.0.0-beta.2",
     "fetch-headers": "^2.0.0",
     "formsy-react": "^1.1.5",
     "formsy-semantic-ui-react": "^0.3.3",

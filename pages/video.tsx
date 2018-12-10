@@ -5,6 +5,7 @@ import { gql } from 'apollo-boost'
 import { Button, Icon, Popup } from 'semantic-ui-react'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import filter from 'lodash/filter'
 import epitath from 'epitath'
 
 import Preloader from '../components/Preloader'
@@ -18,6 +19,72 @@ interface IProps {
       ytId: string
     }
   }
+}
+
+const vote = ({
+  type,
+  adding,
+  upVote,
+  downVote,
+  videoId,
+  userId,
+  ytId,
+  voteScore,
+  votes,
+  voteMutation,
+}) => {
+  const doubleAction =
+    (type === 'UP' && downVote) || (type === 'DOWN' && upVote)
+  const scoreDiff = doubleAction ? 2 : 1
+  const add = arr => [
+    ...arr,
+    {
+      type,
+      user: {
+        id: userId,
+        __typename: 'User',
+      },
+      __typename: 'Vote',
+    },
+  ]
+  const remove = arr => filter(arr, o => o.user.id !== userId)
+  voteMutation({
+    variables: { id: videoId, type, adding },
+    optimisticResponse: {
+      voteVideo: {
+        voteScore:
+          (adding && type === 'UP') || (!adding && type === 'DOWN')
+            ? voteScore + scoreDiff
+            : voteScore - scoreDiff,
+        votes: doubleAction
+          ? add(remove(votes))
+          : adding
+            ? add(votes)
+            : remove(votes),
+        __typename: 'Video',
+      },
+      __typename: 'Mutation',
+    },
+    update: (
+      proxy,
+      {
+        data: {
+          voteVideo: { voteScore, votes },
+        },
+      }
+    ) => {
+      const data = proxy.readQuery({
+        query: VIDEO_QUERY,
+        variables: { ytId },
+      })
+      data.video = {
+        ...data.video,
+        voteScore,
+        votes,
+      }
+      proxy.writeQuery({ query: VIDEO_QUERY, data })
+    },
+  })
 }
 
 const VideoPage = epitath(function*({
@@ -35,7 +102,7 @@ const VideoPage = epitath(function*({
       refetchQueries={[getOperationName(VIDEO_QUERY)]}
     />
   )
-  const [vote, { loading: voteMutationLoading }] = yield (
+  const [voteMutation, { loading: voteMutationLoading }] = yield (
     <Mutation
       mutation={VOTE_VIDEO_MUTATION}
       refetchQueries={[getOperationName(VIDEO_QUERY)]}
@@ -45,7 +112,8 @@ const VideoPage = epitath(function*({
     return <Preloader />
   }
   const {
-    video: { id, adder, snippet, bookmarkers, votes, voteScore },
+    video: { id: videoId, adder, snippet, bookmarkers, votes, voteScore },
+    me: { id: userId },
   } = data
   const bookmarked = bookmarkers.some(item => {
     return get(me, 'id') === item.id
@@ -53,8 +121,8 @@ const VideoPage = epitath(function*({
   const existingVote = find(votes, item => {
     return get(me, 'id') === item.user.id
   })
-  const existingUpVote = get(existingVote, 'type') === 'UP'
-  const existingDownVote = get(existingVote, 'type') === 'DOWN'
+  const upVote = get(existingVote, 'type') === 'UP'
+  const downVote = get(existingVote, 'type') === 'DOWN'
   return (
     <Fragment>
       <Youtube className="mb-5" id={ytId} />
@@ -62,10 +130,21 @@ const VideoPage = epitath(function*({
         <div className="flex -mx-2">
           <div className="flex-initial px-2 text-center">
             <Button
-              loading={voteMutationLoading}
-              primary={existingUpVote}
+              primary={upVote}
+              disabled={voteMutationLoading}
               onClick={() =>
-                vote({ variables: { id, type: 'UP', adding: !existingUpVote } })
+                vote({
+                  type: 'UP',
+                  adding: !upVote,
+                  upVote,
+                  downVote,
+                  videoId,
+                  userId,
+                  ytId,
+                  voteScore,
+                  votes,
+                  voteMutation,
+                })
               }
               icon="chevron up"
             />
@@ -73,11 +152,20 @@ const VideoPage = epitath(function*({
               <strong>{voteScore}</strong>
             </div>
             <Button
-              loading={voteMutationLoading}
-              primary={existingDownVote}
+              primary={downVote}
+              disabled={voteMutationLoading}
               onClick={() =>
                 vote({
-                  variables: { id, type: 'DOWN', adding: !existingDownVote },
+                  type: 'DOWN',
+                  adding: !downVote,
+                  upVote,
+                  downVote,
+                  videoId,
+                  userId,
+                  ytId,
+                  voteScore,
+                  votes,
+                  voteMutation,
                 })
               }
               icon="chevron down"
@@ -93,21 +181,51 @@ const VideoPage = epitath(function*({
                       <Button
                         className="small"
                         primary={bookmarked}
-                        icon
-                        onClick={() =>
+                        icon={bookmarked ? 'bookmark' : 'bookmark outline'}
+                        onClick={() => {
+                          const adding = !bookmarked
                           bookmark({
                             variables: {
-                              id,
-                              adding: !bookmarked,
+                              id: videoId,
+                              adding,
+                            },
+                            optimisticResponse: {
+                              bookmarkVideo: {
+                                bookmarkers: adding
+                                  ? [
+                                      ...bookmarkers,
+                                      {
+                                        id: userId,
+                                        __typename: 'User',
+                                      },
+                                    ]
+                                  : filter(bookmarkers, o => o.id !== userId),
+                                __typename: 'Video',
+                              },
+                              __typename: 'Mutation',
+                            },
+                            update: (
+                              proxy,
+                              {
+                                data: {
+                                  bookmarkVideo: { bookmarkers },
+                                },
+                              }
+                            ) => {
+                              const data = proxy.readQuery({
+                                query: VIDEO_QUERY,
+                                variables: { ytId },
+                              })
+                              data.video = {
+                                ...data.video,
+                                bookmarkers,
+                              }
+                              proxy.writeQuery({ query: VIDEO_QUERY, data })
                             },
                           })
-                        }
-                        loading={bookmarkMutationLoading}
-                      >
-                        <Icon
-                          name={bookmarked ? 'bookmark' : 'bookmark outline'}
-                        />
-                      </Button>
+                        }}
+                        disabled={bookmarkMutationLoading}
+                      />
                     }
                     content={bookmarked ? 'Remove from bookmarks' : 'Bookmark'}
                   />
@@ -124,6 +242,16 @@ const VideoPage = epitath(function*({
     </Fragment>
   )
 })
+
+const votes = `
+  votes {
+    type
+    user {
+      id
+    }
+  }
+  voteScore
+`
 
 const VIDEO_QUERY = gql`
   query VIDEO_QUERY($ytId: String!) {
@@ -149,13 +277,10 @@ const VIDEO_QUERY = gql`
       bookmarkers {
         id
       }
-      votes {
-        type
-        user {
-          id
-        }
-      }
-      voteScore
+      ${votes}
+    }
+    me {
+      id
     }
   }
 `
@@ -163,7 +288,9 @@ const VIDEO_QUERY = gql`
 const BOOKMARK_VIDEO_MUTATION = gql`
   mutation BOOKMARK_VIDEO_MUTATION($id: ID!, $adding: Boolean!) {
     bookmarkVideo(id: $id, adding: $adding) {
-      ytId
+      bookmarkers {
+        id
+      }
     }
   }
 `
@@ -171,7 +298,7 @@ const BOOKMARK_VIDEO_MUTATION = gql`
 const VOTE_VIDEO_MUTATION = gql`
   mutation VOTE_VIDEO_MUTATION($id: ID!, $type: VoteType!, $adding: Boolean!) {
     voteVideo(id: $id, type: $type, adding: $adding) {
-      ytId
+      ${votes}
     }
   }
 `
