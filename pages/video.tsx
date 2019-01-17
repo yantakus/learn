@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Query, Mutation } from '../components/Epitath'
 import { getOperationName } from 'apollo-utilities'
 import { gql } from 'apollo-boost'
-import { Button, Icon, Popup } from 'semantic-ui-react'
+import { Button, Popup } from 'semantic-ui-react'
 import get from 'lodash/get'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
@@ -237,7 +237,7 @@ const VideoPage = epitath(function*({
         </div>
       </div>
       <div className="description">
-        <p>{snippet.description}</p>
+        <p>{get(snippet, 'description', 'This video is unavailable.')}</p>
       </div>
     </Fragment>
   )
@@ -272,6 +272,7 @@ const VIDEO_QUERY = gql`
       }
       snippet
       adder {
+        id
         name
       }
       bookmarkers {

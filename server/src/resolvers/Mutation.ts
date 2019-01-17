@@ -345,7 +345,6 @@ export const Mutation: MutationResolvers.Type = {
   },
 
   async voteVideo(_parent, { id, type, adding }, ctx) {
-    console.log(1, { id, type, adding })
     const userId = ctx.request.userId
     if (!userId) {
       throw new AuthError()

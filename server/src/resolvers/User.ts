@@ -1,9 +1,12 @@
 import { UserResolvers } from '../../generated/graphqlgen'
 import { prisma } from '../../generated/prisma'
 
-export const User /*: UserResolvers.Type*/ = {
+export const User: UserResolvers.Type = {
   ...UserResolvers.defaultResolvers,
 
+  isActivated: (parent, args, ctx) => {
+    throw new Error('Resolver not implemented')
+  },
   videosAdded: ({ id }) => {
     return prisma.videos({
       orderBy: 'createdAt_DESC',

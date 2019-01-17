@@ -67,7 +67,9 @@ export default class Video extends Component<IProps> {
           style={{ width: '320px', height: '100%' }}
         >
           <div className="position-relative">
-            <Image src={video.snippet.thumbnails.medium.url} />
+            <Image
+              src={get(video, ['snippet', 'thumbnails', 'medium', 'url'])}
+            />
             <User nullable>
               {({ id, role }) => {
                 if (
@@ -109,7 +111,9 @@ export default class Video extends Component<IProps> {
             </Card.Meta>
             <Card.Header className="leading-none">
               <Link href={`/video/${video.ytId}`}>
-                <a className="text-grey-darkest">{video.snippet.title}</a>
+                <a className="text-grey-darkest">
+                  {get(video, ['snippet', 'title'])}
+                </a>
               </Link>
             </Card.Header>
           </Card.Content>

@@ -4,10 +4,10 @@ import { GraphQLResolveInfo } from 'graphql'
 import { Video, User, Vote, Language, Topic, Tag, Payload } from './prisma'
 import { Context } from '../src/types'
 
-type Complexity = 'ELEMENTARY' | 'BASIC' | 'ADVANCED' | 'EXPERT'
-type Role = 'USER' | 'EDITOR' | 'ADMIN'
-type VoteType = 'UP' | 'DOWN'
-type VideoOrderByInput =
+export type Complexity = 'ELEMENTARY' | 'BASIC' | 'ADVANCED' | 'EXPERT'
+export type Role = 'USER' | 'EDITOR' | 'ADMIN'
+export type VoteType = 'UP' | 'DOWN'
+export type VideoOrderByInput =
   | 'id_ASC'
   | 'id_DESC'
   | 'ytId_ASC'
@@ -20,7 +20,7 @@ type VideoOrderByInput =
   | 'createdAt_DESC'
   | 'updatedAt_ASC'
   | 'updatedAt_DESC'
-type UserOrderByInput =
+export type UserOrderByInput =
   | 'id_ASC'
   | 'id_DESC'
   | 'isActivated_ASC'
@@ -46,384 +46,384 @@ export namespace QueryResolvers {
   export const defaultResolvers = {}
 
   export interface VideoWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    ytId: string | null
-    ytId_not: string | null
-    ytId_in: string[]
-    ytId_not_in: string[]
-    ytId_lt: string | null
-    ytId_lte: string | null
-    ytId_gt: string | null
-    ytId_gte: string | null
-    ytId_contains: string | null
-    ytId_not_contains: string | null
-    ytId_starts_with: string | null
-    ytId_not_starts_with: string | null
-    ytId_ends_with: string | null
-    ytId_not_ends_with: string | null
-    complexity: Complexity | null
-    complexity_not: Complexity | null
-    complexity_in: Complexity[]
-    complexity_not_in: Complexity[]
-    language: LanguageWhereInput | null
-    topics_every: TopicWhereInput | null
-    topics_some: TopicWhereInput | null
-    topics_none: TopicWhereInput | null
-    tags_every: TagWhereInput | null
-    tags_some: TagWhereInput | null
-    tags_none: TagWhereInput | null
-    adder: UserWhereInput | null
-    bookmarkers_every: UserWhereInput | null
-    bookmarkers_some: UserWhereInput | null
-    bookmarkers_none: UserWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    voteScore: number | null
-    voteScore_not: number | null
-    voteScore_in: number[]
-    voteScore_not_in: number[]
-    voteScore_lt: number | null
-    voteScore_lte: number | null
-    voteScore_gt: number | null
-    voteScore_gte: number | null
-    AND: VideoWhereInput[]
-    OR: VideoWhereInput[]
-    NOT: VideoWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    ytId?: string | null
+    ytId_not?: string | null
+    ytId_in?: string[] | null
+    ytId_not_in?: string[] | null
+    ytId_lt?: string | null
+    ytId_lte?: string | null
+    ytId_gt?: string | null
+    ytId_gte?: string | null
+    ytId_contains?: string | null
+    ytId_not_contains?: string | null
+    ytId_starts_with?: string | null
+    ytId_not_starts_with?: string | null
+    ytId_ends_with?: string | null
+    ytId_not_ends_with?: string | null
+    complexity?: Complexity | null
+    complexity_not?: Complexity | null
+    complexity_in?: Complexity[] | null
+    complexity_not_in?: Complexity[] | null
+    language?: LanguageWhereInput | null
+    topics_every?: TopicWhereInput | null
+    topics_some?: TopicWhereInput | null
+    topics_none?: TopicWhereInput | null
+    tags_every?: TagWhereInput | null
+    tags_some?: TagWhereInput | null
+    tags_none?: TagWhereInput | null
+    adder?: UserWhereInput | null
+    bookmarkers_every?: UserWhereInput | null
+    bookmarkers_some?: UserWhereInput | null
+    bookmarkers_none?: UserWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    voteScore?: number | null
+    voteScore_not?: number | null
+    voteScore_in?: number[] | null
+    voteScore_not_in?: number[] | null
+    voteScore_lt?: number | null
+    voteScore_lte?: number | null
+    voteScore_gt?: number | null
+    voteScore_gte?: number | null
+    AND?: VideoWhereInput[] | null
+    OR?: VideoWhereInput[] | null
+    NOT?: VideoWhereInput[] | null
   }
   export interface LanguageWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: LanguageWhereInput[]
-    OR: LanguageWhereInput[]
-    NOT: LanguageWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: LanguageWhereInput[] | null
+    OR?: LanguageWhereInput[] | null
+    NOT?: LanguageWhereInput[] | null
   }
   export interface TopicWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TopicWhereInput[]
-    OR: TopicWhereInput[]
-    NOT: TopicWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TopicWhereInput[] | null
+    OR?: TopicWhereInput[] | null
+    NOT?: TopicWhereInput[] | null
   }
   export interface TagWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TagWhereInput[]
-    OR: TagWhereInput[]
-    NOT: TagWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TagWhereInput[] | null
+    OR?: TagWhereInput[] | null
+    NOT?: TagWhereInput[] | null
   }
   export interface UserWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    activationCode: AccountActivationCodeWhereInput | null
-    passwordResetCode: PasswordResetCodeWhereInput | null
-    isActivated: boolean | null
-    isActivated_not: boolean | null
-    login: string | null
-    login_not: string | null
-    login_in: string[]
-    login_not_in: string[]
-    login_lt: string | null
-    login_lte: string | null
-    login_gt: string | null
-    login_gte: string | null
-    login_contains: string | null
-    login_not_contains: string | null
-    login_starts_with: string | null
-    login_not_starts_with: string | null
-    login_ends_with: string | null
-    login_not_ends_with: string | null
-    email: string | null
-    email_not: string | null
-    email_in: string[]
-    email_not_in: string[]
-    email_lt: string | null
-    email_lte: string | null
-    email_gt: string | null
-    email_gte: string | null
-    email_contains: string | null
-    email_not_contains: string | null
-    email_starts_with: string | null
-    email_not_starts_with: string | null
-    email_ends_with: string | null
-    email_not_ends_with: string | null
-    password: string | null
-    password_not: string | null
-    password_in: string[]
-    password_not_in: string[]
-    password_lt: string | null
-    password_lte: string | null
-    password_gt: string | null
-    password_gte: string | null
-    password_contains: string | null
-    password_not_contains: string | null
-    password_starts_with: string | null
-    password_not_starts_with: string | null
-    password_ends_with: string | null
-    password_not_ends_with: string | null
-    name: string | null
-    name_not: string | null
-    name_in: string[]
-    name_not_in: string[]
-    name_lt: string | null
-    name_lte: string | null
-    name_gt: string | null
-    name_gte: string | null
-    name_contains: string | null
-    name_not_contains: string | null
-    name_starts_with: string | null
-    name_not_starts_with: string | null
-    name_ends_with: string | null
-    name_not_ends_with: string | null
-    role: Role | null
-    role_not: Role | null
-    role_in: Role[]
-    role_not_in: Role[]
-    rank: number | null
-    rank_not: number | null
-    rank_in: number[]
-    rank_not_in: number[]
-    rank_lt: number | null
-    rank_lte: number | null
-    rank_gt: number | null
-    rank_gte: number | null
-    videosAdded_every: VideoWhereInput | null
-    videosAdded_some: VideoWhereInput | null
-    videosAdded_none: VideoWhereInput | null
-    videosBookmarked_every: VideoWhereInput | null
-    videosBookmarked_some: VideoWhereInput | null
-    videosBookmarked_none: VideoWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    AND: UserWhereInput[]
-    OR: UserWhereInput[]
-    NOT: UserWhereInput[]
-  }
-  export interface AccountActivationCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: AccountActivationCodeWhereInput[]
-    OR: AccountActivationCodeWhereInput[]
-    NOT: AccountActivationCodeWhereInput[]
-  }
-  export interface PasswordResetCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: PasswordResetCodeWhereInput[]
-    OR: PasswordResetCodeWhereInput[]
-    NOT: PasswordResetCodeWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    activationCode?: AccountActivationCodeWhereInput | null
+    passwordResetCode?: PasswordResetCodeWhereInput | null
+    isActivated?: boolean | null
+    isActivated_not?: boolean | null
+    login?: string | null
+    login_not?: string | null
+    login_in?: string[] | null
+    login_not_in?: string[] | null
+    login_lt?: string | null
+    login_lte?: string | null
+    login_gt?: string | null
+    login_gte?: string | null
+    login_contains?: string | null
+    login_not_contains?: string | null
+    login_starts_with?: string | null
+    login_not_starts_with?: string | null
+    login_ends_with?: string | null
+    login_not_ends_with?: string | null
+    email?: string | null
+    email_not?: string | null
+    email_in?: string[] | null
+    email_not_in?: string[] | null
+    email_lt?: string | null
+    email_lte?: string | null
+    email_gt?: string | null
+    email_gte?: string | null
+    email_contains?: string | null
+    email_not_contains?: string | null
+    email_starts_with?: string | null
+    email_not_starts_with?: string | null
+    email_ends_with?: string | null
+    email_not_ends_with?: string | null
+    password?: string | null
+    password_not?: string | null
+    password_in?: string[] | null
+    password_not_in?: string[] | null
+    password_lt?: string | null
+    password_lte?: string | null
+    password_gt?: string | null
+    password_gte?: string | null
+    password_contains?: string | null
+    password_not_contains?: string | null
+    password_starts_with?: string | null
+    password_not_starts_with?: string | null
+    password_ends_with?: string | null
+    password_not_ends_with?: string | null
+    name?: string | null
+    name_not?: string | null
+    name_in?: string[] | null
+    name_not_in?: string[] | null
+    name_lt?: string | null
+    name_lte?: string | null
+    name_gt?: string | null
+    name_gte?: string | null
+    name_contains?: string | null
+    name_not_contains?: string | null
+    name_starts_with?: string | null
+    name_not_starts_with?: string | null
+    name_ends_with?: string | null
+    name_not_ends_with?: string | null
+    role?: Role | null
+    role_not?: Role | null
+    role_in?: Role[] | null
+    role_not_in?: Role[] | null
+    rank?: number | null
+    rank_not?: number | null
+    rank_in?: number[] | null
+    rank_not_in?: number[] | null
+    rank_lt?: number | null
+    rank_lte?: number | null
+    rank_gt?: number | null
+    rank_gte?: number | null
+    videosAdded_every?: VideoWhereInput | null
+    videosAdded_some?: VideoWhereInput | null
+    videosAdded_none?: VideoWhereInput | null
+    videosBookmarked_every?: VideoWhereInput | null
+    videosBookmarked_some?: VideoWhereInput | null
+    videosBookmarked_none?: VideoWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    AND?: UserWhereInput[] | null
+    OR?: UserWhereInput[] | null
+    NOT?: UserWhereInput[] | null
   }
   export interface VoteWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    parent: VideoWhereInput | null
-    user: UserWhereInput | null
-    type: VoteType | null
-    type_not: VoteType | null
-    type_in: VoteType[]
-    type_not_in: VoteType[]
-    AND: VoteWhereInput[]
-    OR: VoteWhereInput[]
-    NOT: VoteWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    parent?: VideoWhereInput | null
+    user?: UserWhereInput | null
+    type?: VoteType | null
+    type_not?: VoteType | null
+    type_in?: VoteType[] | null
+    type_not_in?: VoteType[] | null
+    AND?: VoteWhereInput[] | null
+    OR?: VoteWhereInput[] | null
+    NOT?: VoteWhereInput[] | null
+  }
+  export interface AccountActivationCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: AccountActivationCodeWhereInput[] | null
+    OR?: AccountActivationCodeWhereInput[] | null
+    NOT?: AccountActivationCodeWhereInput[] | null
+  }
+  export interface PasswordResetCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: PasswordResetCodeWhereInput[] | null
+    OR?: PasswordResetCodeWhereInput[] | null
+    NOT?: PasswordResetCodeWhereInput[] | null
   }
 
   export interface ArgsVideos {
-    skip: number | null
-    first: number | null
-    where: VideoWhereInput | null
+    skip?: number | null
+    first?: number | null
+    where?: VideoWhereInput | null
   }
 
   export interface ArgsVideo {
@@ -431,7 +431,7 @@ export namespace QueryResolvers {
   }
 
   export interface ArgsUsers {
-    orderBy: UserOrderByInput | null
+    orderBy?: UserOrderByInput | null
   }
 
   export interface ArgsUser {
@@ -944,388 +944,388 @@ export namespace LanguageResolvers {
   }
 
   export interface VideoWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    ytId: string | null
-    ytId_not: string | null
-    ytId_in: string[]
-    ytId_not_in: string[]
-    ytId_lt: string | null
-    ytId_lte: string | null
-    ytId_gt: string | null
-    ytId_gte: string | null
-    ytId_contains: string | null
-    ytId_not_contains: string | null
-    ytId_starts_with: string | null
-    ytId_not_starts_with: string | null
-    ytId_ends_with: string | null
-    ytId_not_ends_with: string | null
-    complexity: Complexity | null
-    complexity_not: Complexity | null
-    complexity_in: Complexity[]
-    complexity_not_in: Complexity[]
-    language: LanguageWhereInput | null
-    topics_every: TopicWhereInput | null
-    topics_some: TopicWhereInput | null
-    topics_none: TopicWhereInput | null
-    tags_every: TagWhereInput | null
-    tags_some: TagWhereInput | null
-    tags_none: TagWhereInput | null
-    adder: UserWhereInput | null
-    bookmarkers_every: UserWhereInput | null
-    bookmarkers_some: UserWhereInput | null
-    bookmarkers_none: UserWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    voteScore: number | null
-    voteScore_not: number | null
-    voteScore_in: number[]
-    voteScore_not_in: number[]
-    voteScore_lt: number | null
-    voteScore_lte: number | null
-    voteScore_gt: number | null
-    voteScore_gte: number | null
-    AND: VideoWhereInput[]
-    OR: VideoWhereInput[]
-    NOT: VideoWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    ytId?: string | null
+    ytId_not?: string | null
+    ytId_in?: string[] | null
+    ytId_not_in?: string[] | null
+    ytId_lt?: string | null
+    ytId_lte?: string | null
+    ytId_gt?: string | null
+    ytId_gte?: string | null
+    ytId_contains?: string | null
+    ytId_not_contains?: string | null
+    ytId_starts_with?: string | null
+    ytId_not_starts_with?: string | null
+    ytId_ends_with?: string | null
+    ytId_not_ends_with?: string | null
+    complexity?: Complexity | null
+    complexity_not?: Complexity | null
+    complexity_in?: Complexity[] | null
+    complexity_not_in?: Complexity[] | null
+    language?: LanguageWhereInput | null
+    topics_every?: TopicWhereInput | null
+    topics_some?: TopicWhereInput | null
+    topics_none?: TopicWhereInput | null
+    tags_every?: TagWhereInput | null
+    tags_some?: TagWhereInput | null
+    tags_none?: TagWhereInput | null
+    adder?: UserWhereInput | null
+    bookmarkers_every?: UserWhereInput | null
+    bookmarkers_some?: UserWhereInput | null
+    bookmarkers_none?: UserWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    voteScore?: number | null
+    voteScore_not?: number | null
+    voteScore_in?: number[] | null
+    voteScore_not_in?: number[] | null
+    voteScore_lt?: number | null
+    voteScore_lte?: number | null
+    voteScore_gt?: number | null
+    voteScore_gte?: number | null
+    AND?: VideoWhereInput[] | null
+    OR?: VideoWhereInput[] | null
+    NOT?: VideoWhereInput[] | null
   }
   export interface LanguageWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: LanguageWhereInput[]
-    OR: LanguageWhereInput[]
-    NOT: LanguageWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: LanguageWhereInput[] | null
+    OR?: LanguageWhereInput[] | null
+    NOT?: LanguageWhereInput[] | null
   }
   export interface TopicWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TopicWhereInput[]
-    OR: TopicWhereInput[]
-    NOT: TopicWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TopicWhereInput[] | null
+    OR?: TopicWhereInput[] | null
+    NOT?: TopicWhereInput[] | null
   }
   export interface TagWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TagWhereInput[]
-    OR: TagWhereInput[]
-    NOT: TagWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TagWhereInput[] | null
+    OR?: TagWhereInput[] | null
+    NOT?: TagWhereInput[] | null
   }
   export interface UserWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    activationCode: AccountActivationCodeWhereInput | null
-    passwordResetCode: PasswordResetCodeWhereInput | null
-    isActivated: boolean | null
-    isActivated_not: boolean | null
-    login: string | null
-    login_not: string | null
-    login_in: string[]
-    login_not_in: string[]
-    login_lt: string | null
-    login_lte: string | null
-    login_gt: string | null
-    login_gte: string | null
-    login_contains: string | null
-    login_not_contains: string | null
-    login_starts_with: string | null
-    login_not_starts_with: string | null
-    login_ends_with: string | null
-    login_not_ends_with: string | null
-    email: string | null
-    email_not: string | null
-    email_in: string[]
-    email_not_in: string[]
-    email_lt: string | null
-    email_lte: string | null
-    email_gt: string | null
-    email_gte: string | null
-    email_contains: string | null
-    email_not_contains: string | null
-    email_starts_with: string | null
-    email_not_starts_with: string | null
-    email_ends_with: string | null
-    email_not_ends_with: string | null
-    password: string | null
-    password_not: string | null
-    password_in: string[]
-    password_not_in: string[]
-    password_lt: string | null
-    password_lte: string | null
-    password_gt: string | null
-    password_gte: string | null
-    password_contains: string | null
-    password_not_contains: string | null
-    password_starts_with: string | null
-    password_not_starts_with: string | null
-    password_ends_with: string | null
-    password_not_ends_with: string | null
-    name: string | null
-    name_not: string | null
-    name_in: string[]
-    name_not_in: string[]
-    name_lt: string | null
-    name_lte: string | null
-    name_gt: string | null
-    name_gte: string | null
-    name_contains: string | null
-    name_not_contains: string | null
-    name_starts_with: string | null
-    name_not_starts_with: string | null
-    name_ends_with: string | null
-    name_not_ends_with: string | null
-    role: Role | null
-    role_not: Role | null
-    role_in: Role[]
-    role_not_in: Role[]
-    rank: number | null
-    rank_not: number | null
-    rank_in: number[]
-    rank_not_in: number[]
-    rank_lt: number | null
-    rank_lte: number | null
-    rank_gt: number | null
-    rank_gte: number | null
-    videosAdded_every: VideoWhereInput | null
-    videosAdded_some: VideoWhereInput | null
-    videosAdded_none: VideoWhereInput | null
-    videosBookmarked_every: VideoWhereInput | null
-    videosBookmarked_some: VideoWhereInput | null
-    videosBookmarked_none: VideoWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    AND: UserWhereInput[]
-    OR: UserWhereInput[]
-    NOT: UserWhereInput[]
-  }
-  export interface AccountActivationCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: AccountActivationCodeWhereInput[]
-    OR: AccountActivationCodeWhereInput[]
-    NOT: AccountActivationCodeWhereInput[]
-  }
-  export interface PasswordResetCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: PasswordResetCodeWhereInput[]
-    OR: PasswordResetCodeWhereInput[]
-    NOT: PasswordResetCodeWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    activationCode?: AccountActivationCodeWhereInput | null
+    passwordResetCode?: PasswordResetCodeWhereInput | null
+    isActivated?: boolean | null
+    isActivated_not?: boolean | null
+    login?: string | null
+    login_not?: string | null
+    login_in?: string[] | null
+    login_not_in?: string[] | null
+    login_lt?: string | null
+    login_lte?: string | null
+    login_gt?: string | null
+    login_gte?: string | null
+    login_contains?: string | null
+    login_not_contains?: string | null
+    login_starts_with?: string | null
+    login_not_starts_with?: string | null
+    login_ends_with?: string | null
+    login_not_ends_with?: string | null
+    email?: string | null
+    email_not?: string | null
+    email_in?: string[] | null
+    email_not_in?: string[] | null
+    email_lt?: string | null
+    email_lte?: string | null
+    email_gt?: string | null
+    email_gte?: string | null
+    email_contains?: string | null
+    email_not_contains?: string | null
+    email_starts_with?: string | null
+    email_not_starts_with?: string | null
+    email_ends_with?: string | null
+    email_not_ends_with?: string | null
+    password?: string | null
+    password_not?: string | null
+    password_in?: string[] | null
+    password_not_in?: string[] | null
+    password_lt?: string | null
+    password_lte?: string | null
+    password_gt?: string | null
+    password_gte?: string | null
+    password_contains?: string | null
+    password_not_contains?: string | null
+    password_starts_with?: string | null
+    password_not_starts_with?: string | null
+    password_ends_with?: string | null
+    password_not_ends_with?: string | null
+    name?: string | null
+    name_not?: string | null
+    name_in?: string[] | null
+    name_not_in?: string[] | null
+    name_lt?: string | null
+    name_lte?: string | null
+    name_gt?: string | null
+    name_gte?: string | null
+    name_contains?: string | null
+    name_not_contains?: string | null
+    name_starts_with?: string | null
+    name_not_starts_with?: string | null
+    name_ends_with?: string | null
+    name_not_ends_with?: string | null
+    role?: Role | null
+    role_not?: Role | null
+    role_in?: Role[] | null
+    role_not_in?: Role[] | null
+    rank?: number | null
+    rank_not?: number | null
+    rank_in?: number[] | null
+    rank_not_in?: number[] | null
+    rank_lt?: number | null
+    rank_lte?: number | null
+    rank_gt?: number | null
+    rank_gte?: number | null
+    videosAdded_every?: VideoWhereInput | null
+    videosAdded_some?: VideoWhereInput | null
+    videosAdded_none?: VideoWhereInput | null
+    videosBookmarked_every?: VideoWhereInput | null
+    videosBookmarked_some?: VideoWhereInput | null
+    videosBookmarked_none?: VideoWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    AND?: UserWhereInput[] | null
+    OR?: UserWhereInput[] | null
+    NOT?: UserWhereInput[] | null
   }
   export interface VoteWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    parent: VideoWhereInput | null
-    user: UserWhereInput | null
-    type: VoteType | null
-    type_not: VoteType | null
-    type_in: VoteType[]
-    type_not_in: VoteType[]
-    AND: VoteWhereInput[]
-    OR: VoteWhereInput[]
-    NOT: VoteWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    parent?: VideoWhereInput | null
+    user?: UserWhereInput | null
+    type?: VoteType | null
+    type_not?: VoteType | null
+    type_in?: VoteType[] | null
+    type_not_in?: VoteType[] | null
+    AND?: VoteWhereInput[] | null
+    OR?: VoteWhereInput[] | null
+    NOT?: VoteWhereInput[] | null
+  }
+  export interface AccountActivationCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: AccountActivationCodeWhereInput[] | null
+    OR?: AccountActivationCodeWhereInput[] | null
+    NOT?: AccountActivationCodeWhereInput[] | null
+  }
+  export interface PasswordResetCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: PasswordResetCodeWhereInput[] | null
+    OR?: PasswordResetCodeWhereInput[] | null
+    NOT?: PasswordResetCodeWhereInput[] | null
   }
 
   export interface ArgsParent {
-    where: VideoWhereInput | null
-    orderBy: VideoOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
+    where?: VideoWhereInput | null
+    orderBy?: VideoOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
   }
 
   export type IdResolver = (
@@ -1354,7 +1354,7 @@ export namespace LanguageResolvers {
     args: ArgsParent,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Video[] | Promise<Video[]>
+  ) => Video[] | null | Promise<Video[] | null>
 
   export interface Type {
     id: (
@@ -1383,7 +1383,7 @@ export namespace LanguageResolvers {
       args: ArgsParent,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Video[] | Promise<Video[]>
+    ) => Video[] | null | Promise<Video[] | null>
   }
 }
 
@@ -1395,388 +1395,388 @@ export namespace TopicResolvers {
   }
 
   export interface VideoWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    ytId: string | null
-    ytId_not: string | null
-    ytId_in: string[]
-    ytId_not_in: string[]
-    ytId_lt: string | null
-    ytId_lte: string | null
-    ytId_gt: string | null
-    ytId_gte: string | null
-    ytId_contains: string | null
-    ytId_not_contains: string | null
-    ytId_starts_with: string | null
-    ytId_not_starts_with: string | null
-    ytId_ends_with: string | null
-    ytId_not_ends_with: string | null
-    complexity: Complexity | null
-    complexity_not: Complexity | null
-    complexity_in: Complexity[]
-    complexity_not_in: Complexity[]
-    language: LanguageWhereInput | null
-    topics_every: TopicWhereInput | null
-    topics_some: TopicWhereInput | null
-    topics_none: TopicWhereInput | null
-    tags_every: TagWhereInput | null
-    tags_some: TagWhereInput | null
-    tags_none: TagWhereInput | null
-    adder: UserWhereInput | null
-    bookmarkers_every: UserWhereInput | null
-    bookmarkers_some: UserWhereInput | null
-    bookmarkers_none: UserWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    voteScore: number | null
-    voteScore_not: number | null
-    voteScore_in: number[]
-    voteScore_not_in: number[]
-    voteScore_lt: number | null
-    voteScore_lte: number | null
-    voteScore_gt: number | null
-    voteScore_gte: number | null
-    AND: VideoWhereInput[]
-    OR: VideoWhereInput[]
-    NOT: VideoWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    ytId?: string | null
+    ytId_not?: string | null
+    ytId_in?: string[] | null
+    ytId_not_in?: string[] | null
+    ytId_lt?: string | null
+    ytId_lte?: string | null
+    ytId_gt?: string | null
+    ytId_gte?: string | null
+    ytId_contains?: string | null
+    ytId_not_contains?: string | null
+    ytId_starts_with?: string | null
+    ytId_not_starts_with?: string | null
+    ytId_ends_with?: string | null
+    ytId_not_ends_with?: string | null
+    complexity?: Complexity | null
+    complexity_not?: Complexity | null
+    complexity_in?: Complexity[] | null
+    complexity_not_in?: Complexity[] | null
+    language?: LanguageWhereInput | null
+    topics_every?: TopicWhereInput | null
+    topics_some?: TopicWhereInput | null
+    topics_none?: TopicWhereInput | null
+    tags_every?: TagWhereInput | null
+    tags_some?: TagWhereInput | null
+    tags_none?: TagWhereInput | null
+    adder?: UserWhereInput | null
+    bookmarkers_every?: UserWhereInput | null
+    bookmarkers_some?: UserWhereInput | null
+    bookmarkers_none?: UserWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    voteScore?: number | null
+    voteScore_not?: number | null
+    voteScore_in?: number[] | null
+    voteScore_not_in?: number[] | null
+    voteScore_lt?: number | null
+    voteScore_lte?: number | null
+    voteScore_gt?: number | null
+    voteScore_gte?: number | null
+    AND?: VideoWhereInput[] | null
+    OR?: VideoWhereInput[] | null
+    NOT?: VideoWhereInput[] | null
   }
   export interface LanguageWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: LanguageWhereInput[]
-    OR: LanguageWhereInput[]
-    NOT: LanguageWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: LanguageWhereInput[] | null
+    OR?: LanguageWhereInput[] | null
+    NOT?: LanguageWhereInput[] | null
   }
   export interface TopicWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TopicWhereInput[]
-    OR: TopicWhereInput[]
-    NOT: TopicWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TopicWhereInput[] | null
+    OR?: TopicWhereInput[] | null
+    NOT?: TopicWhereInput[] | null
   }
   export interface TagWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TagWhereInput[]
-    OR: TagWhereInput[]
-    NOT: TagWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TagWhereInput[] | null
+    OR?: TagWhereInput[] | null
+    NOT?: TagWhereInput[] | null
   }
   export interface UserWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    activationCode: AccountActivationCodeWhereInput | null
-    passwordResetCode: PasswordResetCodeWhereInput | null
-    isActivated: boolean | null
-    isActivated_not: boolean | null
-    login: string | null
-    login_not: string | null
-    login_in: string[]
-    login_not_in: string[]
-    login_lt: string | null
-    login_lte: string | null
-    login_gt: string | null
-    login_gte: string | null
-    login_contains: string | null
-    login_not_contains: string | null
-    login_starts_with: string | null
-    login_not_starts_with: string | null
-    login_ends_with: string | null
-    login_not_ends_with: string | null
-    email: string | null
-    email_not: string | null
-    email_in: string[]
-    email_not_in: string[]
-    email_lt: string | null
-    email_lte: string | null
-    email_gt: string | null
-    email_gte: string | null
-    email_contains: string | null
-    email_not_contains: string | null
-    email_starts_with: string | null
-    email_not_starts_with: string | null
-    email_ends_with: string | null
-    email_not_ends_with: string | null
-    password: string | null
-    password_not: string | null
-    password_in: string[]
-    password_not_in: string[]
-    password_lt: string | null
-    password_lte: string | null
-    password_gt: string | null
-    password_gte: string | null
-    password_contains: string | null
-    password_not_contains: string | null
-    password_starts_with: string | null
-    password_not_starts_with: string | null
-    password_ends_with: string | null
-    password_not_ends_with: string | null
-    name: string | null
-    name_not: string | null
-    name_in: string[]
-    name_not_in: string[]
-    name_lt: string | null
-    name_lte: string | null
-    name_gt: string | null
-    name_gte: string | null
-    name_contains: string | null
-    name_not_contains: string | null
-    name_starts_with: string | null
-    name_not_starts_with: string | null
-    name_ends_with: string | null
-    name_not_ends_with: string | null
-    role: Role | null
-    role_not: Role | null
-    role_in: Role[]
-    role_not_in: Role[]
-    rank: number | null
-    rank_not: number | null
-    rank_in: number[]
-    rank_not_in: number[]
-    rank_lt: number | null
-    rank_lte: number | null
-    rank_gt: number | null
-    rank_gte: number | null
-    videosAdded_every: VideoWhereInput | null
-    videosAdded_some: VideoWhereInput | null
-    videosAdded_none: VideoWhereInput | null
-    videosBookmarked_every: VideoWhereInput | null
-    videosBookmarked_some: VideoWhereInput | null
-    videosBookmarked_none: VideoWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    AND: UserWhereInput[]
-    OR: UserWhereInput[]
-    NOT: UserWhereInput[]
-  }
-  export interface AccountActivationCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: AccountActivationCodeWhereInput[]
-    OR: AccountActivationCodeWhereInput[]
-    NOT: AccountActivationCodeWhereInput[]
-  }
-  export interface PasswordResetCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: PasswordResetCodeWhereInput[]
-    OR: PasswordResetCodeWhereInput[]
-    NOT: PasswordResetCodeWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    activationCode?: AccountActivationCodeWhereInput | null
+    passwordResetCode?: PasswordResetCodeWhereInput | null
+    isActivated?: boolean | null
+    isActivated_not?: boolean | null
+    login?: string | null
+    login_not?: string | null
+    login_in?: string[] | null
+    login_not_in?: string[] | null
+    login_lt?: string | null
+    login_lte?: string | null
+    login_gt?: string | null
+    login_gte?: string | null
+    login_contains?: string | null
+    login_not_contains?: string | null
+    login_starts_with?: string | null
+    login_not_starts_with?: string | null
+    login_ends_with?: string | null
+    login_not_ends_with?: string | null
+    email?: string | null
+    email_not?: string | null
+    email_in?: string[] | null
+    email_not_in?: string[] | null
+    email_lt?: string | null
+    email_lte?: string | null
+    email_gt?: string | null
+    email_gte?: string | null
+    email_contains?: string | null
+    email_not_contains?: string | null
+    email_starts_with?: string | null
+    email_not_starts_with?: string | null
+    email_ends_with?: string | null
+    email_not_ends_with?: string | null
+    password?: string | null
+    password_not?: string | null
+    password_in?: string[] | null
+    password_not_in?: string[] | null
+    password_lt?: string | null
+    password_lte?: string | null
+    password_gt?: string | null
+    password_gte?: string | null
+    password_contains?: string | null
+    password_not_contains?: string | null
+    password_starts_with?: string | null
+    password_not_starts_with?: string | null
+    password_ends_with?: string | null
+    password_not_ends_with?: string | null
+    name?: string | null
+    name_not?: string | null
+    name_in?: string[] | null
+    name_not_in?: string[] | null
+    name_lt?: string | null
+    name_lte?: string | null
+    name_gt?: string | null
+    name_gte?: string | null
+    name_contains?: string | null
+    name_not_contains?: string | null
+    name_starts_with?: string | null
+    name_not_starts_with?: string | null
+    name_ends_with?: string | null
+    name_not_ends_with?: string | null
+    role?: Role | null
+    role_not?: Role | null
+    role_in?: Role[] | null
+    role_not_in?: Role[] | null
+    rank?: number | null
+    rank_not?: number | null
+    rank_in?: number[] | null
+    rank_not_in?: number[] | null
+    rank_lt?: number | null
+    rank_lte?: number | null
+    rank_gt?: number | null
+    rank_gte?: number | null
+    videosAdded_every?: VideoWhereInput | null
+    videosAdded_some?: VideoWhereInput | null
+    videosAdded_none?: VideoWhereInput | null
+    videosBookmarked_every?: VideoWhereInput | null
+    videosBookmarked_some?: VideoWhereInput | null
+    videosBookmarked_none?: VideoWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    AND?: UserWhereInput[] | null
+    OR?: UserWhereInput[] | null
+    NOT?: UserWhereInput[] | null
   }
   export interface VoteWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    parent: VideoWhereInput | null
-    user: UserWhereInput | null
-    type: VoteType | null
-    type_not: VoteType | null
-    type_in: VoteType[]
-    type_not_in: VoteType[]
-    AND: VoteWhereInput[]
-    OR: VoteWhereInput[]
-    NOT: VoteWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    parent?: VideoWhereInput | null
+    user?: UserWhereInput | null
+    type?: VoteType | null
+    type_not?: VoteType | null
+    type_in?: VoteType[] | null
+    type_not_in?: VoteType[] | null
+    AND?: VoteWhereInput[] | null
+    OR?: VoteWhereInput[] | null
+    NOT?: VoteWhereInput[] | null
+  }
+  export interface AccountActivationCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: AccountActivationCodeWhereInput[] | null
+    OR?: AccountActivationCodeWhereInput[] | null
+    NOT?: AccountActivationCodeWhereInput[] | null
+  }
+  export interface PasswordResetCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: PasswordResetCodeWhereInput[] | null
+    OR?: PasswordResetCodeWhereInput[] | null
+    NOT?: PasswordResetCodeWhereInput[] | null
   }
 
   export interface ArgsParent {
-    where: VideoWhereInput | null
-    orderBy: VideoOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
+    where?: VideoWhereInput | null
+    orderBy?: VideoOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
   }
 
   export type IdResolver = (
@@ -1805,7 +1805,7 @@ export namespace TopicResolvers {
     args: ArgsParent,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Video[] | Promise<Video[]>
+  ) => Video[] | null | Promise<Video[] | null>
 
   export interface Type {
     id: (
@@ -1834,7 +1834,7 @@ export namespace TopicResolvers {
       args: ArgsParent,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Video[] | Promise<Video[]>
+    ) => Video[] | null | Promise<Video[] | null>
   }
 }
 
@@ -1846,388 +1846,388 @@ export namespace TagResolvers {
   }
 
   export interface VideoWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    ytId: string | null
-    ytId_not: string | null
-    ytId_in: string[]
-    ytId_not_in: string[]
-    ytId_lt: string | null
-    ytId_lte: string | null
-    ytId_gt: string | null
-    ytId_gte: string | null
-    ytId_contains: string | null
-    ytId_not_contains: string | null
-    ytId_starts_with: string | null
-    ytId_not_starts_with: string | null
-    ytId_ends_with: string | null
-    ytId_not_ends_with: string | null
-    complexity: Complexity | null
-    complexity_not: Complexity | null
-    complexity_in: Complexity[]
-    complexity_not_in: Complexity[]
-    language: LanguageWhereInput | null
-    topics_every: TopicWhereInput | null
-    topics_some: TopicWhereInput | null
-    topics_none: TopicWhereInput | null
-    tags_every: TagWhereInput | null
-    tags_some: TagWhereInput | null
-    tags_none: TagWhereInput | null
-    adder: UserWhereInput | null
-    bookmarkers_every: UserWhereInput | null
-    bookmarkers_some: UserWhereInput | null
-    bookmarkers_none: UserWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    voteScore: number | null
-    voteScore_not: number | null
-    voteScore_in: number[]
-    voteScore_not_in: number[]
-    voteScore_lt: number | null
-    voteScore_lte: number | null
-    voteScore_gt: number | null
-    voteScore_gte: number | null
-    AND: VideoWhereInput[]
-    OR: VideoWhereInput[]
-    NOT: VideoWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    ytId?: string | null
+    ytId_not?: string | null
+    ytId_in?: string[] | null
+    ytId_not_in?: string[] | null
+    ytId_lt?: string | null
+    ytId_lte?: string | null
+    ytId_gt?: string | null
+    ytId_gte?: string | null
+    ytId_contains?: string | null
+    ytId_not_contains?: string | null
+    ytId_starts_with?: string | null
+    ytId_not_starts_with?: string | null
+    ytId_ends_with?: string | null
+    ytId_not_ends_with?: string | null
+    complexity?: Complexity | null
+    complexity_not?: Complexity | null
+    complexity_in?: Complexity[] | null
+    complexity_not_in?: Complexity[] | null
+    language?: LanguageWhereInput | null
+    topics_every?: TopicWhereInput | null
+    topics_some?: TopicWhereInput | null
+    topics_none?: TopicWhereInput | null
+    tags_every?: TagWhereInput | null
+    tags_some?: TagWhereInput | null
+    tags_none?: TagWhereInput | null
+    adder?: UserWhereInput | null
+    bookmarkers_every?: UserWhereInput | null
+    bookmarkers_some?: UserWhereInput | null
+    bookmarkers_none?: UserWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    voteScore?: number | null
+    voteScore_not?: number | null
+    voteScore_in?: number[] | null
+    voteScore_not_in?: number[] | null
+    voteScore_lt?: number | null
+    voteScore_lte?: number | null
+    voteScore_gt?: number | null
+    voteScore_gte?: number | null
+    AND?: VideoWhereInput[] | null
+    OR?: VideoWhereInput[] | null
+    NOT?: VideoWhereInput[] | null
   }
   export interface LanguageWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: LanguageWhereInput[]
-    OR: LanguageWhereInput[]
-    NOT: LanguageWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: LanguageWhereInput[] | null
+    OR?: LanguageWhereInput[] | null
+    NOT?: LanguageWhereInput[] | null
   }
   export interface TopicWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TopicWhereInput[]
-    OR: TopicWhereInput[]
-    NOT: TopicWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TopicWhereInput[] | null
+    OR?: TopicWhereInput[] | null
+    NOT?: TopicWhereInput[] | null
   }
   export interface TagWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    value: string | null
-    value_not: string | null
-    value_in: string[]
-    value_not_in: string[]
-    value_lt: string | null
-    value_lte: string | null
-    value_gt: string | null
-    value_gte: string | null
-    value_contains: string | null
-    value_not_contains: string | null
-    value_starts_with: string | null
-    value_not_starts_with: string | null
-    value_ends_with: string | null
-    value_not_ends_with: string | null
-    text: string | null
-    text_not: string | null
-    text_in: string[]
-    text_not_in: string[]
-    text_lt: string | null
-    text_lte: string | null
-    text_gt: string | null
-    text_gte: string | null
-    text_contains: string | null
-    text_not_contains: string | null
-    text_starts_with: string | null
-    text_not_starts_with: string | null
-    text_ends_with: string | null
-    text_not_ends_with: string | null
-    parent_every: VideoWhereInput | null
-    parent_some: VideoWhereInput | null
-    parent_none: VideoWhereInput | null
-    AND: TagWhereInput[]
-    OR: TagWhereInput[]
-    NOT: TagWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    value?: string | null
+    value_not?: string | null
+    value_in?: string[] | null
+    value_not_in?: string[] | null
+    value_lt?: string | null
+    value_lte?: string | null
+    value_gt?: string | null
+    value_gte?: string | null
+    value_contains?: string | null
+    value_not_contains?: string | null
+    value_starts_with?: string | null
+    value_not_starts_with?: string | null
+    value_ends_with?: string | null
+    value_not_ends_with?: string | null
+    text?: string | null
+    text_not?: string | null
+    text_in?: string[] | null
+    text_not_in?: string[] | null
+    text_lt?: string | null
+    text_lte?: string | null
+    text_gt?: string | null
+    text_gte?: string | null
+    text_contains?: string | null
+    text_not_contains?: string | null
+    text_starts_with?: string | null
+    text_not_starts_with?: string | null
+    text_ends_with?: string | null
+    text_not_ends_with?: string | null
+    parent_every?: VideoWhereInput | null
+    parent_some?: VideoWhereInput | null
+    parent_none?: VideoWhereInput | null
+    AND?: TagWhereInput[] | null
+    OR?: TagWhereInput[] | null
+    NOT?: TagWhereInput[] | null
   }
   export interface UserWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    activationCode: AccountActivationCodeWhereInput | null
-    passwordResetCode: PasswordResetCodeWhereInput | null
-    isActivated: boolean | null
-    isActivated_not: boolean | null
-    login: string | null
-    login_not: string | null
-    login_in: string[]
-    login_not_in: string[]
-    login_lt: string | null
-    login_lte: string | null
-    login_gt: string | null
-    login_gte: string | null
-    login_contains: string | null
-    login_not_contains: string | null
-    login_starts_with: string | null
-    login_not_starts_with: string | null
-    login_ends_with: string | null
-    login_not_ends_with: string | null
-    email: string | null
-    email_not: string | null
-    email_in: string[]
-    email_not_in: string[]
-    email_lt: string | null
-    email_lte: string | null
-    email_gt: string | null
-    email_gte: string | null
-    email_contains: string | null
-    email_not_contains: string | null
-    email_starts_with: string | null
-    email_not_starts_with: string | null
-    email_ends_with: string | null
-    email_not_ends_with: string | null
-    password: string | null
-    password_not: string | null
-    password_in: string[]
-    password_not_in: string[]
-    password_lt: string | null
-    password_lte: string | null
-    password_gt: string | null
-    password_gte: string | null
-    password_contains: string | null
-    password_not_contains: string | null
-    password_starts_with: string | null
-    password_not_starts_with: string | null
-    password_ends_with: string | null
-    password_not_ends_with: string | null
-    name: string | null
-    name_not: string | null
-    name_in: string[]
-    name_not_in: string[]
-    name_lt: string | null
-    name_lte: string | null
-    name_gt: string | null
-    name_gte: string | null
-    name_contains: string | null
-    name_not_contains: string | null
-    name_starts_with: string | null
-    name_not_starts_with: string | null
-    name_ends_with: string | null
-    name_not_ends_with: string | null
-    role: Role | null
-    role_not: Role | null
-    role_in: Role[]
-    role_not_in: Role[]
-    rank: number | null
-    rank_not: number | null
-    rank_in: number[]
-    rank_not_in: number[]
-    rank_lt: number | null
-    rank_lte: number | null
-    rank_gt: number | null
-    rank_gte: number | null
-    videosAdded_every: VideoWhereInput | null
-    videosAdded_some: VideoWhereInput | null
-    videosAdded_none: VideoWhereInput | null
-    videosBookmarked_every: VideoWhereInput | null
-    videosBookmarked_some: VideoWhereInput | null
-    videosBookmarked_none: VideoWhereInput | null
-    votes_every: VoteWhereInput | null
-    votes_some: VoteWhereInput | null
-    votes_none: VoteWhereInput | null
-    AND: UserWhereInput[]
-    OR: UserWhereInput[]
-    NOT: UserWhereInput[]
-  }
-  export interface AccountActivationCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: AccountActivationCodeWhereInput[]
-    OR: AccountActivationCodeWhereInput[]
-    NOT: AccountActivationCodeWhereInput[]
-  }
-  export interface PasswordResetCodeWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    user: UserWhereInput | null
-    AND: PasswordResetCodeWhereInput[]
-    OR: PasswordResetCodeWhereInput[]
-    NOT: PasswordResetCodeWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    activationCode?: AccountActivationCodeWhereInput | null
+    passwordResetCode?: PasswordResetCodeWhereInput | null
+    isActivated?: boolean | null
+    isActivated_not?: boolean | null
+    login?: string | null
+    login_not?: string | null
+    login_in?: string[] | null
+    login_not_in?: string[] | null
+    login_lt?: string | null
+    login_lte?: string | null
+    login_gt?: string | null
+    login_gte?: string | null
+    login_contains?: string | null
+    login_not_contains?: string | null
+    login_starts_with?: string | null
+    login_not_starts_with?: string | null
+    login_ends_with?: string | null
+    login_not_ends_with?: string | null
+    email?: string | null
+    email_not?: string | null
+    email_in?: string[] | null
+    email_not_in?: string[] | null
+    email_lt?: string | null
+    email_lte?: string | null
+    email_gt?: string | null
+    email_gte?: string | null
+    email_contains?: string | null
+    email_not_contains?: string | null
+    email_starts_with?: string | null
+    email_not_starts_with?: string | null
+    email_ends_with?: string | null
+    email_not_ends_with?: string | null
+    password?: string | null
+    password_not?: string | null
+    password_in?: string[] | null
+    password_not_in?: string[] | null
+    password_lt?: string | null
+    password_lte?: string | null
+    password_gt?: string | null
+    password_gte?: string | null
+    password_contains?: string | null
+    password_not_contains?: string | null
+    password_starts_with?: string | null
+    password_not_starts_with?: string | null
+    password_ends_with?: string | null
+    password_not_ends_with?: string | null
+    name?: string | null
+    name_not?: string | null
+    name_in?: string[] | null
+    name_not_in?: string[] | null
+    name_lt?: string | null
+    name_lte?: string | null
+    name_gt?: string | null
+    name_gte?: string | null
+    name_contains?: string | null
+    name_not_contains?: string | null
+    name_starts_with?: string | null
+    name_not_starts_with?: string | null
+    name_ends_with?: string | null
+    name_not_ends_with?: string | null
+    role?: Role | null
+    role_not?: Role | null
+    role_in?: Role[] | null
+    role_not_in?: Role[] | null
+    rank?: number | null
+    rank_not?: number | null
+    rank_in?: number[] | null
+    rank_not_in?: number[] | null
+    rank_lt?: number | null
+    rank_lte?: number | null
+    rank_gt?: number | null
+    rank_gte?: number | null
+    videosAdded_every?: VideoWhereInput | null
+    videosAdded_some?: VideoWhereInput | null
+    videosAdded_none?: VideoWhereInput | null
+    videosBookmarked_every?: VideoWhereInput | null
+    videosBookmarked_some?: VideoWhereInput | null
+    videosBookmarked_none?: VideoWhereInput | null
+    votes_every?: VoteWhereInput | null
+    votes_some?: VoteWhereInput | null
+    votes_none?: VoteWhereInput | null
+    AND?: UserWhereInput[] | null
+    OR?: UserWhereInput[] | null
+    NOT?: UserWhereInput[] | null
   }
   export interface VoteWhereInput {
-    id: string | null
-    id_not: string | null
-    id_in: string[]
-    id_not_in: string[]
-    id_lt: string | null
-    id_lte: string | null
-    id_gt: string | null
-    id_gte: string | null
-    id_contains: string | null
-    id_not_contains: string | null
-    id_starts_with: string | null
-    id_not_starts_with: string | null
-    id_ends_with: string | null
-    id_not_ends_with: string | null
-    parent: VideoWhereInput | null
-    user: UserWhereInput | null
-    type: VoteType | null
-    type_not: VoteType | null
-    type_in: VoteType[]
-    type_not_in: VoteType[]
-    AND: VoteWhereInput[]
-    OR: VoteWhereInput[]
-    NOT: VoteWhereInput[]
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    parent?: VideoWhereInput | null
+    user?: UserWhereInput | null
+    type?: VoteType | null
+    type_not?: VoteType | null
+    type_in?: VoteType[] | null
+    type_not_in?: VoteType[] | null
+    AND?: VoteWhereInput[] | null
+    OR?: VoteWhereInput[] | null
+    NOT?: VoteWhereInput[] | null
+  }
+  export interface AccountActivationCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: AccountActivationCodeWhereInput[] | null
+    OR?: AccountActivationCodeWhereInput[] | null
+    NOT?: AccountActivationCodeWhereInput[] | null
+  }
+  export interface PasswordResetCodeWhereInput {
+    id?: string | null
+    id_not?: string | null
+    id_in?: string[] | null
+    id_not_in?: string[] | null
+    id_lt?: string | null
+    id_lte?: string | null
+    id_gt?: string | null
+    id_gte?: string | null
+    id_contains?: string | null
+    id_not_contains?: string | null
+    id_starts_with?: string | null
+    id_not_starts_with?: string | null
+    id_ends_with?: string | null
+    id_not_ends_with?: string | null
+    user?: UserWhereInput | null
+    AND?: PasswordResetCodeWhereInput[] | null
+    OR?: PasswordResetCodeWhereInput[] | null
+    NOT?: PasswordResetCodeWhereInput[] | null
   }
 
   export interface ArgsParent {
-    where: VideoWhereInput | null
-    orderBy: VideoOrderByInput | null
-    skip: number | null
-    after: string | null
-    before: string | null
-    first: number | null
-    last: number | null
+    where?: VideoWhereInput | null
+    orderBy?: VideoOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
   }
 
   export type IdResolver = (
@@ -2256,7 +2256,7 @@ export namespace TagResolvers {
     args: ArgsParent,
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => Video[] | Promise<Video[]>
+  ) => Video[] | null | Promise<Video[] | null>
 
   export interface Type {
     id: (
@@ -2285,7 +2285,7 @@ export namespace TagResolvers {
       args: ArgsParent,
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => Video[] | Promise<Video[]>
+    ) => Video[] | null | Promise<Video[] | null>
   }
 }
 
@@ -2293,43 +2293,43 @@ export namespace MutationResolvers {
   export const defaultResolvers = {}
 
   export interface LanguageCreateOneWithoutParentInput {
-    create: LanguageCreateWithoutParentInput | null
-    connect: LanguageWhereUniqueInput | null
+    create?: LanguageCreateWithoutParentInput | null
+    connect?: LanguageWhereUniqueInput | null
+  }
+  export interface TopicCreateManyWithoutParentInput {
+    create?: TopicCreateWithoutParentInput[] | null
+    connect?: TopicWhereUniqueInput[] | null
+  }
+  export interface TagCreateManyWithoutParentInput {
+    create?: TagCreateWithoutParentInput[] | null
+    connect?: TagWhereUniqueInput[] | null
   }
   export interface LanguageCreateWithoutParentInput {
     value: string
     text: string
   }
   export interface LanguageWhereUniqueInput {
-    id: string | null
-    value: string | null
-    text: string | null
-  }
-  export interface TopicCreateManyWithoutParentInput {
-    create: TopicCreateWithoutParentInput[]
-    connect: TopicWhereUniqueInput[]
+    id?: string | null
+    value?: string | null
+    text?: string | null
   }
   export interface TopicCreateWithoutParentInput {
     value: string
     text: string
   }
   export interface TopicWhereUniqueInput {
-    id: string | null
-    value: string | null
-    text: string | null
-  }
-  export interface TagCreateManyWithoutParentInput {
-    create: TagCreateWithoutParentInput[]
-    connect: TagWhereUniqueInput[]
+    id?: string | null
+    value?: string | null
+    text?: string | null
   }
   export interface TagCreateWithoutParentInput {
     value: string
     text: string
   }
   export interface TagWhereUniqueInput {
-    id: string | null
-    value: string | null
-    text: string | null
+    id?: string | null
+    value?: string | null
+    text?: string | null
   }
 
   export interface ArgsSignup {
@@ -2358,12 +2358,12 @@ export namespace MutationResolvers {
   }
 
   export interface ArgsEditProfile {
-    name: string | null
-    login: string | null
+    name?: string | null
+    login?: string | null
   }
 
   export interface ArgsUpsertVideo {
-    update: boolean | null
+    update?: boolean | null
     ytId: string
     complexity: Complexity
     language: LanguageCreateOneWithoutParentInput
