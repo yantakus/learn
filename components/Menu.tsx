@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { Menu, Icon } from 'semantic-ui-react'
 import Link from 'next/link'
+import { withRouter, NextRouter } from 'next/router'
 
 import { CURRENT_USER_QUERY } from '../components/User'
 import User from '../components/User'
@@ -16,10 +17,7 @@ const SIGN_OUT_MUTATION = gql`
 `
 
 interface Props {
-  router: {
-    pathname: String
-    asPath: String
-  }
+  router: NextRouter
 }
 
 const defaultMenuItems = [
@@ -29,7 +27,7 @@ const defaultMenuItems = [
 ]
 let menuItems
 
-export default class MenuComponent extends Component<Props> {
+class MenuComponent extends Component<Props> {
   render() {
     const {
       router: { pathname },
@@ -119,3 +117,5 @@ export default class MenuComponent extends Component<Props> {
     )
   }
 }
+
+export default withRouter(MenuComponent)

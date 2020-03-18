@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Link from 'next/link'
 import { Mutation } from 'react-apollo'
-import { gql } from 'apollo-boost'
+import { gql, ApolloError } from 'apollo-boost'
 import { Form } from 'semantic-ui-react'
 
 import redirect from '../lib/redirect'
@@ -11,6 +11,10 @@ import Message from '../components/Message'
 
 interface IProps {
   redirect?: boolean
+}
+type MutationProps = {
+  loading: boolean
+  error?: ApolloError
 }
 
 export default class Signin extends Component<IProps> {
@@ -30,7 +34,7 @@ export default class Signin extends Component<IProps> {
         }}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-        {(signin, { loading, error }) => (
+        {(signin, { loading, error }: MutationProps) => (
           <div className="ui stackable two column centered grid container">
             <div className="column">
               <h3 className="ui horizontal divider header">Sign In</h3>

@@ -155,9 +155,9 @@ export default class Video extends Component<IProps> {
             padding: 5px;
             background-color: rgba(0, 0, 0, 0.25);
             border-radius: 50%;
-            &:hover {
-              background-color: rgba(0, 0, 0, 0.75);
-            }
+          }
+          .edit:hover {
+            background-color: rgba(0, 0, 0, 0.75);
           }
         `}</style>
       </Fragment>

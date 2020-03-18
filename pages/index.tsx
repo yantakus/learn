@@ -63,7 +63,7 @@ class HomePage extends Component<{}, IState> {
                         selection
                         clearable
                         id="language"
-                        options={data.languages}
+                        options={data?.languages}
                         onChange={this.handleChange}
                         search
                         placeholder="Select..."
@@ -81,7 +81,7 @@ class HomePage extends Component<{}, IState> {
                         selection
                         clearable
                         id="topics_some"
-                        options={data.topics}
+                        options={data?.topics}
                         onChange={this.handleChange}
                         search
                         placeholder="Select..."
@@ -99,7 +99,7 @@ class HomePage extends Component<{}, IState> {
                         selection
                         clearable
                         id="tags_some"
-                        options={data.tags}
+                        options={data?.tags}
                         onChange={this.handleChange}
                         search
                         placeholder="Select..."
@@ -130,7 +130,7 @@ class HomePage extends Component<{}, IState> {
                   </div>
                 </Form>
               </div>
-              <Videos data={data.videos} loading={loading} />
+              <Videos data={data?.videos} loading={loading} />
             </Fragment>
           )
         }}

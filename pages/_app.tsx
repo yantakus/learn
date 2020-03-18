@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-boost'
@@ -12,26 +12,24 @@ import Main from '../components/Main'
 import Menu from '../components/Menu'
 import Head from '../components/Head'
 
-Router.onRouteChangeStart = () => {
+import 'semantic-ui-css/semantic.min.css'
+import '../tailwind.css'
+
+Router.events.on('routeChangeStart', () => {
   NProgress.start()
-}
+})
 
-Router.onRouteChangeComplete = () => {
+Router.events.on('routeChangeComplete', () => {
   NProgress.done()
-}
+})
 
-Router.onRouteChangeError = () => {
+Router.events.on('routeChangeError', () => {
   NProgress.done()
-}
+})
 
 interface Props {
   apollo: ApolloClient<{}>
   loggedInUser?: Object
-  query: Object
-  router: {
-    pathname: String
-    asPath: String
-  }
 }
 
 interface State {
@@ -47,13 +45,13 @@ class MyApp extends App<Props> {
     this.setState({ hasError: true })
   }
   render() {
-    const { Component, apollo, router } = this.props
+    const { Component, apollo } = this.props
     const { hasError } = this.state as State
     if (hasError) {
       return <h1>Something went wrong.</h1>
     }
     return (
-      <Container>
+      <>
         <Head title="With apollo app" />
         <ApolloProvider client={apollo}>
           <Main>
@@ -67,16 +65,16 @@ class MyApp extends App<Props> {
               </div>
               <div className="flex -mx-4">
                 <div className="flex-1 px-4">
-                  <Component router={router} />
+                  <Component />
                 </div>
                 <div className="flex-initial px-4">
-                  <Menu router={router} />
+                  <Menu />
                 </div>
               </div>
             </div>
           </Main>
         </ApolloProvider>
-      </Container>
+      </>
     )
   }
 }

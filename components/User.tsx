@@ -25,7 +25,8 @@ interface IProps {
 
 const User = ({ children, nullable, ...rest }: IProps) => (
   <Query {...rest} query={CURRENT_USER_QUERY}>
-    {({ data: { me }, loading }) => {
+    {({ data, loading }) => {
+      const me = data?.me
       if (nullable) {
         if (me) {
           return children(me, loading)

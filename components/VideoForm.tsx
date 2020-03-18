@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Mutation, graphql } from 'react-apollo'
 import { getOperationName } from 'apollo-utilities'
-import { gql } from 'apollo-boost'
+import { gql, ApolloError } from 'apollo-boost'
 import { Message } from 'semantic-ui-react'
 import { Form, Input, Dropdown } from 'formsy-semantic-ui-react'
 import { paramCase } from 'change-case'
@@ -58,7 +58,7 @@ interface IState {
   ytId: string
   ytIdError: string
   ytValue: string
-  language: Options
+  language: string
   languageOptions: Options
   tags: Options
   tagsOptions: Options
@@ -66,7 +66,7 @@ interface IState {
   topics: Options
   topicsOptions: Options
   topicsValue: Array<string>
-  complexity?: String
+  complexity?: string
   isValidYtId: boolean
 }
 
@@ -89,6 +89,11 @@ const createManyInput = data => {
     result.connect = connect
   }
   return isEmpty(result) ? undefined : result
+}
+
+type MutationProps = {
+  loading: boolean
+  error?: ApolloError
 }
 
 class AddVideo extends Component<IProps, IState> {
@@ -223,7 +228,7 @@ class AddVideo extends Component<IProps, IState> {
           }}
           refetchQueries={[getOperationName(VIDEOS_QUERY)]}
         >
-          {(upsertVideo, { loading, error }) => {
+          {(upsertVideo, { loading, error }: MutationProps) => {
             return (
               <Fragment>
                 {ytId && <Youtube className="mb-10" id={ytId} />}
