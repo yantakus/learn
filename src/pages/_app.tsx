@@ -30,6 +30,7 @@ Router.events.on('routeChangeError', () => {
 interface Props {
   apollo: ApolloClient<{}>
   loggedInUser?: Object
+  Component: React.FunctionComponent<any>
 }
 
 interface State {
@@ -45,7 +46,7 @@ class MyApp extends App<Props> {
     this.setState({ hasError: true })
   }
   render() {
-    const { Component, apollo } = this.props
+    const { Component, apollo, router } = this.props
     const { hasError } = this.state as State
     if (hasError) {
       return <h1>Something went wrong.</h1>
@@ -65,7 +66,7 @@ class MyApp extends App<Props> {
               </div>
               <div className="flex -mx-4">
                 <div className="flex-1 px-4">
-                  <Component />
+                  <Component router={router} />
                 </div>
                 <div className="flex-initial px-4">
                   <Menu />

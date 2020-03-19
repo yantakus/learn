@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import VideoForm from '../components/VideoForm'
+import { withRouter, NextRouter } from 'next/router'
 
-interface IProps {
-  router: {
-    query: {
-      v?: string
-    }
-  }
+type Props = {
+  router: NextRouter
 }
 
-class AddVideo extends Component<IProps> {
+class AddVideo extends Component<Props> {
   render() {
     return <VideoForm ytId={this.props.router.query.v} />
   }
 }
 
-export default AddVideo
+export default withRouter(AddVideo)

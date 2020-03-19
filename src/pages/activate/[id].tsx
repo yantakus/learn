@@ -3,9 +3,10 @@ import Link from 'next/link'
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import get from 'lodash/get'
-import Message from '../components/Message'
-import Preloader from '../components/Preloader'
-import printError from '../lib/printError'
+
+import Message from 'components/Message'
+import Preloader from 'components/Preloader'
+import printError from 'lib/printError'
 
 interface IProps {
   activate: Function

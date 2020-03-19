@@ -1,8 +1,9 @@
 import { Mutation } from 'react-apollo'
+import { DocumentNode } from 'graphql'
 
 interface IProps {
   children?: Function
-  mutation: string
+  mutation: DocumentNode
   refetchQueries: Array<string>
 }
 

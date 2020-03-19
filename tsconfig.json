@@ -1,5 +1,4 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -13,20 +12,13 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
+    "baseUrl": "./src",
     "plugins": [
       {
         "name": "@divyenduz/ts-graphql-plugin"
       }
     ],
-    "lib": [
-      "dom",
-      "es2015",
-      "es2016"
-    ],
+    "lib": ["dom", "es2015", "es2016"],
     "noEmit": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -34,12 +26,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

@@ -1,17 +1,8 @@
+const path = require('path')
+
 module.exports = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(png|svg|eot|otf|ttf|woff|woff2)$/,
-      use: {
-        loader: 'url-loader',
-        options: {
-          limit: 100000,
-          publicPath: './',
-          outputPath: 'static/',
-          name: '[name].[ext]',
-        },
-      },
-    })
+  webpack: config => {
+    config.resolve.modules = [path.resolve(__dirname, './src'), 'node_modules']
 
     return config
   },

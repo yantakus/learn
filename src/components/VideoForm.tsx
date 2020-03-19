@@ -43,7 +43,7 @@ export const complexities = [
 type Options = Array<{ text: string; value: string }>
 
 interface IProps {
-  ytId?: string
+  ytId?: string | string[]
   currentData?: {
     ytId: string
     complexity: string
@@ -96,7 +96,7 @@ type MutationProps = {
   error?: ApolloError
 }
 
-class AddVideo extends Component<IProps, IState> {
+class VideoForm extends Component<IProps, IState> {
   static getDerivedStateFromProps(newProps, oldState) {
     if (!oldState.tagsOptions && newProps.data.tags) {
       return {
@@ -149,7 +149,7 @@ class AddVideo extends Component<IProps, IState> {
     this.handleChange(null, { name, value: trimmedValue })
     if (value.length === validLength) {
       fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyBy-34x0QPvNx6FsniDEeCT1PVur_fk528&id=${value}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyBePvxlAhMnv2j8YaZ3zDdULjL0AV88yGQ&id=${value}`
       )
         .then(response => response.json())
         .then(json => {
@@ -414,4 +414,4 @@ const UPSERT_VIDEO_MUTATION = gql`
   }
 `
 
-export default graphql(VIDEO_META_QUERY)(AddVideo)
+export default graphql<IProps>(VIDEO_META_QUERY)(VideoForm)

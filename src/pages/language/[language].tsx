@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import VideoPage from '../components/VideoPage'
+import VideoPage from 'components/VideoPage'
 
 interface IProps {
   router: {

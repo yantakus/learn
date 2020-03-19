@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost'
 import { Form, Message } from 'semantic-ui-react'
 import get from 'lodash/get'
 
-import printError from '../../lib/printError'
+import printError from 'lib/printError'
 
 interface IProps {
   query: {

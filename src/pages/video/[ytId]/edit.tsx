@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import VideoForm from '../components/VideoForm'
 import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
+
+import VideoForm from 'components/VideoForm'
 
 interface IProps {
   router: {

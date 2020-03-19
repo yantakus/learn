@@ -25,12 +25,10 @@ export const Video: VideoResolvers.Type = {
   },
   snippet: async parent => {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?key=${
-        process.env.YOUTUBE_API_KEY
-      }&part=snippet&id=${parent.ytId}`
+      `https://www.googleapis.com/youtube/v3/videos?key=${process.env.YOUTUBE_API_KEY}&part=snippet&id=${parent.ytId}`
     )
     if (!response.ok) {
-      throw new Error(response.status)
+      console.error(response)
     }
     const result = await response.json()
     if (!result) {
