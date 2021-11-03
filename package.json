@@ -38,7 +38,7 @@
     "react-visibility-sensor": "^3.11.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "validator": "^10.5.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@divyenduz/ts-graphql-plugin": "^0.1.0",
